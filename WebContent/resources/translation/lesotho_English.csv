@@ -1,0 +1,102 @@
+login_userName,"Counsellor #","User Name"
+login_password,PIN,Password
+login_orgUnit,"Counsel for this session","Organisation Unit"
+login_btn_login,Login,Login
+menu_todayCases,"Today Cases","Today Cases"
+menu_previousCases,"Previous Cases","Previous Cases"
+menu_positiveCases,"Positive Cases","Positive Cases"
+menu_consumables,Consumables,Consumables
+menu_statistics,Statistics,Statistics
+menu_searchCreateClient,"Search / Create Client","Search / Create Client"
+menu_settings,Settings,Settings
+menu_about,About,About
+menu_logOff,"Log Off","Log Off"
+page_headerTitle_counsellor,Counsellor,Counsellor
+clientEntryForm_msg_select_orgUnit,"Please select an orgUnit in","Please select an orgUnit in"
+clientEntryForm_msg_settings,Settings,Settings
+searchClient_headerTitle,"Search/Create client","Search/Create client"
+searchClient_btn_search,Search/Create,Search
+searchResult_msg_searchCriteria,"Matches for","Matches for your search"
+searchClient_result_tableHeader_firstName,"First Name","First Name"
+searchClient_result_tableHeader_surname,Surname,Surname
+searchClient_result_tableHeader_dob,DoB,DoB
+searchClient_result_tableHeader_districtOfBirth,"District o B","District o B"
+searchClient_result_tableHeader_twin,Twin,Twin
+searchClient_result_tableHeader_adquisition,Adquisition,Adquisition
+searchClient_result_tableHeader_lastTestNS,"Last test NS","Last test NS"
+searchClient_result_tableHeader_lastContact,"Last Contact","Last Contact"
+searchClient_result_optionTitle,"Select a client from from above or","Select a client from from above or"
+searchClient_result_opt_addNew,"Add new","Add new"
+searchClient_result_opt_editSearchCriteria,"Edit Search criteria (go back to search screen)","Edit Search criteria (go back to search screen)"
+searchClient_result_opt_cancel,Cancel,Cancel
+searchClient_result_btn_next,Next,Next
+dataEntryForm_headerTitle_addClient,"Add Client","Add Client"
+dataEntryForm_tab_clientAttributes_headerTitle,"Client Attributes","Client Attributes"
+dataEntryForm_tab_previousTests_headerTitle,"Previous Tests","Previous Tests"
+dataEntryForm_tab_thisTest_headerTitle,"This Test","This Test"
+dataEntryForm_tab_clientAttributes_btn_save,Save,Save
+dataEntryForm_tab_thisTest_btn_save,Save,Save
+dataEntryForm_tab_thisTest_btn_complete,Complete,Complete
+dataEntryForm_tab_btn_back,Back,Back
+settings_headerTitle,Settings,Settings
+settings_rowHeader_orgUnit,"Counsel for this session","Counsel for this session"
+about_headerTitle,About,About
+about_rowHeader_currentUser,"Current user","Current user"
+about_rowHeader_version,Version,Version
+about_rowHeader_dhisServer,"DHIS server","DHIS server"
+translation_msg_updatingTranslationKeywords,Updating,Updating
+translation_msg_updatedTranslationKeywords,Updated,Updated
+translation_btn_updateKeyword,Update,Update
+todayCases_headerTitle,"Tested clients today","Tested clients today"
+previousCases_headerTitle,"Previous cases, not including today","Previous cases, not including today"
+positiveCases_headerTitle,"Positive Cases last 12 months","Positive Cases last 12 months"
+common_msg_loadingData,"Loading data","Loading data"
+searchClient_validation_requiredValueInOneField,"Please enter value in at least one field in form","Please enter value in at least one field in form"
+searchClient_result_rowTooltip,"Click to edit the client","Click to edit the client"
+searchClient_result_loadingClientDetails,"Loading client details","Loading client details"
+clientEntryForm_msg_savingClient,"Saving client","Saving client"
+clientEntryForm_editForm_headerTitle,"Edit Client","Edit Client"
+clientEntryForm_msg_clientSaved,"The client is saved","The client is saved"
+clientEntryForm_validation_checkErrorFields,"Please check error fields","Please check error fields"
+clientEntryForm_msg_editingEvent,"Saving event","Saving event"
+clientEntryForm_msg_eventSaved,"The event is saved","The event is saved"
+clientEntryForm_msg_creatingEvent,"Creating new event","Creating new event"
+dataEntryForm_tab_previousTests_msg_headerTitle,"Test on","Test on"
+dataEntryForm_headerTitle_editClient,"Edit Client","Edit Client"
+searchClient_result_noClientFound,"No client found. Select an option below","No client found. Select an option below"
+session_msg_expired,"User is not logged in or session is expired","User is not logged in or session is expired"
+session_msg_loginAgain,"Please login in again","Please login in again"
+session_msg_here,here,here
+settings_rowHeader_language,"Language ",Language
+login_msg_enterUserNameOrPassword,"Please enter username / password","Please enter username / password"
+login_msg_logging,Logging,Logging
+login_msg_wrongUsernamePassword,"Wrong username/password","Wrong username/password"
+common_msg_initializing,Initializing,Initializing
+common_msg_orgUnitSaved,"Organisation Unit is saved","Organisation Unit is saved"
+searchResult_msg_matchFor,Ma,"clients with"
+clientEntryForm_msg_saveDataFail,"Save data fail. Please check the data in form","Save data fail. Please check the data in form."
+common_validation_valueNumber,"The value should be a number","The value should be a number"
+clientEntryForm_msg_aksForCompletingEvent,"Are you sure you want to completed this event?","Are you sure you want to completed this event?"
+common_validation_exactLength,"Please enter exactly","Please enter exactly"
+common_validation_exactCharacter,characters,characters
+common_validation_valueMax,"The value should be less than or equal to","The value should be less than or equal to"
+settings_rowHeader_hideFieldHIVTestLoginAction,"Hide Fields ""HIV Test"" logic action","Hide Fields ""HIV Test"" logic action"
+common_msg_settingsHideLogicActionFieldsSaved,"Hide Fields ""HIV Test"" logic action is saved","Hide Fields ""HIV Test"" logic action is saved"
+dataEntryForm_tab_btn_createClient,"Create Client","Create Client"
+dataEntryForm_tab_btn_editClient,"Edit Client","Edit Client"
+dataEntryForm_tab_btn_createEvent,"Create Event","Create Event"
+dataEntryForm_tab_btn_editEvent,"Edit Event","Edit Event"
+clientEntryForm_msg_creatingEmptyEvent,"Creating empty event","Creating empty event"
+searchClient_msg_searching,Searching,Searching
+clientEntryForm_msg_completingEvent,"Completing event","Completing event"
+clientEntryForm_msg_eventCompleted,"Event is completed","Event is completed"
+allCaseList_msg_clickToOpenEditForm,"Click to open Client Edit form","Click to open Client Edit form"
+positiveCaseList_msg_clickToOpenEditForm,"Click to open Client Edit form","Click to open Client Edit form"
+statistics_reportClientResult_btn_back,Run,Run
+statistics_searchResult_headerTitle,"Client list with CUIC","Client list with CUIC"
+statistics_reportClientResult_btn_back,Back,Back
+report_msg_loadingEvent,"Loading event","Loading event"
+statistics_eventReport_btn_back,Back,Back
+statistics_btn_run,Run,Run
+common_validation_valueLetter,"The value should be a letter","The value should be a letter"
+dataEntryForm_tab_previousTests_msg_by,by,by

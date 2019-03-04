@@ -1,0 +1,51 @@
+{"system":{"id":"clone.psi-mis.org","rev":"17d427e","version":"2.25","date":"2018-10-04T03:28:31.875"},"trackedEntityAttributes":[
+
+{"lastUpdated":"2018-10-04T03:20:48.481","id":"PoTcUsGrIbS","created":"2018-10-04T03:20:48.481","name":"LS - HIV Test Final Result","shortName":"LS - HIV Test Final Result","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+,{"lastUpdated":"2018-10-04T03:21:24.180","id":"AcpKX4a2iAx","created":"2018-10-04T03:21:24.180","name":"LS - HIV Test Final Result - Event Date","shortName":"LS - HIV Test Final Result - Event Date","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"DATE","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+,{"lastUpdated":"2018-10-04T03:25:15.622","id":"Y1pdU5TSGrB","created":"2018-10-04T03:25:15.622","name":"LS - HIV Testing event number","shortName":"LS - HIV Testing event number","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"INTEGER_ZERO_OR_POSITIVE","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"i1NpXcIwfes","created":"2018-10-04T03:24:09.661","name":"LS - Has Contact log Information","shortName":"LS - Has Contact log Information","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"BOOLEAN","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"hkf4GS79Sul","created":"2018-10-04T03:24:09.661","name":"LS - HIV Test Final Event - Category Option","shortName":"LS - HIV Test Final Event - Category Option","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"JAMoB6GnGyw","created":"2018-10-04T03:24:09.661","name":"LS - HIV Test Final Result - Status","shortName":"LS - HIV Test Final Result - Status","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"uXg5tqrRsXJ","created":"2018-10-04T03:24:09.661","name":"LS - HIV Test Final Result - OrgUnit","shortName":"LS - HIV Test Final Result - OrgUnit","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"wLGxRN9x0uW","created":"2018-10-04T03:24:09.661","name":"LS - ART Opening - Facility Referred to","shortName":"LS - ART Opening - Facility Referred to","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"D7CpzDGAPpy","created":"2018-10-04T03:24:09.661","name":"LS - ART Closure - Event Date","shortName":"LS - ART Closure - Event Date","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"DATE","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"YhfhMtu82Pr","created":"2018-10-04T03:24:09.661","name":"LS - ART Closure - List User created","shortName":"LS - ART Closure - List User created","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"jWl3jWdsogC","created":"2018-10-04T03:24:09.661","name":"LS - Contact Log Event - Last Action","shortName":"LS - Contact Log Event - Last Action","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"L5NZ7vuyLe7","created":"2018-10-04T03:24:09.661","name":"LS - Contact Log Event - Last Action Date","shortName":"LS - Contact Log Event - Last Action Date","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"DATE","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"kIREHjvNqNe","created":"2018-10-04T03:24:09.661","name":"LS - Contact Log Event - Next Action","shortName":"LS - Contact Log Event - Next Action","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"L9SC2lA8eWg","created":"2018-10-04T03:24:09.661","name":"LS - Contact Log Event - List User Created","shortName":"LS - Contact Log Event - List User Created","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"OqrP3KFlFT1","created":"2018-10-04T03:24:09.661","name":"LS - ART Opening - EventDate","shortName":"LS - ART Opening - EventDate","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"HJQvtlJOmQm","created":"2018-10-04T03:24:09.661","name":"LS - HIV Test Event - Client Partner Option","shortName":"LS - HIV Test Event - Client Partner Option","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+,{"lastUpdated":"2018-10-04T03:24:48.960","id":"s192aFpfWbW","created":"2018-10-04T03:24:09.661","name":"LS - HIV Test Event - Client Partner CUIC","shortName":"LS - HIV Test Event - Client Partner CUIC","aggregationType":"SUM","programScope":false,"displayInListNoProgram":false,"publicAccess":"rw------","pattern":"","generated":false,"displayOnVisitSchedule":false,"valueType":"TEXT","orgunitScope":false,"confidential":false,"unique":false,"inherit":false,"user":{"id":"tVRIUAq9yAL"},"translations":[],"userGroupAccesses":[],"attributeValues":[]}
+
+
+]
+}
+

@@ -1,0 +1,591 @@
+<html>
+
+
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+
+<meta name="viewport" content="initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="New Start LS">
+<meta name="apple-mobile-web-app-title" content="New Start LS">
+<link rel="icon" href="../images/appIcon.jpg">
+<link rel="apple-touch-icon" href="../images/appIcon.jpg">
+<link rel="apple-touch-icon-precomposed" href="../images/appIcon.jpg" />
+
+<link rel="stylesheet" href="../css/jQuery/jquery-ui.css">
+
+<script src="../js/jQuery/jquery-1.11.1.min.js"></script>
+<script src="../js/jQuery/jquery-ui.min.js"></script>
+<script src="../js/jQuery/jquery.dateFormat-1.0.js"></script>
+<script src="../js/jQuery/jquery.blockUI.js" type="text/javascript"></script>
+<script src="../js/jQuery/jquery.tablesorter.js" type="text/javascript"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../js/bootstrap/moment-with-locales.js"></script>
+<link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker.css">
+<script src="../js/bootstrap/bootstrap-datetimepicker.js"></script>
+
+
+<link rel="stylesheet" href="../css/jQuery/tablesorter/style.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="../css/style.css" />
+
+<script src="../js/utils/lesotho_utils.js"></script>
+<script src="../js/eventReport.js"></script>
+
+<head>
+  <style>
+    @page {
+      size: A4 portrait;
+    }
+
+    body {
+      font-family: 'Arial';
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    table,
+    th,
+    td {
+      border-style: solid;
+      border-collapse: collapse;
+      border: 1px solid #CDCDCD;
+      height: 25px;
+    }
+
+    .row_title_gr_t {
+      height: 20px;
+      padding-left: 5px;
+      padding-top: 5px;
+      background-color: #8EAADB;
+    }
+
+    .row_title_gr_l {
+      height: 20px;
+      padding-top: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+      background-color: #8EAADB;
+    }
+
+    .row_title_top {
+      height: 20px;
+      padding-left: 5px;
+      padding-top: 5px;
+      background-color: #D9E2F3;
+    }
+
+    .row_title_left {
+      height: 20px;
+      padding-top: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+      background-color: #D9E2F3;
+    }
+
+    .row_data {
+      height: 20px;
+      padding-top: 5px;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    .row_title_left_x2 {
+      height: 35px;
+      padding-top: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+      background-color: #D9E2F3;
+    }
+
+    .row_data_x2 {
+      height: 55px;
+      padding-top: 5px;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    .row_data_x2-plus {
+      height: 72px;
+      padding-top: 5px;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    .b_l {
+      border-left: solid 1px #cccccc;
+    }
+
+    .b_r {
+      border-right: solid 1px #cccccc;
+    }
+
+    .b_t {
+      border-top: solid 1px #cccccc;
+    }
+
+    .b_b {
+      border-bottom: solid 1px #cccccc;
+    }
+
+    .text-v {
+      writing-mode: tb-rl;
+      filter: flipv fliph;
+      height: 98px;
+      width: 20px;
+      padding-right: 8px;
+    }
+
+    .text-v-tb {
+      writing-mode: tb-rl;
+      filter: flipv fliph;
+      height: 36px;
+      width: 20px;
+      padding-right: 8px;
+      padding-top: 15px;
+      background-color: #8EAADB;
+    }
+
+    .text-v-rf {
+      writing-mode: tb-rl;
+      filter: flipv fliph;
+      height: 121px;
+      width: 20px;
+      padding-right: 8px;
+      padding-top: 15%;
+      background-color: #8EAADB;
+    }
+
+    .client-uic {
+      float: left;
+      margin-top: 2px;
+      width: 138px;
+      height: 20px;
+      background-color: #fff;
+      text-align: center;
+      padding-top: 5px;
+    }
+
+    .client-uic-data {
+      float: left;
+      margin-top: 2px;
+      width: 54px;
+      height: 20px;
+      text-align: center;
+      padding-top: 5px;
+    }
+
+    .i-number-cc {
+      width: 38px;
+      height: 25px;
+      background-color: #fff;
+      text-align: center;
+      padding-top: 5px;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #eventReport * {
+        visibility: visible;
+      }
+      #eventReport {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+<div style="width:100%; margin-left: auto; margin-right: auto;">
+    <div id="eventReport" style="width:800px; margin-left: auto; margin-right: auto;">
+    <div style="width:800px;height:auto;">
+      <div id="Counsellor-Code" class="b_r b_l b_t b_b" style="float:left;width:200px;height:48px;">
+        <div id="Counsellor-Code_title" class="row_title_top b_b" style="height:23px;font-weight:bold;">Counsellor Code</div>
+        <div id="Counsellor-Code_data" style="float:left;width:100%;">
+          <!--#-->
+          <div id="Counsellor-Code_data_1" class="i-number-cc" style="float:left;width:33px;height:23px;" attribute="catOptCode" idx="0">X</div>
+          <div id="Counsellor-Code_data_2" class="i-number-cc b_l" style="float:left;width:33px;height:23px;" attribute="catOptCode" idx="1">X</div>
+          <div id="Counsellor-Code_data_3" class="i-number-cc b_l" style="float:left;width:33px;height:23px;" attribute="catOptCode" idx="2">X</div>
+          <div id="Counsellor-Code_data_4" class="i-number-cc b_l" style="float:left;width:33px;height:23px;" attribute="catOptCode" idx="3">X</div>
+          <div id="Counsellor-Code_data_5" class="i-number-cc b_l" style="float:left;width:33px;height:23px;" attribute="catOptCode" idx="4">X</div>
+          <div id="Counsellor-Code_data_6" class="i-number-cc b_l" style="float:left;width:33px;height:23px;" attribute="catOptCode" idx="5">X</div>
+        </div>
+      </div>
+      <div id="District" class="b_t b_b" style="float:left;width:200px;height:48px;">
+        <div id="District_title" class="row_title_top b_b" style="height:23px;font-weight:bold;">District</div>
+        <div id="District_data" class="row_data" attribute="districtName" style="height:23px;">[District]</div>
+        <!--#-->
+      </div>
+      <div id="Council" class="b_l b_t b_b" style="float:left;width:200px;height:48px;">
+        <div id="Council_title" class="row_title_top b_b" style="height:23px;font-weight:bold;">Council</div>
+        <div id="Council_data" class="row_data" attribute="councilName" style="height:23px;">[Council]</div>
+        <!--#-->
+      </div>
+      <div id="Village" class="b_l b_r b_t b_b" style="float:left;width:200px;height:48px;">
+        <div id="Village_title" class="row_title_top b_b" style="height:23px;font-weight:bold;">Village</div>
+        <div id="Village_data" class="row_data" dataelement="jBmfQ0i1McL" style="height:23px;">[Village]</div>
+      </div>
+    </div>
+    <div style="width:800px;height:auto;">
+      <div style="float:left;width:50%;height:auto;">
+        <div id="date-of-birth" style="float:left;width:400px;height:24px;">
+          <div id="date-of-birth_title" class="row_title_left b_l b_b" style="float:left;width:99px;height:24px;font-weight:bold;">Date of Birth</div>
+          <div id="date-of-birth_data" class="row_data b_b b_l" style="float:left;width:301px;height:24px;" attribute="BvsJfkddTgZ">[Date of Birth]</div>
+        </div>
+        <div id="first-name" style="float:left;width:400px;height:24px;">
+          <div id="first-name_title" class="row_title_left b_l b_b b_r" style="float:left;width:100px;height:24px;font-weight:bold;">First Name</div>
+          <div id="first-name_data" class="row_data b_b" style="float:left;width:300px;height:24px;" attribute="R9Lw1uNtRuj">[First Name]</div>
+        </div>
+        <div id="surname" style="float:left;width:400px;height:24px;">
+          <div id="surname_title" class="row_title_left b_l b_b b_r" style="float:left;width:100px;height:24px;font-weight:bold;">Surname</div>
+          <div id="surname_data" class="row_data b_b" style="float:left;width:300px;height:24px;" attribute="TBt2a4Bq0Lx">[Surname]</div>
+        </div>
+      </div>
+      <div style="float:left;width:400px;height:72px;">
+
+        <div id="District-of-birth_title" class="row_title_top b_b b_r b_l" style="float:left;width:100px;height:24px;font-weight:bold;">District of Birth</div>
+        <div id="District-of-birth_data" class="row_data b_r b_b" style="float:left;width:300px;height:24px;" attribute="u57uh7lHwF8">[District of Birth]</div>
+
+        <div id="sex_title" class="row_title_left b_l b_b b_r" style="float:left;width:100px;height:24px;font-weight:bold;">Sex</div>
+        <div id="sex_data" class="row_data b_b b_r" style="float:left;width:300px;height:24px;" attribute="CCVO6BZMrnp">X</div>
+
+        <div id="birth-order_title" class="row_title_left b_l b_b b_r" style="float:left;width:100px;height:24px;font-weight:bold;">Birth Order</div>
+        <div id="birth-order_data" class="row_data b_b b_r" style="float:left;width:300px;height:24px;" attribute="vTPYC9BXPNn">XX</div>
+      </div>
+    </div>
+    <div id="client-uic" style="width:800px;height:24px;">
+      <div id="client-uic-tile" class="client-uic b_l b_r b_t b_b" style="width:116px;height:24px;font-weight:bold;">CLIENT UIC</div>
+      <!--#-->
+      <div id="client-uic-data1" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="0" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data2" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="1" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data3" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="2" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data4" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="3" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data5" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="4" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data6" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="5" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data7" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="6" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data8" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="7" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data9" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="8" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data10" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="9" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data11" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="10" style="width:57px;height:24px;">X</div>
+      <div id="client-uic-data12" class="client-uic-data b_r b_t b_b" attribute="rw3W9pDCPb2" idx="11" style="width:57px;height:24px;">X</div>
+    </div>
+    <div style="width:800px;height:auto;">
+      <div style="float:left;width:400px;height:auto;">
+        <!-- col 1 -->
+        <div id="client-information">
+          <div id="client-information-title" class="row_title_gr_t b_t b_l b_r f_bold" style="margin-top:2px;width:400px;height:24px;font-weight:bold;">CLIENT INFORMATION</div>
+
+          <div id="Informed-consent_title" class="row_title_left b_l b_b b_r b_t" style="float:left;width:100px;height:48px;font-weight:bold;">Informed Consent</div>
+          <div id="Informed-consent_data" class="row_data b_b b_r b_t" style="float:left;width:300px;height:48px;"></div>
+
+          <div id="Key-Pop_title" class="row_title_top b_l b_b b_r" style="float:left;width:400px;height:24px;font-weight:bold;">Key Pop</div>
+          <div id="Key-Pop_data1" class="row_data b_l b_b" style="float:left;width:200px;height:48px;" attribute="Y35TizULMzg">[KP1]</div>
+          <div id="Key-Pop_data2">
+            <div id="Key-Pop_data2a" class="row_data b_l b_b b_r" style="float:left;width:200px;height:24px;" attribute="kdzfhXK71re">[KP2]</div>
+            <div id="Key-Pop_data2b" class="row_data b_l b_b b_r" style="float:left;width:200px;height:24px;" attribute="Fty7JMtC7mX">[KP3]</div>
+          </div>
+
+          <div id="priority-Pop_title" class="row_title_top b_l b_b b_r" style="float:left;width:400px;height:24px;font-weight:bold;">Priority Pop</div>
+          <div id="priority-Pop_data1" class="row_data b_l b_b" style="float:left;width:134px;height:48px;" attribute="vD0qayOxs64">[OVC]</div>
+          <div id="priority-Pop_data2">
+            <div id="priority-Pop_data2a" class="row_data b_l b_b" style="float:left;width:133px;height:24px;" attribute="tzZCy78mWEG">[Factory]</div>
+            <div id="priority-Pop_data2b" class="row_data b_l b_b b_r" style="float:left;width:133px;height:24px;" attribute="kpMMzIM3t5I">[Mobile]</div>
+          </div>
+          <div id="priority-Pop_data3">
+            <div id="priority-Pop_data3a" class="row_data b_l b_b" style="float:left;width:133px;height:24px;" attribute="gYiUqfKwktq">[Miner]</div>
+            <div id="priority-Pop_data3b" class="row_data b_l b_b b_r" style="float:left;width:133px;height:24px;" attribute="fa7lRYdWJfl">[Military]</div>
+          </div>
+        </div>
+        <div id="previous-hiv-test-history">
+          <div id="previous-hiv-test-history-title" class="row_title_gr_t b_l b_r b_b f_bold" style="float:left;width:400px;height:24px;font-weight:bold;">PREVIOUS HIV TEST HISTORY</div>
+          <div id="Ever-tested-for-HIV-rr" style="float:left;width:400px;height:24px;">
+            <div id="Ever-tested-for-HIV-rr_title" class="row_title_left b_l b_b b_r" style="float:left;width:250px;height:24px;font-weight:bold;">Ever tested for HIV and received result*</div>
+            <div id="Ever-tested-for-HIV-rr_data" class="row_data b_b b_r" style="float:left;width:150px;height:24px;" attribute="PWy9kmp4Pmb">[Y/N]</div>
+          </div>
+          <div id="date-of-most-recent-HIV-test" style="float:left;width:400px;height:24px;">
+            <div id="date-of-most-recent-HIV-test_title" class="row_title_left b_l b_b b_r" style="float:left;width:250px;height:24px;font-weight:bold;">If yes, date of most recent HIV test*</div>
+            <div id="date-of-most-recent-HIV-test_data" class="row_data b_b b_r" style="float:left;width:150px;height:24px;" attribute="PyfoYtwNGrI">[MM/YYYY]</div>
+          </div>
+          <div id="If-yes-result-of-previous-HIV-test">
+            <div id="If-yes-result-of-previous-HIV-test_title" class="row_title_left b_l b_b b_r" style="float:left;width:250px;height:24px;font-weight:bold;">If yes, result of previous HIV test*</div>
+            <div id="If-yes-result-of-previous-HIV-test_data" class="row_data b_b b_r" style="float:left;width:150px;height:24px;" attribute="XTWSNIlxkEj">[Result]</div>
+          </div>
+        </div>
+        <div id="current-hiv-test">
+          <div id="current-hiv-test-title" class="row_title_gr_t b_l b_r b_b f_bold" style="float:left;width:400px;height:24px;font-weight:bold;">TODAY’S HIV TEST</div>
+          <div id="date-of-HIV-test" style="float:left;width:400px;height:24px;">
+            <div id="date-of-HIV-test_title" class="row_title_left b_l b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Date of HIV Test</div>
+            <div id="date-of-HIV-test_data" class="row_data b_b b_r" style="float:left;width:200px;height:24px;" attribute="eventDate">[DD/MM/YYYY]</div>
+            <!--#-->
+          </div>
+          <div style="float:left;width:400px;height:48px;">
+            <div id="age_title" class="row_title_left b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Age (years)</div>
+            <div id="age_data" class="row_data b_b b_r" style="float:left;width:200px;height:24px;" dataElement="e4XZKCNJjlc">XX</div>
+
+            <div id="client-type_title" class="row_title_left b_l b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Client Type</div>
+            <div id="client-type_data" class="row_data b_b b_r" style="float:left;width:200px;height:24px;" dataelement="RvYugZqBKoN">[Type]</div>
+          </div>
+          <div id="couple-UIC" style="float:left;width:400px;height:24px;">
+            <div id="couple-UIC_title" class="row_title_left b_l b_b b_r" style="float:left;width:100px;height:24px;font-weight:bold;">Couple UIC</div>
+            <div id="couple-UIC_data" style="float:left;">
+              <!-- UYyCL2xz8Wz -->
+              <!--#-->
+              <div id="couple-UIC_data1" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="0" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data2" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="1" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data3" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="2" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data4" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="3" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data5" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="4" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data6" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="5" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data7" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="6" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data8" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="7" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data9" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="8" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data10" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="9" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data11" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="10" style="float:left;width:25px;height:24px;">X</div>
+              <div id="couple-UIC_data12" class="i-number-cc b_r b_b" dataelement="UYyCL2xz8Wz" idx="11" style="float:left;width:25px;height:24px;">X</div>
+            </div>
+          </div>
+          <div id="testing-channel" style="float:left;width:400px;height:24px;">
+            <div id="testing-channel_title" class="row_title_left b_l b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Testing Channel</div>
+            <div id="testing-channel_data" class="row_data b_b b_r" style="float:left;width:200px;height:24px;" dataelement="quOYwc0SOqD">[Channel]</div>
+          </div>
+          <div id="indexed-lead-UIC" style="float:left;width:400px;height:24px;">
+            <div id="indexed-lead-UIC_title" class="row_title_left_x2 b_l b_b b_r" style="float:left;width:100px;height:24px;font-weight:bold;">Index Lead UIC</div>
+            <div id="indexed-lead-UIC_data" style="float:left;">
+              <!-- nSr0NMql5FW -->
+              <!--#-->
+              <div id="indexed-lead-UIC_data1" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="0" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data2" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="1" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data3" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="2" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data4" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="3" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data5" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="4" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data6" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="5" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data7" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="6" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data8" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="7" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data9" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="8" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data10" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="9" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data11" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="10" style="float:left;width:25px;height:24px;">X</div>
+              <div id="indexed-lead-UIC_data12" class="i-number-cc b_r b_b" dataelement="nSr0NMql5FW" idx="11" style="float:left;width:25px;height:24px;">X</div>
+            </div>
+          </div>
+          <div id="layer" style="float:left;width:400px;height:24px;">
+            <div id="layer_title" class="row_title_left b_l b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Layer</div>
+            <div id="layer_data" class="row_data b_b b_r" style="float:left;width:200px;height:24px;" dataelement="fGSXGuPIEOy">[Layer]</div>
+            <!-- omugvBULuf0 -->
+            <!--#-->
+          </div>
+          <div style="float:left;width:400px;height:48px;">
+            <div id="education-level" style="float:left;width:200px;">
+              <div id="education-level_title" class="row_title_left b_l b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Education level (current)*</div>
+              <div id="education-level_data" class="row_data_x2 b_l b_b b_r" style="float:left;width:200px;height:24px;" dataelement="KZsCEYMUuXz">[Education]</div>
+            </div>
+            <div id="employment" style="float:left;width:200px;height:48px;">
+              <div id="employment_title" class="row_title_left b_b b_r" style="float:left;width:200px;height:24px;font-weight:bold;">Employment*</div>
+              <div id="employment_data" class="row_data_x2 b_b b_r" style="float:left;width:200px;height:24px;" dataelement="VEVaRAcZUcD">[Employment]</div>
+            </div>
+          </div>
+          <div id="what-made-you-decide-to-get-tested-for-HIV-today">
+            <div id="what-made-you-decide-to-get-tested-for-HIV-today_title" class="row_title_left b_l b_b b_r" style="float:left;width:400px;height:24px;font-weight:bold;">What made you decide to get tested for HIV today*</div>
+            <div id="what-made-you-decide-to-get-tested-for-HIV-today_data" class="row_data b_l b_b" style="float:left;width:400px;height:24px;" dataelement="vOrRzjpdQC6">[Motivation]</div>
+            <!-- GCl3ORKj1jC -->
+            <!--#-->
+          </div>
+        </div>
+        <div style="margin-right:4px;">
+          <div id="senior-counselor-title" class="row_title_gr_t b_b b_r b_l b_t f_bold" style="margin-top:4px;float:left;width:396px;height:24px;font-weight:bold;">SENIOR COUNSELOR</div>
+          <div id="senior-counselor-name">
+            <div id="senior-counselor-name-title" class="row_title_left b_b b_r b_l f_bold" style="float:left;width:396px;height:24px;font-weight:bold;">Name</div>
+            <div id="senior-counselor-name-data" class="row_data b_b b_r b_l" style="float:left;width:396px;height:58px;"></div>
+          </div>
+          <div id="senior-counselor-signature">
+            <div id="senior-counselor-signature_title" class="row_title_left b_b b_r b_l f_bold" style="float:left;width:396px;height:24px;font-weight:bold;">Signature</div>
+            <div id="senior-counselor-signature-data" class="row_data b_b b_r b_l" style="float:left;width:396px;height:58px;"></div>
+          </div>
+      </div>
+      </div>
+
+
+
+      <div style="float:left;width:400px;">
+        <!-- col 2 -->
+        <div id="non-communicable-disiases">
+          <div id="non-communicable-disiases-title" class="row_title_gr_t b_t b_r b_b f_bold" style="margin-top:2px;width:400px;height:24px;font-weight:bold;">NON-COMMUNICABLE DISEASES</div>
+          <div id="Height-m" style="float:left;width:133px;height:48px;">
+            <div id="Height-m_title" class="row_title_left b_b b_r" style="float:left;width:133px;height:24px;font-weight:bold;">Height (m)</div>
+            <div id="Height-m_data" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="aIplfQPaJH7">XX</div>
+          </div>
+          <div id="Weight-kg" style="float:left;width:133px;height:48px;">
+            <div id="Weight-kg_title" class="row_title_left b_b b_r" style="float:left;width:133px;height:24px;font-weight:bold;">Weight (kg)</div>
+            <div id="Weight-kg_data" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="PazJ9tnjGhS">XX</div>
+          </div>
+          <div id="bmi" style="float:left;width:134px;height:48px;">
+            <div id="bmi_title" class="row_title_left b_b b_r" style="float:left;width:134px;height:24px;font-weight:bold;">BMI</div>
+            <div id="bmi_data" class="row_data b_b b_r" style="float:left;width:134px;height:24px;" dataelement="r0Lh3dEecPF">XX.XX</div>
+          </div>
+          <div id="blood-presure" style="float:left;width:266px;height:48px;">
+            <div id="blood-presure_title" class="row_title_left b_b b_r" style="float:left;width:266px;height:24px;font-weight:bold;">Blood Pressure (mmHg)</div>
+            <div id="blood-presure_data1" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="yI7kyMQJVKW">S XXX</div>
+            <div id="blood-presure_data1" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="SvAAL4qH5pX">D XXX</div>
+          </div>
+          <div id="glucose" style="float:left;width:134px;height:48px;">
+            <div id="glucose_title" class="row_title_left b_b b_r" style="float:left;width:134px;height:24px;font-weight:bold;">Glucose</div>
+            <div id="glucose_data" class="row_data b_b b_r" style="float:left;width:134px;height:24px;" dataelement="xioxtS6erFa">XX</div>
+          </div>
+        </div>
+        <div id="risk-assessment">
+          <div id="risk-assessment-title" class="row_title_gr_t b_r b_b f_bold" style="float:left;width:400px;height:24px;font-weight:bold;">RISK ASSESSMENT</div>
+
+          <div id="pregnant-breastfeeding_title" class="row_title_left b_b b_r" style="float:left;width:275px;height:24px;font-weight:bold;">Pregnant/breastfeeding (client or partner)*</div>
+          <div id="pregnant-breastfeeding_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="Ax5h5bwtBMK">[Y/N]</div>
+
+          <div id="do-you-know-your-partner-HIV-status_title" class="row_title_left b_b b_r" style="float:left;width:275px;height:24px;font-weight:bold;">Do you know your partner’s HIV status*</div>
+          <div id="do-you-know-your-partner-HIV-status_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="TSqDjQSS2Qi">[Y/N]</div>
+
+          <div id="if-yes-what-your-partner-HIV-status_title" class="row_title_top b_b b_r" style="float:left;width:400px;height:24px;font-weight:bold;">If yes, what’s your partner HIV status*</div>
+          <div id="if-yes-what-your-partner-HIV-status_data" class="row_data b_b b_r" style="float:left;width:400px;height:24px;" dataelement="C4Zu5mKJQ9y">[Result]</div>
+
+          <div id="if-yes-what-your-partner-HIV-status-other">
+            <div id="if-yes-what-your-partner-HIV-status-other_title" class="row_title_left b_b b_r" style="float:left;width:134px;height:24px;font-weight:bold;">Other</div>
+            <div id="if-yes-what-your-partner-HIV-status-other_data1" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="Ml9lBSv0iCC">[Circumcised]</div>
+            <div id="if-yes-what-your-partner-HIV-status-other_data2" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="za8zgXEjUHp">[Genital sores]</div>
+          </div>
+
+          <div id="Number-of-sexual-partners-in-last-6-months_title" class="row_title_left b_b b_r" style="float:left;width:275px;height:24px;font-weight:bold;">Number of sexual partners in last 6 months</div>
+          <div id="Number-of-sexual-partners-in-last-6-months_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="drqngyyqyP3">X</div>
+
+        </div>
+
+        <div id="hiv-test">
+
+          <div id="hiv-test_title" class="row_title_gr_t b_r b_b f_bold" style="float:left;width:400px;height:24px;font-weight:bold;">HIV TEST</div>
+
+          <div id="col1-hiv-test" style="float:left;">
+            <div id="row1-hiv-test" style="clear:both;">
+              <div id="t1-result" style="float:left;width:133px;">
+                <div id="t1-result_title" class="row_title_left b_b b_r" style="float:left;width:133px;height:24px;font-weight:bold;">T1: Result*</div>
+                <div id="t1-result_data" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="choHDFxMCaU">[Pos/Neg]</div>
+              </div>
+              <div id="t1-result" style="float:left;width:133px;">
+                <div id="t1-result_title" class="row_title_left b_b b_r" style="float:left;width:133px;height:24px;font-weight:bold;">T2: Result*</div>
+                <div id="t1-result_data" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="KDnhSz51HKS">[Pos/Neg]</div>
+              </div>
+            </div>
+            <div id="row2-hiv-test" style="clear:both;">
+              <div id="t3-parallel-1-2" style="float:left;width:133px;">
+                <div id="t3-parallel-1-2_title" class="row_title_left b_b b_r" style="float:left;width:133px;height:24px;font-weight:bold;">T3: Parallel 1/2</div>
+                <div id="t3-parallel-1-2_data" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="rMh4ZGNzrh1">[Pos/Neg]</div>
+              </div>
+              <div id="t3-parallel-2-2" style="float:left;width:133px;">
+                <div id="t3-parallel-2-2_title" class="row_title_left b_b b_r" style="float:left;width:133px;height:24px;font-weight:bold;">T3: Parallel 2/2</div>
+                <div id="t3-parallel-2-2_data" class="row_data b_b b_r" style="float:left;width:133px;height:24px;" dataelement="Bqff4skvt4d">[Pos/Neg]</div>
+              </div>
+            </div>
+          </div>
+          <div id="col2-hiv-test" style="float:left;">
+            <div id="t4-sd-bioline" style="float:left;width:134px;">
+              <div id="t4-sd-bioline_title" class="row_title_left b_b b_r" style="float:left;width:134px;height:24px;font-weight:bold;">T4: SD Bioline</div>
+              <div id="t4-sd-bioline_data" class="row_data_x2-plus b_b b_r" style="float:left;width:134px;height:72px;" dataelement="M11JqgkJt2X">[Pos/Neg/Ind/Out]</div>
+            </div>
+          </div>
+
+          <div id="final-result_title" class="row_title_left b_b b_r" style="float:left;width:275px;height:24px;font-weight:bold;">Final Result*</div>
+          <div id="final-result_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="UuKat0HFjWS">[Pos/Neg/Ind]</div>
+
+          <div id="test-results-given_title" class="row_title_left b_b b_r" style="float:left;width:275px;height:24px;font-weight:bold;">Test results given*</div>
+          <div id="test-results-given_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="QLMo6Kh3eVP">[Y/N]</div>
+
+          <div id="if-HIV-plus-did-client-have-knowledge-of-HIV-plus-status_title" class="row_title_left b_b b_r" style="float:left;width:275px;height:24px;font-weight:bold;">If HIV+, did client had previous knowledge</div>
+          <div id="if-HIV-plus-did-client-have-knowledge-of-HIV-plus-status_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="esWS3Y9LDi6">[Y/N]</div>
+
+
+          <div id="if-extra-products-used_title" class="row_title_top b_b b_r" style="float:left;width:400px;height:24px;font-weight:bold;">If extra products used</div>
+
+          <div id="determine-strips_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Determine strips</div>
+          <div id="determine-strips_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="UOmjmckRjzR">X</div>
+
+          <div id="unigold-strips_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Unigold strips</div>
+          <div id="unigold-strips_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="tYNs16xzTqS">X</div>
+
+          <div id="capillary-tubes_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Capillary tubes</div>
+          <div id="capillary-tubes_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="kY8Yhg3va7P">X</div>
+
+          <div id="alcohol-swabs_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Alcohol swabs</div>
+          <div id="alcohol-swabs_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="GmbfRCbWdRA">X</div>
+
+          <div id="blood-lancets_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Blood lancets</div>
+          <div id="blood-lancets_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="dqynj0LR6ba">X</div>
+
+          <div id="exam-gloves_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Exam gloves</div>
+          <div id="exam-gloves_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="qq2C8BLOe4F">X</div>
+        </div>
+
+        <div id="tb_title" class="text-v-tb b_b b_r f_bold b_l" style="float:left;width:24px;height:48px;font-weight:bold;">TB</div>
+
+        <div id="screening-conducted_title" class="row_title_left b_b b_r" style="float:left;width:251px;height:24px;font-weight:bold;">Screening conducted*</div>
+        <div id="screening-conducted_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="mkVl2wjztaz">[Conducted]</div>
+
+        <div id="suspected_title" class="row_title_left b_b b_r" style="float:left;width:251px;height:24px;font-weight:bold;">Suspected*</div>
+        <div id="suspected_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="aK3LtjgJwUH">[Suspected]</div>
+
+
+        <div id="referral_title" class="text-v-rf b_b b_r f_bold b_l" style="float:left;width:24px;height:120px;font-weight:bold;">Referrals</div>
+
+        <div id="referral-offered_title" class="row_title_left b_b b_r" style="float:left;width:251px;height:24px;font-weight:bold;">Referral offered*</div>
+        <div id="referral-offered_data" class="row_data b_b b_r" style="float:left;width:125px;height:24px;" dataelement="r8AftzZCjWP">[Y/N]</div>
+
+        <div id="referrals-given-to-client_title" class="row_title_left b_b b_r" style="float:left;width:226px;height:24px;font-weight:bold;">Referrals given to client</div>
+        <div id="referrals-given-to-client_data1" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="tUIkmIFMEDS">[ART]</div>
+        <div id="referrals-given-to-client_data2" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="ZKWK5UIO9wp">[DNA]</div>
+        <div id="referrals-given-to-client_data3" class="row_data b_b b_r" style="float:left;width:76px;height:24px;" dataelement="sTmbmjnUhrA">[PReP]</div>
+        <div id="referrals-given-to-client_data4" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="a9x8qqtTs0J">[TB]</div>
+        <div id="referrals-given-to-client_data5" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="hv1oAJf18cE">[STI]</div>
+        <div id="referrals-given-to-client_data6" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="DbfyDJ04SjL">[VMMC]</div>
+        <div id="referrals-given-to-client_data7" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="BqyBHC6eEFr">[FP]</div>
+        <div id="name-of-referral-DNA-PCR-or-ART-facility_title" class="row_title_left b_b b_r" style="float:left;width:376px;height:24px;font-weight:bold;">Name of referral DNA PCR or ART facility</div>
+        <div id="name-of-referral-DNA-PCR-or-ART-facility_data" class="row_data b_b b_r" style="float:left;width:376px;height:24px;" dataelement="E1KAxdya3y5">[Facility]</div>
+        <!-- CLclHLxzl9e -->
+        <!--#-->
+
+        <div id="determine-strips_data-t" class="row_title_left b_b b_r b_l" style="float:left;width:200px;height:24px;font-weight:bold;">Products distributed</div>
+        <div id="determine-strips_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Female condoms</div>
+        <div id="determine-strips_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="nNJQ6POHKNc">XX</div>
+        <div id="determine-strips_data-t" class="row_data b_b b_r b_l" style="float:left;width:125px;height:24px;">Lube</div>
+        <div id="determine-strips_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="ettc2MtVOcm">XX</div>
+        <div id="unigold-strips_data-t" class="row_data b_b b_r" style="float:left;width:125px;height:24px;">Male condoms</div>
+        <div id="unigold-strips_data" class="row_data b_b b_r" style="float:left;width:75px;height:24px;" dataelement="A5aT1hCrMw1">XX</div>
+      </div>
+    </div>
+    <div style="clear: both;width:800px;">
+
+    </div>
+  </div>
+</div>
+<br>
+<br>
+</body>
+
+
+<script>
+  $(document).ready()
+  {
+    new EventReport();
+  }
+
+</script>
+
+</html>
