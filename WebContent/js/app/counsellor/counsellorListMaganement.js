@@ -191,11 +191,11 @@ function CounsellorListMaganement( _mainPage  )
 		 	            }
 						,success: function( response ) 
 						{
-							exeFunc( response.trackedEntityInstances );
+							exeFunc( response.listGrid.rows );
 						}
 						,error: function(response)
 						{
-							console.log(response);
+							console.log( response );
 						}
 					});
 			} 
@@ -220,33 +220,13 @@ function CounsellorListMaganement( _mainPage  )
 		{
 			for( var i in list )
 			{
-				var clientData = list[i];
-				var attrValues = clientData.attributes;
-				
-				var clientId = clientData.trackedEntityInstance;
-				var eventDate = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventDate );
-				var hivTestResult = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVTestFinalResult );
-				var eventStatus = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventStatus );
-				var cuic = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ClientCUIC );
-				var hasContactData = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HasContactLogFormInfor );
-				
-				var hasOpenEvent = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTFacility );
-				if( hasOpenEvent !== "" )
-				{
-					var hasOpenEvent = true;
-				}
-				
-				var hasOpenPrepReferEvent = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTFacility );
-				if( hasOpenPrepReferEvent !== "" )
-				{
-					var hasOpenPrepReferEvent = true;
-				}
-					
-				var ouName = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventOrgUnit );
-				if( ouName != undefined && ouName.split("$").length > 1 )
-				{
-					ouName = ouName.split("$")[1];
-				}
+				var event = list[i];
+				var clientId = event[0];
+				var eventId = event[1];
+				var eventDate = event[2];
+				var hivTestResult = event[3];
+				var cuic = event[4];
+				var ouName = event[6];
 				
 				// -------------------------------------------------------------
 				// Set status icon
@@ -254,6 +234,11 @@ function CounsellorListMaganement( _mainPage  )
 
 				var testResultTag = $( "<td>" + hivTestResult + "</td>" );
 				
+				var eventStatus = event[7];
+				var hasContactData = ( event[8] == 5 );
+				var hasOpenARTEvent = ( event[9] != null &&  event[9] != "" );
+				var artValue = ( event[10] == "true" );
+				var hasOpenPrepReferEvent = ( event[11] != null && event[11] != "" );
 				
 				//For both Negative and Positive, in red if the test has not been completed, in green if it has been completed
 				var statusColor = ( eventStatus == "COMPLETED" ) ? "green" : "red"; 
@@ -269,7 +254,7 @@ function CounsellorListMaganement( _mainPage  )
 					if( hivTestResult == "Positive" )
 					{
 						//For Positives only, in red if the Referral Opening event does not exist, green if it does
-						resultColor = ( hasOpenEvent ) ? "green" : "red"; 
+						resultColor = ( hasOpenARTEvent ) ? "green" : "red"; 
 						testResultTag.append("<span class='glyphicon glyphicon-plus' style='color:" + resultColor + ";padding-left:5px;'></span>");
 					}
 					else if( hivTestResult == "Negative" )
@@ -297,7 +282,7 @@ function CounsellorListMaganement( _mainPage  )
 				var eventKey = eventDate.substring(11, 19).split(":").join("");
 				
 				var tranlatedText = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_clickToOpenEditForm" );
-				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' ></tr>");							
+				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' eventId='" + eventId + "' ></tr>");
 				rowTag.append( "<td><span style='display:none;'>" + eventKey + "</span><span>" + eventDateStr + "</span></td>" );
 				rowTag.append( "<td>" + cuic + "</td>" );
 				rowTag.append( "<td>" + ouName + "</td>" );
@@ -325,31 +310,24 @@ function CounsellorListMaganement( _mainPage  )
 		{
 			for( var i in list )
 			{
-				var clientData = list[i];
-				var attrValues = clientData.attributes;
+				var event = list[i];
+				var clientId = event[0];
+				var eventId = event[1];
+				var eventDate = event[2];
+				var hivTestResult = event[3];
+				var cuic = event[4];
+				var noTest = event[5];
+				var ouName = event[6];
 				
-				var clientId = clientData.trackedEntityInstance;
-				var hivTestResult = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVTestFinalResult );
-				var eventStatus = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventStatus );
-				var cuic = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ClientCUIC );
-				var noTest = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventNo );
-				var ouName = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventOrgUnit );
-				if( ouName != undefined && ouName.split("$").length > 1 )
-				{
-					ouName = ouName.split("$")[1];
-				}
-				
-				var eventDate = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventDate );
 				var eventDateStr = eventDate;
 				if( eventDate !== "" )
 				{
 					eventDateStr = Util.formatDate_DisplayDate( eventDate );
 				}
-				
 				var eventKey = eventDate.substring(0, 10).split("-").join("");
 			
 				var tranlatedText = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_clickToOpenEditForm" );
-				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' ></tr>");							
+				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' eventId='" + eventId + "' ></tr>");							
 				rowTag.append( "<td><span style='display:none;'>" + eventKey + "</span><span>" + eventDateStr + "</span></td>" );
 				rowTag.append( "<td>" + cuic + "</td>" );
 				rowTag.append( "<td>" + ouName + "</td>" );
@@ -378,34 +356,35 @@ function CounsellorListMaganement( _mainPage  )
 		{
 			for( var i in list )
 			{
-				var clientData = list[i];
-				var attrValues = clientData.attributes;
+				var event = list[i];
+				var clientId = event[0];
+				var eventId = event[1];
+				var eventDate = event[2];
+				var cuic = event[4];
+				var numberOfTest = event[5];
+				var ouName = event[6];
 				
-				var clientId = clientData.trackedEntityInstance;
-				var hivTestResult = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVTestFinalResult );
-				var eventStatus = Util.getAttributeValue( attrValues,"attribute",  me.mainPage.settingsManagement.attr_HIVEventStatus );
-				var cuic = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ClientCUIC );
-				var numberOfTest = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventNo );
-				var artStatus = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTStatus );
-				var openingFacility = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTFacility );
-				var ouName = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventOrgUnit );
-				if( ouName != undefined && ouName.split("$").length > 1 )
+				var artStatus = event[7];
+				if( artStatus == null )
 				{
-					ouName = ouName.split("$")[1];
+					artStatus = "";
+				}
+				var openingFacility = event[8];
+				if( openingFacility == null )
+				{
+					openingFacility = "";
 				}
 				
-				var eventDate = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventDate );
 				var eventDateStr = eventDate;
 				if( eventDate !== "" )
 				{
 					eventDateStr = Util.formatDate_DisplayDate( eventDate );
 				}
-				
 				var eventKey = eventDate.substring(0, 10).split("-").join("");
 				
 				
 				var tranlatedText = me.translationObj.getTranslatedValueByKey( "positiveCaseList_msg_clickToOpenEditForm" );
-				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "'></tr>");										
+				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' eventId='" + eventId + "'></tr>");										
 				rowTag.append( "<td><span style='display:none;'>" + eventKey + "</span><span>" + eventDateStr + "</span></td>" );
 				rowTag.append( "<td>" + cuic + "</td>" );
 				rowTag.append( "<td>" + ouName + "</td>" );

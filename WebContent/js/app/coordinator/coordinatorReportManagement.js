@@ -62,12 +62,30 @@ function CoordinatorReportManagement( mainPage )
 							// --------------------------------------------------------------------
 							
 							// STEP 2. Get the currentPeriod and period which Yesterday is winthin
-							var thisWeekPeriod = response.report.metaData.pe[3];
-							var thisMonthPeriod = response.report.metaData.pe[1];
-							var thisQuarterlyPeriod = response.report.metaData.pe[2];
-							var thisFinancialPeriod = response.report.metaData.pe[0];
+							var thisWeekPeriod;
+							var thisMonthPeriod;
+							var thisQuarterlyPeriod;
+							var thisFinancialPeriod;
 							
-							var last4WeeksData = [];
+							for( var peKey in response.report.metaData.items )
+							{
+								if( peKey.indexOf("W") >= 0 ) // Ex: 2019W5
+								{
+									thisWeekPeriod = peKey;
+								}
+								else if( peKey.indexOf("Q") >= 0 ) // Ex: 2019Q1
+								{
+									thisQuarterlyPeriod = peKey;
+								}
+								else if( peKey.length == 6 ) // Ex: 201901
+								{
+									thisMonthPeriod = peKey;
+								}
+								else if( peKey.length == 7 ) // Ex: 2018Oct
+								{
+									thisMonthPeriod = peKey;
+								}
+							}
 							
 							var data = response.report.rows;
 							for( var i in data )

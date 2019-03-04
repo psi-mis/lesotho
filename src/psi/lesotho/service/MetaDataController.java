@@ -22,7 +22,7 @@ public class MetaDataController
     // -------------------------------------------------------------------------
     
     private static String URL_QUERY_LOAD_PROGRAM_STAGE_SECTIONS = Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=programStages[id,name,programStageDataElements[compulsory,dataElement[id,formName,valueType,optionSet[id,name,options[code,name]]]],programStageSections[id,displayName,dataElements[id]]";
-    private static String URL_QUERY_LOAD_ATTRIBUTE_GROUPS = Util.LOCATION_DHIS_SERVER + "/api/programSections.json?filter=code:like:LSHTC&paging=false&fields=id,name,code,programTrackedEntityAttribute[id,shortName,valueType,optionSet[id,name,options[code,name]]";
+    private static String URL_QUERY_LOAD_ATTRIBUTE_GROUPS = Util.LOCATION_DHIS_SERVER + "/api/programSections.json?filter=code:like:LSHTC&paging=false&fields=id,name,code,programTrackedEntityAttribute[id,name,shortName,valueType,optionSet[id,name,options[code,name]]";
     private static String URL_QUERY_LOAD_PROGRAM_ATTRIBUTES = Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name]]";
     private static String URL_QUERY_LOAD_ORGUNIT_CHILDREN =  Util.LOCATION_DHIS_SERVER + "/api/organisationUnits/" + MetaDataController.PARAM_DISTRICT_ID + ".json?fields=children[id,name,code]";
     private static String URL_QUERY_LOAD_ORGUNITS_BY_LEVEL =  Util.LOCATION_DHIS_SERVER + "/api/organisationUnits/" + Util.ROOT_ORGTUNIT_LESOTHO + ".json?includeDescendants=true&fields=id,name,code&filter=level:eq:" + Util.REGISTER_DISTRICT_LEVEL;

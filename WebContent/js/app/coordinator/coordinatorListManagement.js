@@ -290,14 +290,16 @@ function CoordinatorListManagement( _mainPage )
 		me.todayFUDateTag.html( Util.formatDate_LastNDate(0) );
 		me.listCases( "../event/todayFU", function( list )
 		{
-			var tbodyTag = me.todayCaseTblTag.find("tbody");
-			tbodyTag.find("tr").remove();
+			me.populateTodayFU( list );
 			
-			// Populate data
-			var contactLogEvent = list.contactLogEvent.trackedEntityInstances;
-			me.populateTodayFU( contactLogEvent );
-			var artClosureEvent = list.artClosureEvent.trackedEntityInstances;
-			me.populateTodayFU( artClosureEvent );
+//			var tbodyTag = me.todayCaseTblTag.find("tbody");
+//			tbodyTag.find("tr").remove();
+//			
+//			// Populate data
+//			var contactLogEvent = list.contactLogEvent.trackedEntityInstances;
+//			me.populateTodayFU( contactLogEvent );
+//			var artClosureEvent = list.artClosureEvent.trackedEntityInstances;
+//			me.populateTodayFU( artClosureEvent );
 			
 			me.todayCaseTblTag.show();
 			me.todayFUListTag.show("fast");
@@ -350,11 +352,11 @@ function CoordinatorListManagement( _mainPage )
 			            ,contentType: "application/json;charset=utf-8"
 						,success: function( response ) 
 						{
-							exeFunc( response );
+							exeFunc( response.listGrid.rows );
 						}
 						,error: function(response)
 						{
-							console.log(response);
+							console.log( response );
 						}
 					});
 			} 
@@ -388,74 +390,50 @@ function CoordinatorListManagement( _mainPage )
 		{
 			for( var i in list )
 			{
-				var clientData = list[i];
-				var clientId = clientData.trackedEntityInstance;
-				
-				var clientRowTag = tbodyTag.find( "tr[clientId='" + clientId + "']" );
-				if( clientRowTag.length == 0 )
+				var event = list[i];
+
+				var clientId = event[0];
+				var eventId = event[1];
+				var eventDate = event[2];
+				var council = event[5];
+				var facilityRefer = event[6];
+				var cuic = event[3];
+				var referStatus = event[4];
+				var closureEventId = event[12];
+
+				var nextAction = event[9];
+				var contactLogEventId = event[7];
+				if( contactLogEventId == "" && closureEventId == "" )
 				{
-					var attrValues = clientData.attributes;
-					
-					var eventDate = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventDate );
-					var cuic = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ClientCUIC );
-					var artClosureEventDate = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTClosure_EventDate );
-					
-					var council = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_HIVEventOrgUnit );
-					if( council != undefined && council.split("$").length > 1 )
-					{
-						council = council.split("$")[1];
-					}
-					
-					var facilityRefer = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTFacility );
-					if( facilityRefer != "" )
-					{
-						facilityRefer = facilityRefer.split("$")[1];
-					}
-					
-					var referStatus = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ARTStatus );
-					if( referStatus != "" )
-					{
-						referStatus = Util.findItemFromList( me.mainPage.settingsManagement.artStatus, "code", referStatus ).name;
-					}
-					
-					var nextAction = Util.getAttributeValue( attrValues, "attribute", me.mainPage.settingsManagement.attr_ContactLogEvent_NextAction );
-					if( nextAction == "" && artClosureEventDate == "" )
-					{
-						nextAction = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_nextStatusFollowUp" );
-					}
-					else if( nextAction != "" && artClosureEventDate != "" )
-					{
-						nextAction = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_nextStatusNone" );
-					}
-					else
-					{
-						nextAction = Util.findItemFromList( me.mainPage.settingsManagement.nextActionName, "code", nextAction ).name;
-					}
-					
-					eventDate = ( eventDate !== undefined ) ? eventDate : "";
-					var eventDateStr = eventDate;
-					if( eventDate !== "" )
-					{
-						eventDateStr = Util.formatTimeInDateTime( eventDate );
-					}
-	
-					var eventKey = eventDate.substring(11, 19).split(":").join("");
-					
-					
-					
-					var tranlatedText = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_clickToOpenEditForm" );
-					var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' ></tr>");							
-					rowTag.append( "<td><span style='display:none;'>" + eventKey + "</span><span>" + eventDateStr + "</span></td>" );
-					rowTag.append( "<td>" + council + "</td>" );
-					rowTag.append( "<td>" + facilityRefer + "</td>" );
-					rowTag.append( "<td>" + cuic + "</td>" );
-					rowTag.append( "<td>" + nextAction + "</td>" );
-					rowTag.append( "<td>" + referStatus + "</td>" );
-					
-					me.addEventForRowInList(rowTag);
-					
-					tbodyTag.append( rowTag );
+					nextAction = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_nextStatusFollowUp" );
 				}
+				else if( contactLogEventId != "" && closureEventId != "" )
+				{
+					nextAction = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_nextStatusNone" );
+				}
+				
+				
+				eventDate = ( eventDate !== undefined ) ? eventDate : "";
+				var eventDateStr = eventDate;
+				if( eventDate !== "" )
+				{
+					eventDateStr = Util.formatTimeInDateTime( eventDate );
+				}
+				
+				var eventKey = eventDate.substring(11, 19).split(":").join("");
+
+				var tranlatedText = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_clickToOpenEditForm" );
+				var rowTag = $("<tr clientId='" + clientId + "' title='" + tranlatedText + "' eventId='" + eventId + "' ></tr>");							
+				rowTag.append( "<td><span style='display:none;'>" + eventKey + "</span><span>" + eventDateStr + "</span></td>" );
+				rowTag.append( "<td>" + council + "</td>" );
+				rowTag.append( "<td>" + facilityRefer + "</td>" );
+				rowTag.append( "<td>" + cuic + "</td>" );
+				rowTag.append( "<td>" + nextAction + "</td>" );
+				rowTag.append( "<td>" + referStatus + "</td>" );
+
+				me.addEventForRowInList(rowTag);
+
+				tbodyTag.append( rowTag );
 			}
 			
 		}
@@ -472,7 +450,7 @@ function CoordinatorListManagement( _mainPage )
 		var tbodyTag = me.allFUTblTag.find("tbody");
 		tbodyTag.find("tr").remove();
 		
-		var list = response.rows;
+		var list = response;
 		
 		if( list.length > 0 )
 		{
@@ -483,7 +461,7 @@ function CoordinatorListManagement( _mainPage )
 				var clientData = list[i];
 				
 				var openingARTEvent = clientData[5];
-				if( openingARTEvent != "" )
+				if( openingARTEvent != null )
 				{	
 					var hasCurrentUserEvent = false;
 
@@ -515,7 +493,7 @@ function CoordinatorListManagement( _mainPage )
 
 					var councilCode = clientData[5];
 					var councilName = "";
-					if( councilCode != "" )
+					if( councilCode != null )
 					{
 						var searched = Util.findItemFromList( me.filterCouncils, "code", councilCode );
 						if( searched != undefined )
@@ -542,7 +520,7 @@ function CoordinatorListManagement( _mainPage )
 					var facilityName = clientData[9];
 					var openingARTEventName = me.settingsManagement.ARTReferralOpeningStage_Name;
 					
-					if( facilityName == "" )
+					if( facilityName == null )
 					{
 						var searched = Util.findItemFromList( me.filterHealthFacilities, "code", facilityCode );
 						if( searched != undefined )
@@ -555,46 +533,14 @@ function CoordinatorListManagement( _mainPage )
 						}
 					}
 					
-					
-					/* for( var j in openingARTEvent )
-					{
-						var event = openingARTEvent[j];
-						if( event.eventId == latestEventId )
-						{
-							if( event.deId == me.de_ARTOpening_ReferralFacilityName )
-							{
-								facilityCode = event.dataValue;
-							}
-							else if( event.deId == me.de_ARTOpening_ReferralFacilityOther )
-							{
-								facilityName = event.dataValue;
-							}
-						}
-						
-						// Check if current user has any event
-						if( event.username == currentUsername && !hasCurrentUserEvent )
-						{
-							hasCurrentUserEvent = true;
-						}
-					} 
-					
-					if( facilityName == "" )
-					{
-						var searched = Util.findItemFromList( me.filterHealthFacilities, "code", facilityCode );
-						if( searched != undefined )
-						{
-							facilityName = searched.name;
-						}
-					} */
-					
 					// ---------------------------------------------------------
 					// [Contact log] event data
 					// ---------------------------------------------------------
 					
 					var contactLogEventDate = clientData[10];
 					var contactLogEventContactType = clientData[11];
-					var contactLogDueDate = clientData[12];
-					var contactLogNextAction = clientData[13];
+					var contactLogDueDate = ( clientData[12] == "" ) ? null : clientData[12];
+					var contactLogNextAction = ( clientData[13] == "" ) ? null : clientData[13] ;
 
 					// Check if current user has any event
 					var hasCurrentUserEvent = false;
@@ -613,7 +559,7 @@ function CoordinatorListManagement( _mainPage )
 					var closureARTEventDate = clientData[16];
 					var closureARTEventUsername = clientData[17];
 					var closureEventLinkageOutcome = clientData[18];
-					if( closureEventLinkageOutcome != "" )
+					if( closureEventLinkageOutcome != null )
 					{
 						isClosureEvent = true;
 						var searched = Util.findItemFromList( me.closureARTStatus, "code", closureEventLinkageOutcome);
@@ -700,7 +646,7 @@ function CoordinatorListManagement( _mainPage )
 		// If [ART Referral - Opening] event existed, no [Contact Log] event, no [ART Referral - Closure]
 		// --> Last action : ART Referral - Opening event DATE, [ART Referral - Opening event NAME]
 		// --> Next action : ART Referral - Opening event DATE+7 Days, "Start follow-up"
-		if( openingARTEventDate != "" && contactLogEventDate == "" && closureARTEventDate == "" )
+		if( openingARTEventDate != null && contactLogEventDate == null && closureARTEventDate == null )
 		{
 			var dueDateObj = Util.getLastXDateFromDateStr( openingARTEventDate, -7 );
 			dueDate = Util.convertDateObjToStr( dueDateObj );
@@ -713,7 +659,7 @@ function CoordinatorListManagement( _mainPage )
 		// If [ART Referral - Opening] and ART Referral - Closure] events existed
 		// --> Last action : ART Referral - Closure event DATE, ART Referral - Closure event LINKAGE OUTCOME
 		// --> Next action : [none]
-		else if( openingARTEventDate != "" && closureARTEventDate != "" )
+		else if( openingARTEventDate != null && closureARTEventDate != null )
 		{
 			var tranlatedText = me.translationObj.getTranslatedValueByKey( "allCaseList_msg_actionNoneStatus" );
 		
@@ -726,7 +672,7 @@ function CoordinatorListManagement( _mainPage )
 		// If [ART Referral - Opening] and [Contact Log] events existed, no [ART Referral - Closure]
 		// --> Last action : Last Contact Log event DATE, Last Contact Log event TYPE OF CONTACT
 		// --> Next action : Last Contact Log event DUE DATE, Last Contact Log event NEXT ACTION
-		else if( openingARTEventDate != "" && contactLogEventDate != "" && closureARTEventDate == "" )
+		else if( openingARTEventDate != null && contactLogEventDate != null && closureARTEventDate == null )
 		{
 			dueDate = contactLogDueDate;
 			
@@ -755,7 +701,7 @@ function CoordinatorListManagement( _mainPage )
 	me.generateDueDateIconStatusColor = function( dueDateStr )
 	{
 		var statusColor = "";
-		if( dueDateStr != "" )
+		if( dueDateStr != undefined && dueDateStr != "" )
 		{
 			var dueDate = dueDateStr.substring( 0, 10 );		
 			var today = Util.convertDateObjToStr( new Date() );

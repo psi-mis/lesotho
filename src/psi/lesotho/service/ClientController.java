@@ -21,17 +21,27 @@ public class ClientController
 
     private static final String PARAM_CLIENT_ID = "@PARAM_CLIENT_ID";
     
+    private static ArrayList<String> searchVariables = new ArrayList<>(Arrays.asList( Util.ID_ATTR_FIRSTNAME, Util.ID_ATTR_LASTNAME
+        , Util.ID_ATTR_DOB, Util.ID_ATTR_DISTRICTOB, Util.ID_ATTR_BIRTHORDER ));
     
     // -------------------------------------------------------------------------
     // URLs
     // -------------------------------------------------------------------------
-    public static final String URL_QUERY_CLIENT_BY_ID = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM;
-    private static final String URL_QUERY_SEARCH_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances.json?ouMode=ALL&program=" + Util.ID_PROGRAM;
-    private static final String URL_QUERY_SEARCH_POSITIVE_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances.json?program=" + Util.ID_PROGRAM + "&ouMode=ALL&filter=" + Util.ID_ATTR_HIV_TEST_FINAL_RESULT + ":EQ:POSITIVE";
-    private static final String URL_QUERY_CREATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances";
-    private static final String URL_QUERY_UPDATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID;
+    
+    private static final String URL_QUERY_SEARCH_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/sqlViews/" + Util.ID_SQLVIEW_SEARCH_CLIENTS + "/data.json?paging=false&";
+    private static final String URL_QUERY_SEARCH_POSITIVE_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/sqlViews/" + Util.ID_SQLVIEW_SEARCH_POSITIVE_CLIENTS + "/data.json?paging=false&";
+    private static final String URL_QUERY_CREATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/30/trackedEntityInstances";
+    private static final String URL_QUERY_UPDATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/30/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID;
     private static final String URL_QUERY_ENROLLMENT = Util.LOCATION_DHIS_SERVER + "/api/enrollments";
     private static final String URL_QUERY_CLIENT_DETAILS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM + "&fields=*,attributes[attribute,value]";
+
+//    public static final String URL_QUERY_CLIENT_BY_ID = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM;
+//    private static final String URL_QUERY_SEARCH_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances.json?ouMode=ALL&program=" + Util.ID_PROGRAM;
+//    private static final String URL_QUERY_SEARCH_POSITIVE_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances.json?program=" + Util.ID_PROGRAM + "&ouMode=ALL&filter=" + Util.ID_ATTR_HIV_TEST_FINAL_RESULT + ":EQ:POSITIVE";
+//    private static final String URL_QUERY_CREATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances";
+//    private static final String URL_QUERY_UPDATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID;
+//    private static final String URL_QUERY_ENROLLMENT = Util.LOCATION_DHIS_SERVER + "/api/enrollments";
+//    private static final String URL_QUERY_CLIENT_DETAILS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM + "&fields=*,attributes[attribute,value]";
     
         
     // -------------------------------------------------------------------------
@@ -159,7 +169,7 @@ public class ClientController
 
         try
         {
-            String requestUrl = ClientController.URL_QUERY_CLIENT_BY_ID;
+            String requestUrl = ClientController.URL_QUERY_CLIENT_DETAILS;
             requestUrl = requestUrl.replace( ClientController.PARAM_CLIENT_ID, clientId );
             responseInfo = Util.sendRequest( Util.REQUEST_TYPE_GET, requestUrl, null, null );
         }
@@ -223,7 +233,6 @@ public class ClientController
             String clientId = responseInfo.referenceId;
             receivedData.put( "trackedEntityInstance", clientId );
             responseInfo.output = receivedData.toString();
-
         }
         catch ( Exception ex )
         {
@@ -306,7 +315,6 @@ public class ClientController
         try
         {
             JSONObject enrollmentJson = ClientController.getEnrollmentJson( clientId, Util.ID_PROGRAM, ouId );
-
             String requestUrl = ClientController.URL_QUERY_ENROLLMENT;
             responseInfo = Util.sendRequest( Util.REQUEST_TYPE_POST, requestUrl, enrollmentJson, null );
         }
@@ -357,15 +365,27 @@ public class ClientController
     
     @SuppressWarnings( "unchecked" )
     private static String createSearchClientCondition( JSONArray attributeList )
-    {
+    { 
         String condition = "";
+        ArrayList<String> searchVariableCopy = (ArrayList<String>)ClientController.searchVariables.clone();
+        
         for( int i=0; i<attributeList.length(); i++ ) 
         {
             String attributeId = attributeList.getJSONObject( i ).getString( "attribute" );
             String value = attributeList.getJSONObject( i ).getString( "value" );
-            value = value.replaceAll("'", "''");
+            value = value.replaceAll("'", "-");
             
-            condition += "&filter=" + attributeId + ":LIKE:" + URLEncoder.encode( value );
+            condition += "var=" + attributeId + ":" + URLEncoder.encode( value ) + "&";
+
+            if ( searchVariableCopy.indexOf( attributeId ) >= 0 )
+            {
+                searchVariableCopy.remove( attributeId );
+            }
+        }
+        
+        for( int i=0; i<searchVariableCopy.size(); i++ )
+        {
+            condition += "var=" + searchVariableCopy.get( i ) + ":%20&";
         }
         
         return condition;

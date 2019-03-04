@@ -177,7 +177,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		me.availableAttributeTag.find("option").remove();
 		for( var i in attributes )
 		{
-			me.availableAttributeTag.append("<option value='" + attributes[i].id + "'>" + attributes[i].shortName + "</option>");
+			me.availableAttributeTag.append("<option value='" + attributes[i].id + "'>" + attributes[i].name + "</option>");
 		}
 	};
 	
@@ -225,7 +225,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		me.selectedAttributeTag.find("option").remove();
 		for( var i in attributes )
 		{
-			me.selectedAttributeTag.append("<option value='" + attributes[i].id + "'>" + attributes[i].shortName + "</option>");
+			me.selectedAttributeTag.append("<option value='" + attributes[i].id + "'>" + attributes[i].name + "</option>");
 		}
 	};
 
@@ -247,7 +247,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		{
 			var attribute = {};
 			attribute.id = $(selectedOptions[i]).val();
-			attribute.shortName = $(selectedOptions[i]).text();
+			attribute.name = $(selectedOptions[i]).text();
 			jsonData.attributes.push( attribute );
 		}
 		

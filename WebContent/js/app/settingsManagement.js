@@ -53,8 +53,7 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 	me.attr_DistrictOB = "u57uh7lHwF8";
 	me.attr_BirthOrder ="vTPYC9BXPNn";
 	
-	me.attr_HasContactLogFormInfor = "i1NpXcIwfes"; // Set this one mandatory for Contact Log
-	
+
 	// [HIV Test Final result EVENT] Attributes
 	me.attr_HIVTestFinalResult = "PoTcUsGrIbS";
 	me.attr_HIVEventDate = "AcpKX4a2iAx";
@@ -71,7 +70,8 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 	me.attr_ContactLogEvent_NextAction = "kIREHjvNqNe";
 	me.attr_ContactLogEvent_Usernames = "L9SC2lA8eWg";
 	
-	
+	me.attr_HasContactLogFormInfor = "i1NpXcIwfes"; // Set this one mandatory for Contact Log
+
 	// [ART Opening] attributes
 	me.attr_ARTStatus = "mYdfuRItatP";
 	me.attr_ARTFacility = "wLGxRN9x0uW";
@@ -90,8 +90,8 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 	// [PrEP Refer. Closure] attributes
 	me.attr_PrEPReferClosure_EventDate = "N0Dry7xDF9P";
 	me.attr_PrEPReferClosure_Usernames = "neSEKfn7J76";
-
 	
+	// [Contact Log] event
 	me.de_ContactLog_TypeOfContact = "wzM3bUiPowS";
 	me.de_ContactLog_nextAction = "mcgzEFh5IV8";
 	
