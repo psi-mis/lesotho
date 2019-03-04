@@ -31,8 +31,8 @@ public final class Util
 
     //// https://data.psi-mis.org
 //    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
-    public static String LOCATION_DHIS_SERVER = "https://clone.psi-mis.org";
-//    public static String LOCATION_DHIS_SERVER = "https://leap.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://clone.psi-mis.org";
+    public static String LOCATION_DHIS_SERVER = "https://leap.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    
 //    // https://sandbox.psi-mis.org
@@ -160,13 +160,13 @@ public final class Util
     public static final String ID_ATTR_HIV_TEST_FINAL_RESULT_CATOPT = "hkf4GS79Sul";
     public static final String ID_ATTR_HIV_TESTING_EVENT_NUMBER = "Y1pdU5TSGrB";
 
-//    public static final String ID_ATTR_HAS_CONTACT_LOG_INFOR = "i1NpXcIwfes";
-//
-//    public static final String ID_ATTR_CONTACTLOGEVENT_DATE = "L5NZ7vuyLe7";
-//    public static final String ID_ATTR_CONTACTLOGEVENT_USERNAMES ="L9SC2lA8eWg";
-//    
-//    public static final String ID_ATTR_ARTCLOSURE_DATE = "D7CpzDGAPpy";
-//    public static final String ID_ATTR_ARTCLOSURE_USERNAMES = "YhfhMtu82Pr";
+    public static final String ID_ATTR_HAS_CONTACT_LOG_INFOR = "i1NpXcIwfes";
+
+    public static final String ID_ATTR_CONTACTLOGEVENT_DATE = "L5NZ7vuyLe7";
+    public static final String ID_ATTR_CONTACTLOGEVENT_USERNAMES ="L9SC2lA8eWg";
+    
+    public static final String ID_ATTR_ARTCLOSURE_DATE = "D7CpzDGAPpy";
+    public static final String ID_ATTR_ARTCLOSURE_USERNAMES = "YhfhMtu82Pr";
     
 
 
@@ -175,18 +175,12 @@ public final class Util
     public static final String ID_DE_PARTNER_EVENTID = "UV2AsoZJ7fw";
     public static final String ID_DE_COPUPLE_STATUS = "Umu8i2QXCZk";
     
-    
     // SQL Views
-    public static final String ID_SQLVIEW_LOAD_TODAY_CASE = "IdFgIYoRINL";
-    public static final String ID_SQLVIEW_LOAD_POSITIVE_CASE = "mayPuvHkJ7G";
-    public static final String ID_SQLVIEW_LOAD_FUCASE_BY_USERNAME = "llbPbszABjd";
     public static final String ID_SQLVIEW_LOAD_FUCASE_ALL = "I8xOsd6qfyh";
-
-    public static final String ID_SQLVIEW_SEARCH_CLIENTS = "zPJW0n6mymH";
-    public static final String ID_SQLVIEW_SEARCH_POSITIVE_CLIENTS = "aUc8BV6Ipmu";
-
-    public static final String ID_SQLVIEW_FIND_PARTNER = "SKI1rT5vA3m";
-    public static final String ID_SQLVIEW_FIND_PARTNER_BY_EVENTID = "aZX9hTaN0aj";
+    
+//    public static final String ID_SQLVIEW_FIND_PARTNER = "SKI1rT5vA3m";
+//    public static final String ID_SQLVIEW_FIND_PARTNER_BY_EVENTID = "aZX9hTaN0aj";
+    
     
     // --------------------------------------------------------------------------------------------------------------
     // HTTPS GET/POST/PUT request
@@ -384,7 +378,6 @@ public final class Util
         String userpass = username + ":" + password;
         String basicAuth = "Basic " + new String( new Base64().encode( userpass.getBytes() ) );
         con.setRequestProperty( "Authorization", basicAuth );
-
         
         // 3. Body Message Received Handle
         if ( jsonData != null && jsonData.length() > 0 )
@@ -397,7 +390,7 @@ public final class Util
             bw.flush();
             bw.close();
         }
-    
+        
         if ( params != null && !params.isEmpty() )
         { 
             StringBuilder postData = new StringBuilder();
@@ -420,6 +413,7 @@ public final class Util
             wr.flush();
             wr.close();
         }
+
         // 4. Send and get Response
         responseInfo.responseCode = con.getResponseCode();
 

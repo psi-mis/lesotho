@@ -171,7 +171,6 @@ Util.disableForm = function( tag, isDisable )
 
 Util.resetForm = function( formTag )
 {
-	formTag.find("input[type='hidden']").val("");
 	formTag.find("input[type='text']:enabled,select:enabled,textarea").val("");
 	formTag.find("input[type='checkbox']").prop("checked", false);
 	formTag.find( "span.errorMsg" ).remove();
@@ -228,7 +227,7 @@ Util.getArrayJsonData = function( key, formTag, isGetEmptyValue )
 			value = item.html();
 		}
 		
-		if( value != null && value !== "" )
+		if( value !== "" )
 		{
 			if( item.attr("isDate") !== undefined && item.attr("isDate") == "true" && value != "" )
 			{
@@ -279,23 +278,15 @@ Util.findItemFromList = function( listData, searchProperty, searchValue )
 
 Util.findAndReplaceItemFromList = function( listData, searchProperty, searchValue, replacedData )
 {
-	var found = false;
-	
-	// Found item, replace a new one
 	$.each( listData, function( i, item )
 	{
 		if ( item[ searchProperty ] == searchValue )
 		{
 			listData[i] = JSON.parse( JSON.stringify( replacedData ) );
-			found = true;
+			return false;
 		}
 	});
 
-	// Not found item, add a new one
-	if( !found )
-	{
-		listData[listData.length] = replacedData;
-	}
 };
 
 

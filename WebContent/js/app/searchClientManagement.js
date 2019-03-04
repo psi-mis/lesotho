@@ -228,7 +228,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 							var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchResult_msg_add" );
 							me.searchResultKeyTag.html( tranlatedText + " " + searchCriteria );
 							
-							var clientList = searchResult.listGrid.rows;
+							var clientList = searchResult.trackedEntityInstances;
 							if( clientList.length > 0 )
 							{
 								me.populateSearchClientData( clientList );
@@ -263,35 +263,33 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		
 		for( var i in clientList )
 		{
-			var client = clientList[i];
-			var clientId = client[0];
-			var firstName = client[1].trim();
-			var lastName = client[2].trim();
+			var clientData = clientList[i];
+			var attrValues = clientData.attributes;
 			
-			var dob = client[3].trim();
+			var clientId = clientData.trackedEntityInstance;
+			var firstName = Util.getAttributeValue( attrValues, "attribute", me.attr_FirstName );
+			var lastName = Util.getAttributeValue( attrValues, "attribute", me.attr_LastName );
+			
+			var dob = Util.getAttributeValue( attrValues, "attribute", me.attr_DoB );
 			dob = ( dob != "" ) ? Util.formatDate_LocalDisplayDate( dob ) : "";
 			
-			var district = client[4].trim();
+			var district = Util.getAttributeValue( attrValues, "attribute", me.attr_DistrictOB );
 			if( district != "" ) {
 				var optionText = me.searchClientFormTag.find("[attribute='" + me.attr_DistrictOB + "'] option[value='" + district + "']").text();
 				district = ( optionText == "" ) ? district :  optionText;
 			}
 			
-			var birthOrder = client[5].trim();
+			var birthOrder = Util.getAttributeValue( attrValues, "attribute", me.attr_BirthOrder );
 			if( birthOrder != "" ) {
 				var optionText = me.searchClientFormTag.find("[attribute='" + me.attr_BirthOrder + "'] option[value='" + birthOrder + "']").text();
 				birthOrder = ( optionText == "" ) ? birthOrder :  optionText;
 			}
 			
-			var adquisition = client[6].trim();
+			var adquisition = clientData.created;
 			adquisition = ( adquisition != "" ) ? Util.formatDate_DisplayDate( adquisition ) : "";
-			var lastTestNS = "";
+			var lastTestNS = Util.getAttributeValue( attrValues, "attribute", me.attr_HIVEventDate );
+			lastTestNS = ( lastTestNS != "" ) ? Util.formatDate_DisplayDate( lastTestNS ) : "";
 			
-			if( client[7] != null ) 
-			{
-				lastTestNS = client[7].trim();
-				lastTestNS = ( lastTestNS != "" ) ? Util.formatDate_DisplayDate( lastTestNS ) : "";
-			}
 			
 			var rowTag = $("<tr title='" + tranlatedText + "' clientId='" + clientId + "'></tr>");
 			rowTag.append( "<td>" + firstName + "</td>" );

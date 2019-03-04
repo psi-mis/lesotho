@@ -55,16 +55,42 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 	
 	me.attr_HasContactLogFormInfor = "i1NpXcIwfes"; // Set this one mandatory for Contact Log
 	
+	// [HIV Test Final result EVENT] Attributes
+	me.attr_HIVTestFinalResult = "PoTcUsGrIbS";
+	me.attr_HIVEventDate = "AcpKX4a2iAx";
+	me.attr_HIVEventStatus = "JAMoB6GnGyw";
+	me.attr_HIVEventCatOpt = "hkf4GS79Sul";
+	me.attr_HIVEventNo = "Y1pdU5TSGrB";
+	me.attr_HIVEventOrgUnit = "uXg5tqrRsXJ";
+	me.attr_HIVEventParnerOption = "HJQvtlJOmQm";
+	me.attr_HIVEventParnerCUIC = "s192aFpfWbW";
+
+	// [Contact Log Event] attributes
+	me.attr_ContactLogEvent_LastAction = "jWl3jWdsogC";
+	me.attr_ContactLogEvent_LastActionDate = "L5NZ7vuyLe7";
+	me.attr_ContactLogEvent_NextAction = "kIREHjvNqNe";
+	me.attr_ContactLogEvent_Usernames = "L9SC2lA8eWg";
+	
+	
 	// [ART Opening] attributes
 	me.attr_ARTStatus = "mYdfuRItatP";
-//	me.attr_ARTFacility = "wLGxRN9x0uW";
-//	me.attr_ARTEventDate = "OqrP3KFlFT1";
+	me.attr_ARTFacility = "wLGxRN9x0uW";
+	me.attr_ARTEventDate = "OqrP3KFlFT1";
+	
+	// [ART Closure] attributes
+	me.attr_ARTClosure_EventDate = "D7CpzDGAPpy";
+	me.attr_ARTClosure_Usernames = "YhfhMtu82Pr";
 
 
 	// [PrEP Refer. Opening] attributes
 	me.attr_PrEPReferStatus = "Gt0fW3hxpek";
-//	me.attr_PrEPReferFacility = "Q57XfdQD146";
-//	me.attr_PrEPReferEventDate = "xvXK3b9PJRT";
+	me.attr_PrEPReferFacility = "Q57XfdQD146";
+	me.attr_PrEPReferEventDate = "xvXK3b9PJRT";
+	
+	// [PrEP Refer. Closure] attributes
+	me.attr_PrEPReferClosure_EventDate = "N0Dry7xDF9P";
+	me.attr_PrEPReferClosure_Usernames = "neSEKfn7J76";
+
 	
 	me.de_ContactLog_TypeOfContact = "wzM3bUiPowS";
 	me.de_ContactLog_nextAction = "mcgzEFh5IV8";
