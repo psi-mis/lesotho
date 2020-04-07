@@ -31,7 +31,7 @@ public final class Util
 
     //// https://data.psi-mis.org
 //    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
-    public static String LOCATION_DHIS_SERVER = "https://clone.psi-mis.org";
+    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
 //    public static String LOCATION_DHIS_SERVER = "https://leap.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    
@@ -121,7 +121,8 @@ public final class Util
     
     // Supper DHIS account
     public static String ACCESS_SERVER_USERNAME = "ls.webapp";
-    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V";
+//    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V";
+    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V!";
      
     // Translation Ids
     // public static String KEY_TRANSLATION_KEYWORDS_PROJECT_ID = "98319"; // On Rodolfo account
