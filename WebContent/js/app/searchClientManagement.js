@@ -159,7 +159,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		
 		for( var i in attrGroups )
 		{
-			var attrList = attrGroups[i].programTrackedEntityAttribute;
+			var attrList = attrGroups[i].trackedEntityAttributes;
 			for( var j in attrList )
 			{
 				var attribute = attrList[j];

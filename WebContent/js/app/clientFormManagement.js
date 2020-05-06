@@ -3088,7 +3088,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			attributeGroupList[i].code = attrGroups[i].code;
 			attributeGroupList[i].list = [];
 			
-			var attrGroupList = attrGroups[i].programTrackedEntityAttribute;
+			var attrGroupList = attrGroups[i].trackedEntityAttributes;
 			for( var j in attrGroupList )
 			{
 				for( var k in prgAttributes )

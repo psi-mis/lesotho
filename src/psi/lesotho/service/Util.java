@@ -31,7 +31,8 @@ public final class Util
 
     //// https://data.psi-mis.org
 //    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
-    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
+    public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
 //    public static String LOCATION_DHIS_SERVER = "https://leap.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    
@@ -40,6 +41,12 @@ public final class Util
 //    public static final String ID_TRACKED_ENTITY = "MCPQUTHX1Ze";
 
 
+    
+    // Supper DHIS account
+    public static String ACCESS_SERVER_USERNAME = "ls.webapp";
+    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V";
+//    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V!"; // dev.psi-mis.org server
+    
     
     public static String REQUEST_PARAM_USERNAME = "usr";
     public static String REQUEST_PARAM_PASSWORD = "pwd";
@@ -118,17 +125,12 @@ public final class Util
     // UIDs
     // -------------------------------------------------------------------------
 
-    
-    // Supper DHIS account
-    public static String ACCESS_SERVER_USERNAME = "ls.webapp";
-//    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V";
-    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V!";
      
     // Translation Ids
-    // public static String KEY_TRANSLATION_KEYWORDS_PROJECT_ID = "98319"; // On Rodolfo account
-    // public static String KEY_TRANSLATION_VERSION_PROJECT_ID = "95765"; // On Rodolfo account
-    public static String KEY_TRANSLATION_KEYWORDS_PROJECT_ID = "102649"; // Tran account
-    public static String KEY_TRANSLATION_VERSION_PROJECT_ID = "102655"; // Tran account
+     public static String KEY_TRANSLATION_KEYWORDS_PROJECT_ID = "322259"; // On PSI account
+     public static String KEY_TRANSLATION_VERSION_PROJECT_ID = "330391"; // On PSI account
+//    public static String KEY_TRANSLATION_KEYWORDS_PROJECT_ID = "102649"; // Tran account
+//    public static String KEY_TRANSLATION_VERSION_PROJECT_ID = "102655"; // Tran account
     
     // Orgunit Ids
     public static final String ROOT_ORGTUNIT = "FvUGp8I75zV";    
@@ -187,7 +189,7 @@ public final class Util
     public static final String ID_SQLVIEW_SEARCH_POSITIVE_CLIENTS = "aUc8BV6Ipmu";
 
     public static final String ID_SQLVIEW_FIND_PARTNER = "SKI1rT5vA3m";
-    public static final String ID_SQLVIEW_FIND_PARTNER_BY_EVENTID = "aZX9hTaN0aj";
+//    public static final String ID_SQLVIEW_FIND_PARTNER_BY_EVENTID = "aZX9hTaN0aj";
     
     // --------------------------------------------------------------------------------------------------------------
     // HTTPS GET/POST/PUT request

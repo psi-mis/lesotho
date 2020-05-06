@@ -172,8 +172,6 @@ function CounsellorListMaganement( _mainPage  )
 		me.storageObj.removeItem("param" );
 		Util.resetPageDisplay();
 		
-		
-		
 		Commons.checkSession( function( isInSession ) 
 		{
 			if( isInSession ) 
@@ -224,7 +222,7 @@ function CounsellorListMaganement( _mainPage  )
 				var clientId = event[0];
 				var eventId = event[1];
 				var eventDate = event[2];
-				var hivTestResult = event[3];
+				var hivTestResult = ( event[3] == null ) ? "" : event[3];
 				var cuic = event[4];
 				var ouName = event[6];
 				
@@ -240,7 +238,7 @@ function CounsellorListMaganement( _mainPage  )
 				var artValue = ( event[10] == "true" );
 				var hasOpenPrepReferEvent = ( event[11] != null && event[11] != "" );
 				
-				//For both Negative and Positive, in red if the test has not been completed, in green if it has been completed
+				// For both Negative and Positive, in red if the test has not been completed, in green if it has been completed
 				var statusColor = ( eventStatus == "COMPLETED" ) ? "green" : "red"; 
 				testResultTag.append("<span class='glyphicon glyphicon-lock' style='color:" + statusColor + ";padding-left:5px;'></span>");
 			
@@ -314,7 +312,7 @@ function CounsellorListMaganement( _mainPage  )
 				var clientId = event[0];
 				var eventId = event[1];
 				var eventDate = event[2];
-				var hivTestResult = event[3];
+				var hivTestResult = ( event[3] == null ) ? "" : event[3];
 				var cuic = event[4];
 				var noTest = event[5];
 				var ouName = event[6];

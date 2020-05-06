@@ -280,7 +280,7 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 				var attrGroups = jsonData.attGroups.programSections;
 				for( var i in attrGroups )
 				{	
-					var attributeList = attrGroups[i].programTrackedEntityAttribute;
+					var attributeList = attrGroups[i].trackedEntityAttributes;
 					for( var j in attributeList )
 					{
 						if( attributeList[j].id === me.attr_District )

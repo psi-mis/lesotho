@@ -45,7 +45,7 @@ function EventReport()
 			,success: function( response ) 
 			{
 				// Attribute OptionSet
-				var psAttributes = response.metaData.programTrackedEntityAttributes;					
+				var psAttributes = response.metaData.programAttributes.programTrackedEntityAttributes;					
 				for( var i in psAttributes )
 				{
 					var attribute = psAttributes[i].trackedEntityAttribute;

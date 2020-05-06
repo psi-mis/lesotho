@@ -85,7 +85,8 @@ public class LoginController
             // STEP 2. Check username/password
          
             ResponseInfo responseInfo = LoginController.processPostMsg( request, loginUsername, loginPassword, accessServerUsername, accessServerPassword );
-            HttpSession session = request.getSession( true );                
+            HttpSession session = request.getSession( true );     
+
             if ( responseInfo.responseCode == 200 )
             {
                 if( responseInfo.data.getBoolean( Util.KEY_LOGGED_SUCCESS ) )
@@ -131,7 +132,7 @@ public class LoginController
             requestUrl = requestUrl.replace( LoginController.PARAM_LOGIN_USERNAME, loginUsername );
            
             responseInfo = Util.sendRequest( Util.REQUEST_TYPE_GET, requestUrl, null, null );
-            
+
             if ( responseInfo.responseCode == 200 )
             {
                 JSONObject jsonData = new JSONObject( responseInfo.output );
@@ -160,7 +161,7 @@ public class LoginController
                             {
                                 String attributeId = arrAttributes.getJSONObject( j ).getJSONObject( "attribute" ).getString( "id" );
                                 String attrVal = arrAttributes.getJSONObject( j ).getString( "value" );
-                                
+
                                 if( attributeId.equals( Util.USER_CATEGORY_PIN_ATRIBUTE_ID ) && attrVal.equals( loginPassword ) )
                                 {
                                     valid = true;

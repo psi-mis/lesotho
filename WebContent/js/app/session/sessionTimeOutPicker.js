@@ -63,7 +63,6 @@ function SessionTimeOutPicker( mainPage )
 		setInterval(function() {
 			Commons.checkSessionTimeOut( function( sessionExpired, sessionTimeOut ){
 
-				console.log('=== sessionTimeOut : ' + sessionTimeOut);
 				if( sessionExpired )
 				{
 					var sessionExpiredText = me.translationObj.getTranslatedValueByKey( "session_msg_checkedSessionExpired" );
@@ -109,6 +108,7 @@ function SessionTimeOutPicker( mainPage )
 				Commons.checkSession( function( valid ){
 					me.dialogFormTag.dialog( "close" );
 					me.updateSessionTimeout();
+					$( this ).dialog( "close" );
 				});
 			}
 			,"Cancel": function()

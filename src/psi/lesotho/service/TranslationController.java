@@ -72,10 +72,10 @@ public class TranslationController
         try
         {
             String url = "https://poeditor.com/api/";
-//            String data = "api_token=5c217d3fd2a9ea3546fad304b1a6b9cd&action=view_terms&id=" + projectId + "&"
-//                + moreData;
-            String data = "api_token=a6df38828db0178d92e8a65a2c73ffad&action=view_terms&id=" + projectId + "&"
-              + moreData;
+            String data = "api_token=5c217d3fd2a9ea3546fad304b1a6b9cd&action=view_terms&id=" + projectId + "&"
+                + moreData;
+//            String data = "api_token=a6df38828db0178d92e8a65a2c73ffad&action=view_terms&id=" + projectId + "&"
+//              + moreData;
                 
             HttpURLConnection conn = (HttpURLConnection) new URL( url ).openConnection();
 

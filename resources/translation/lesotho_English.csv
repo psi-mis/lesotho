@@ -1,102 +1,287 @@
-login_userName,"Counsellor #","User Name"
-login_password,PIN,Password
-login_orgUnit,"Counsel for this session","Organisation Unit"
-login_btn_login,Login,Login
-menu_todayCases,"Today Cases","Today Cases"
-menu_previousCases,"Previous Cases","Previous Cases"
-menu_positiveCases,"Positive Cases","Positive Cases"
-menu_consumables,Consumables,Consumables
-menu_statistics,Statistics,Statistics
-menu_searchCreateClient,"Search / Create Client","Search / Create Client"
-menu_settings,Settings,Settings
-menu_about,About,About
-menu_logOff,"Log Off","Log Off"
-page_headerTitle_counsellor,Counsellor,Counsellor
-clientEntryForm_msg_select_orgUnit,"Please select an orgUnit in","Please select an orgUnit in"
-clientEntryForm_msg_settings,Settings,Settings
-searchClient_headerTitle,"Search/Create client","Search/Create client"
-searchClient_btn_search,Search/Create,Search
-searchResult_msg_searchCriteria,"Matches for","Matches for your search"
-searchClient_result_tableHeader_firstName,"First Name","First Name"
-searchClient_result_tableHeader_surname,Surname,Surname
-searchClient_result_tableHeader_dob,DoB,DoB
-searchClient_result_tableHeader_districtOfBirth,"District o B","District o B"
-searchClient_result_tableHeader_twin,Twin,Twin
-searchClient_result_tableHeader_adquisition,Adquisition,Adquisition
-searchClient_result_tableHeader_lastTestNS,"Last test NS","Last test NS"
-searchClient_result_tableHeader_lastContact,"Last Contact","Last Contact"
-searchClient_result_optionTitle,"Select a client from from above or","Select a client from from above or"
-searchClient_result_opt_addNew,"Add new","Add new"
-searchClient_result_opt_editSearchCriteria,"Edit Search criteria (go back to search screen)","Edit Search criteria (go back to search screen)"
-searchClient_result_opt_cancel,Cancel,Cancel
-searchClient_result_btn_next,Next,Next
-dataEntryForm_headerTitle_addClient,"Add Client","Add Client"
-dataEntryForm_tab_clientAttributes_headerTitle,"Client Attributes","Client Attributes"
-dataEntryForm_tab_previousTests_headerTitle,"Previous Tests","Previous Tests"
-dataEntryForm_tab_thisTest_headerTitle,"This Test","This Test"
-dataEntryForm_tab_clientAttributes_btn_save,Save,Save
-dataEntryForm_tab_thisTest_btn_save,Save,Save
-dataEntryForm_tab_thisTest_btn_complete,Complete,Complete
-dataEntryForm_tab_btn_back,Back,Back
-settings_headerTitle,Settings,Settings
-settings_rowHeader_orgUnit,"Counsel for this session","Counsel for this session"
-about_headerTitle,About,About
-about_rowHeader_currentUser,"Current user","Current user"
-about_rowHeader_version,Version,Version
-about_rowHeader_dhisServer,"DHIS server","DHIS server"
-translation_msg_updatingTranslationKeywords,Updating,Updating
-translation_msg_updatedTranslationKeywords,Updated,Updated
-translation_btn_updateKeyword,Update,Update
-todayCases_headerTitle,"Tested clients today","Tested clients today"
-previousCases_headerTitle,"Previous cases, not including today","Previous cases, not including today"
-positiveCases_headerTitle,"Positive Cases last 12 months","Positive Cases last 12 months"
-common_msg_loadingData,"Loading data","Loading data"
-searchClient_validation_requiredValueInOneField,"Please enter value in at least one field in form","Please enter value in at least one field in form"
-searchClient_result_rowTooltip,"Click to edit the client","Click to edit the client"
-searchClient_result_loadingClientDetails,"Loading client details","Loading client details"
-clientEntryForm_msg_savingClient,"Saving client","Saving client"
-clientEntryForm_editForm_headerTitle,"Edit Client","Edit Client"
-clientEntryForm_msg_clientSaved,"The client is saved","The client is saved"
-clientEntryForm_validation_checkErrorFields,"Please check error fields","Please check error fields"
-clientEntryForm_msg_editingEvent,"Saving event","Saving event"
-clientEntryForm_msg_eventSaved,"The event is saved","The event is saved"
-clientEntryForm_msg_creatingEvent,"Creating new event","Creating new event"
-dataEntryForm_tab_previousTests_msg_headerTitle,"Test on","Test on"
-dataEntryForm_headerTitle_editClient,"Edit Client","Edit Client"
-searchClient_result_noClientFound,"No client found. Select an option below","No client found. Select an option below"
-session_msg_expired,"User is not logged in or session is expired","User is not logged in or session is expired"
-session_msg_loginAgain,"Please login in again","Please login in again"
-session_msg_here,here,here
-settings_rowHeader_language,"Language ",Language
-login_msg_enterUserNameOrPassword,"Please enter username / password","Please enter username / password"
-login_msg_logging,Logging,Logging
-login_msg_wrongUsernamePassword,"Wrong username/password","Wrong username/password"
-common_msg_initializing,Initializing,Initializing
-common_msg_orgUnitSaved,"Organisation Unit is saved","Organisation Unit is saved"
-searchResult_msg_matchFor,Ma,"clients with"
-clientEntryForm_msg_saveDataFail,"Save data fail. Please check the data in form","Save data fail. Please check the data in form."
-common_validation_valueNumber,"The value should be a number","The value should be a number"
-clientEntryForm_msg_aksForCompletingEvent,"Are you sure you want to completed this event?","Are you sure you want to completed this event?"
-common_validation_exactLength,"Please enter exactly","Please enter exactly"
-common_validation_exactCharacter,characters,characters
-common_validation_valueMax,"The value should be less than or equal to","The value should be less than or equal to"
-settings_rowHeader_hideFieldHIVTestLoginAction,"Hide Fields ""HIV Test"" logic action","Hide Fields ""HIV Test"" logic action"
-common_msg_settingsHideLogicActionFieldsSaved,"Hide Fields ""HIV Test"" logic action is saved","Hide Fields ""HIV Test"" logic action is saved"
-dataEntryForm_tab_btn_createClient,"Create Client","Create Client"
-dataEntryForm_tab_btn_editClient,"Edit Client","Edit Client"
-dataEntryForm_tab_btn_createEvent,"Create Event","Create Event"
-dataEntryForm_tab_btn_editEvent,"Edit Event","Edit Event"
-clientEntryForm_msg_creatingEmptyEvent,"Creating empty event","Creating empty event"
-searchClient_msg_searching,Searching,Searching
-clientEntryForm_msg_completingEvent,"Completing event","Completing event"
-clientEntryForm_msg_eventCompleted,"Event is completed","Event is completed"
-allCaseList_msg_clickToOpenEditForm,"Click to open Client Edit form","Click to open Client Edit form"
-positiveCaseList_msg_clickToOpenEditForm,"Click to open Client Edit form","Click to open Client Edit form"
-statistics_reportClientResult_btn_back,Run,Run
-statistics_searchResult_headerTitle,"Client list with CUIC","Client list with CUIC"
-statistics_reportClientResult_btn_back,Back,Back
-report_msg_loadingEvent,"Loading event","Loading event"
-statistics_eventReport_btn_back,Back,Back
-statistics_btn_run,Run,Run
-common_validation_valueLetter,"The value should be a letter","The value should be a letter"
-dataEntryForm_tab_previousTests_msg_by,by,by
+login_userName,"User ID","User Name",,
+login_password,Password,Password,,
+login_orgUnit,Council,"Organisation Unit",,"Updated from Organisation Unit to Council"
+login_btn_login,Login,Login,,
+menu_todayTests,"Today Tests","Today Cases",,
+menu_pastTests,"Past Tests","Previous Cases",,
+menu_positiveTests,"Positive Tests","Positive Cases",,
+menu_consumables,Consumables,Consumables,,
+menu_statistics,"My Performance",Statistics,,
+menu_searchCreateClient,"Search / Create client","Search / Create Client",,
+menu_settings,Settings,Settings,,
+menu_about,About,About,,
+menu_logOff,"Log Off","Log Off",,
+page_headerTitle_counsellor,Counsellor,Counsellor,,
+clientEntryForm_msg_select_orgUnit,"Please select an orgUnit in","Please select an orgUnit in",,
+clientEntryForm_msg_settings,Settings,Settings,,
+searchClient_headerTitle,"Search / Create client","Search/Create client",,
+searchClient_btn_search,Search,Search,,
+searchResult_msg_searchCriteria,"Matches for your search","Matches for your search",,
+searchClient_result_tableHeader_firstName,"First Name","First Name",,
+searchClient_result_tableHeader_surname,Surname,Surname,,
+searchClient_result_tableHeader_dob,DoB,DoB,,
+searchClient_result_tableHeader_districtOfBirth,"District o B","District o B",,
+searchClient_result_tableHeader_birthOrder,"B Order",Twin,,
+searchClient_result_tableHeader_adquisition,Adquisition,Adquisition,,
+searchClient_result_tableHeader_lastTestNS,"Last test NS","Last test NS",,
+searchClient_result_optionTitle,"Select a client above","Select a client above or",,
+searchClient_result_btn_addClient,"Add a client","Add new",,
+searchClient_result_btn_backToSearch,"Back to search",Back,,
+searchClient_result_btn_todayCases,"Today's Cases",Cancel,,
+dataEntryForm_headerTitle_addClient,"Add Client","Add Client",,
+dataEntryForm_tab_clientAttributes_headerTitle,"Client Information","Client Attributes",,
+dataEntryForm_tab_previousTests_headerTitle,"Previous Tests","Previous Tests",,
+dataEntryForm_tab_thisTest_headerTitle,"New Test","This Test",,
+dataEntryForm_tab_clientAttributes_btn_save,Save,Save,,
+dataEntryForm_tab_thisTest_btn_save,Save,Save,,
+dataEntryForm_tab_btn_back,Back,Back,,
+settings_headerTitle,Settings,Settings,,
+settings_rowHeader_orgUnit,"Counsel for this session","Counsel for this session",,
+about_headerTitle,About,About,,
+about_rowHeader_currentUser,"Current user","Current user",,
+about_rowHeader_version,Version,Version,,
+about_rowHeader_dhisServer,"DHIS server","DHIS server",,
+translation_msg_updatingTranslationKeywords,Updating,Updating,,
+translation_msg_updatedTranslationKeywords,Updated,Updated,,
+translation_btn_updateKeyword,Update,Update,,
+todayCases_headerTitle,"Tested clients today","Tested clients today",,
+previousCases_headerTitle,"Past tests - Last 12 months","Previous cases, not including today",,
+positiveCases_headerTitle,"Positive Cases last 12 months","Positive Cases last 12 months",,
+common_msg_loadingData,"Loading data","Loading data",,
+searchClient_validation_requiredValueInOneField,"Please enter value in at least one field in form","Please enter value in at least one field in form",,
+searchClient_result_rowTooltip,"Click to edit the client","Click to edit the client",,
+searchClient_result_loadingClientDetails,"Loading client details","Loading client details",,
+clientEntryForm_msg_savingClient,"Saving client","Saving client",,
+clientEntryForm_editForm_headerTitle,"Edit Client","Edit Client",,
+clientEntryForm_msg_clientSaved,"The client is saved","The client is saved",,
+clientEntryForm_validation_checkErrorFields,"Please check error fields","Please check error fields",,
+clientEntryForm_msg_editingEvent,"Saving event","Saving event",,
+clientEntryForm_msg_eventSaved,"The event is saved","The event is saved",,
+clientEntryForm_msg_creatingEvent,"Creating new event","Creating new event",,
+dataEntryForm_headerTitle_editClient,"Edit Client","Edit Client",,
+searchClient_result_noClientFound,"No client found. Select an option below","No client found. Select an option below",,
+session_msg_expired,"User is not logged in or session has expired","User is not logged in or session is expired",,
+session_msg_loginAgain,"Please login in again","Please login in again",,
+session_msg_here,here,here,,
+settings_rowHeader_language,Language,Language,,
+login_msg_enterUserNameOrPassword,"Please enter username / password","Please enter username / password",,
+login_msg_logging,Logging,Logging,,
+login_msg_wrongUsernamePassword,"Wrong username/password","Wrong username/password",,
+common_msg_initializing,Initializing,Initializing,,
+common_msg_orgUnitSaved,"Organisation Unit is saved","Organisation Unit is saved",,
+searchResult_msg_matchFor,"clients with","clients with",,
+clientEntryForm_msg_saveDataFail,"Save data fail. Please check the data in form.","Save data fail. Please check the data in form.",,
+common_validation_valueNumber,"The value should be a number","The value should be a number",,
+clientEntryForm_msg_aksForCompletingEvent,"Are you sure you want to completed this event?","Are you sure you want to completed this event?",,
+common_validation_exactLength,"Please enter exactly","Please enter exactly",,
+common_validation_exactCharacter,characters,characters,,
+common_validation_valueMax,"The value should be less than or equal to","The value should be less than or equal to",,
+settings_rowHeader_hideFieldHIVTestLoginAction,"Hide Fields ""HIV Test"" logic action","Hide Fields ""HIV Test"" logic action",,
+common_msg_settingsHideLogicActionFieldsSaved,"Hide Fields ""HIV Test"" logic action is saved","Hide Fields ""HIV Test"" logic action is saved",,
+dataEntryForm_tab_btn_createClient,"Create Client","Create Client",,
+dataEntryForm_tab_btn_createEvent,"Create Event","Create Event",,
+clientEntryForm_msg_creatingEmptyEvent,"Creating empty event","Creating empty event",,
+searchClient_msg_searching,Searching,Searching,,
+clientEntryForm_msg_completingEvent,"Completing event","Completing event",,
+clientEntryForm_msg_eventCompleted,"Event is completed","Event is completed",,
+allCaseList_msg_clickToOpenEditForm,"Click to open Client Edit form","Click to open Client Edit form",,
+positiveCaseList_msg_clickToOpenEditForm,"Click to open Client Edit form","Click to open Client Edit form",,
+statistics_reportClientResult_btn_back,Run,Run,,
+statistics_searchResult_headerTitle,"Client list with CUIC","Client list with CUIC",,
+statistics_reportClientResult_btn_back,Back,Back,,
+report_msg_loadingEvent,"Loading event","Loading event",,
+statistics_eventReport_btn_back,Back,Back,,
+statistics_btn_run,Run,Run,,
+common_validation_valueLetter,"The value should be a letter","The value should be a letter",,
+searchResult_msg_clients,clients,clients,,
+searchResult_msg_add,"or add",add,,
+dataEntryForm_tab_thisTest_msg_createdBy,"This event was created by counsellor","This event was created by other counsellor",,
+login_district,District,District,,
+settings_rowHeader_district,District,District,,
+todayCases_footer_msg_totalCases,"Total Tested for today","Total Cases for today",,
+previousCases_footer_msg_totalCases,"Total Cases for previous","Total Cases for previous",,
+positiveCases_footer_msgtotalCases,"Total Cases for positive","Total Cases for positive",,
+common_footer_msg_clients,clients,cases,,
+dataEntryForm_tab_thisTest_coordinate,Coordinate,Coordinate,,
+dataEntryForm_tab_thisTest_latitude,Latitude,Latitude,,
+dataEntryForm_tab_thisTest_longitude,Longitude,Longitude,,
+positiveCases_footer_msg_totalCases,"Total Cases for positive","Total Cases for positive",,
+searchResult_msg_client,client,client,,
+searchResult_msg_bornAt,"born at","born at",,
+searchResult_msg_on,on,on,,
+app_headerNoOrguit,"no orgUnit","no orgUnit",,
+previousCase_footer_msg_totalCases,"Total past tests last 12 months","Total Cases for previous",,
+todayCases_tableHeader_time,Time,Time,,
+todayCases_tableHeader_cuic,CUIC,Name,,
+todayCases_tableHeader_lastTestResult,"Last Test Result",Result,,
+todayCases_tableHeader_councilOfTesting,"Council of Testing","Org Unit",,
+previousCases_tableHeader_date,Date,Date,,
+previousCases_tableHeader_cuic,CUIC,Name,,
+previousCases_tableHeader_lastTestResult,"Last Test Result",Result,,
+previousCases_tableHeader_councilOfTesting,"Council of Testing","Org Unit",,
+previousCases_tableHeader_numberOfTest,"Number of Test","Number of Test",,
+positiveCases_tableHeader_date,Date,Date,,
+positiveCases_tableHeader_cuic,CUIC,name,,
+positiveCases_tableHeader_councilOfTesting,"Council of Testing","Org Unit",,
+positiveCases_tableHeader_ARTReferralStatus,"ART Referral Status","Number of Test",,
+positiveCases_tableHeader_facilityReferredTo,"Facility Referred to","Referral ART Closed",,
+settings_msg_selectOrgUnit,"Please selected Council for this session unit in Settings before using any functionality","Please selected Counsel for this session unit in Settings before using any functionality",,
+report_tableHeader_thisMonth,"This Month",Yesterday,,
+report_tableHeader_thisWeek,"This Week","This Week",,
+report_tableHeader_thisQuarterly,"This Quarter","Last 4 weeks",,
+report_rowTitle_tested,Tested,Tested,,
+report_rowTitle_target,Target,Target,,
+report_rowTitle_achieved,"Achieved (%)","% achieved",,
+datatEntryForm_validation_checkErrorFields,"Please check error fields","Please check error fields",,
+common_validation_minLength,"Length should be equals or more than ","Length should be equals or more than ",,
+report_msg_loadingReport,"Loading report","Loading report",,
+dataEntryForm_msg_loading,Loading,Loading,,
+searchClient_msg_checkingData,"Checking data","Checking data",,
+clientEntryForm_msg_checkingData,"Checking data","Checking data",,
+clientEntryForm_msg_gettingCurrentGPSCoordinates,"Getting current GPS coordinates","Getting current GPS coordinates",,
+report_footer_InformationLastCalculated,"Information last calculated","Information last calculated",,
+report_footer_Ago,ago,ago,,
+common_msg_leavePage,"You are abandoning this page. You will loose all your information. Are you sure","You are abandoning this page. You will loose all your information. Are you sure",,
+clientEntryForm_msg_errorDetails,"Error details","Error details",,
+consumables_headerTitle,Consumables,Consumables,,
+report_headerTitle,"My Performance",Statistics,,
+settings_btn_translationUpdate,Update,Update,,
+settings_translation_msg_loading,"Loading translation keywords","Loading translation keywords",,
+translation_msg_translatingPage,Translating,Translating,,
+dataEntryForm_tab_contactLog_headerTitle,"Contact Log","Contact Log",,
+dataEntryForm_tab_ARTRefer_headerTitle,"ART Refer.","ART Refer.",,
+contactLogForm_tab_discardChanges,Discard,"Discard Changes",,
+contactLogForm_tab_saveChanges,Save,"Save Changes",,
+contactLogForm_tab_btn_add,Add,Add,,
+contactLogForm_tab_logNewContact,"Log new contact","Log new Contact",,
+contactLogForm_tab_eventForm_header_typeOfContact,"Type of contact","Type of contact",,
+contactLogForm_tab_eventForm_header_outcome,Outcome,Outcome,,
+contactLogForm_tab_eventForm_header_nextAction,"Next action","Next action",,
+contactLogForm_tab_eventForm_header_dueDate,"Due date","Due date",,
+contactLogForm_tab_eventForm_header_comments,Comments,Comments,,
+menu_referCoordinator_search,"Search client",Search,,
+menu_referCoordinator_todayFU,"Today Followed-up","Today F/U",,
+menu_referCoordinator_allFU,"All ART Referrals","All F/U",,
+menu_referCoordinator_statistics,Statistics,Statistics,,
+todayFU_tableHeader_time,Time,Time,,
+todayFU_tableHeader_councilOfResidence,"Council of Residence","Council of Residence",,
+todayFU_tableHeader_facilityReferredTo,"Facility Referred to","Facility Referred to",,
+todayFU_tableHeader_cuic,CUIC,CUIC,,
+todayFU_tableHeader_nextAction,"Next Action","Last Action",,
+todayFU_tableHeader_referralStatus,"Referral Status","Referral Status",,
+mainPage_btn_counsellor,COUNSELLOR,COUNSELLOR,,
+mainPage_btn_referralCoordinator,"RERERRAL COORDINATOR","RERERRAL COORDINATOR",,
+contactLogForm_tab_add,Add,Add,,
+todayFU_headerTitle,"Clients followed-up for ART Referral today","Clients followed-up for ART  Referral today",,
+allFU_headerTitle,"Clients referred to ART","Clients followed-up for ART Referral",,
+allFU_tableHeader_councilOfResidence,"Council of Residence","Council of Residence",,
+allFU_tableHeader_facilityReferredTo,"Facility Referred to","Facility Referred to",,
+allFU_tableHeader_cuic,CUIC,CUIC,,
+allFU_tableHeader_daysSinceDiagnosis,"Days since Diagnosis","Days since Diagnosis",,
+allFU_tableHeader_lastAction,"Last action","Last action",,
+todayFU_footer_msg,"Total followed-up for ART Referral today","Total followed-up for ART Referral today",,
+common_footer_msg_clients,clients,clients,,
+allFU_footer_msg,"Total clients filtered","Total clients filtered",,
+referCoordinator_searchClient_btn_search,Search,Search,,
+referCoordinator_searchClient_headerTitle,Search,Search,,
+referCoordinator_searchClient_headerTitle,"Search client","Search positive client",,
+login_msg_notLSAccount,"It is not LS account","It is not LS account",,
+dataEntryForm_tab_clientRegForm_discardChanges,"Are you sure you want to discard changes ?","Are you sure you want to discard changes ?",,
+dataEntryForm_tab_contactLogForm_discardChanges,"Are you sure you want to discard changes ?","Are you sure you want to discard changes ?",,
+dataEntryForm_tab_clientRegForm_changesDiscarded,"Changes are discarded","Changes are discarded",,
+dataEntryForm_tab_contactLogForm_changesDiscarded,"Changes are discarded","Changes are discarded",,
+dataEntryForm_tab_ARTEventForm_discardChanges,"Are you sure you want to discard changes ?","Are you sure you want to discard changes ?",,
+dataEntryForm_tab_ARTEventForm_changesDiscarded,"Changes are discarded","Are you sure you want to discard changes ?",,
+common_validation_phoneNumberLengthFor0,"Phone number should be from 12 to 15 digits","Phone number should be from 12 to 15 digits",,
+common_validation_phoneNumberLengthForLocal,"Phone number should be 10 digits","The phone number should be 10 digits",,
+common_validation_phoneNumberStartWith,"Phone number should start with 0 or +","Phone number should start with",,
+common_validation_phoneNumberAcceptPlusLetterAndNumberOnly,"Phone number accepts plus sight and number digits only","Phone number accepts plus sight and number digits only",,
+allFU_tableHeader_date,Date,Date,,
+allFU_tableHeader_nextAction,"Next action","Next action",,
+report_rowTitle_header_allClients,"All clients","All clients",,
+report_rowTitle_header_positiveClients,"Positive clients","Positive clients",,
+report_rowTitle_yield,"Yield (%)","Referrals Issued",,
+report_rowTitle_successfulLinkable,"Successful Linkable","Successful Linkable",,
+referCoordinator_searchClient_result_btn_backToSearch,"Back to Search","Back to search",,
+referCoordinator_searchClient_result_btn_todayFollowUp,"Today's Follow-up","Today's Follow-up",,
+referCoordinator_report_headerTitle,Statistics,Statistics,,
+referCoordinator_report_tableHeader_yesterday,Yesterday,Yesterday,,
+referCoordinator_report_tableHeader_thisWeek,"This Week",ThisWeek,,
+referCoordinator_report_tableHeader_last4weeks,"Last 4 Weeks","Last 4 Weeks",,
+referCoordinator_report_rowTitle_header_ARTReferrals,"ART Referrals","ART Referrals",,
+referCoordinator_report_rowTitle_successfulLinkages,"Successful Linkages","Successful Linkages",,
+referCoordinator_report_tableHeader_last3Days,"Last 3 Days","Last 3 Days",,
+artRefer_tab_msg_clientReferredToARTOn,"Client referred to ART on","Client referred to ART on",,
+artRefer_tab_msg_timeElapsed,"Time elapsed","Time elapsed",,
+artRefer_tab_msg_status,Status,Status,,
+artRefer_tab_msg_statusNone,none,none,,
+report_tableHeader_thisFinancialYear,"This Financial Year ( Oct to Sep )","This financial year ( Oct to Sep )",,
+clientEntryForm_msg_updatingPartnerCUIC,"Updating partner CUIC","Updating partner CUIC",,
+clientEntryForm_msg_updatedPartnerCUIC,"Updated partner CUIC","Update partner CUIC",,
+clientEntryForm_msg_findingPartnerCUIC,"Finding partner CUIC","Finding partner CUIC",,
+report_coordinator_rowTitle_achieved,"Achieved (%)","Achieved (%)",,
+report_coordinator_rowTitle_tested,"ART Enrollment Confirmed","ART Enrollment Confirmed",,
+report_coordinator_rowTitle_target,Target,Target,,
+referCoordinator_report_rowTitle_header_successfulLinkages,"Successful Linkages","Successful Linkages",,
+allFU_filterBy,"Filter by","Filter By",,
+allFU_filterBy_placeOfResidence,"Place of Residence","Place of Residence",,
+allFU_filterBy_facilityReferredTo,"Facility Referred to","Facility Referred to",,
+app_header,"PSI LS HTS","PSI LS HTS",,
+page_headerTitle_referralCoordinator,"Referral Coordinator","Referral Coordinator",,
+allCaseList_msg_nextStatusNone,None,None,,
+allCaseList_msg_nextStatusFollowUp,Follow-up,Follow-up,,
+allFU_filterByOptions,Options,Options,,
+allFU_filterByOptions_onlyShowMyCases,"Only show my cases","Only show my cases",,
+allFU_filterByOptions_showClosedCases,"Also include closed cases","Also include closed cases",,
+allFU_filterBy_district,District,District,,
+allFU_filterBy_councilFacility,"Councils / Facilities",Council,,
+allFU_tableHeader_username,Username,Username,,
+allFU_filterBy_ouNone,"None filter",none,,
+allFU_tableHeader_closureARTEventId,"Closure ART Event Id","Closure ART Event Id",,
+searchPostiveClient_headerTitle,"Search client","Search positive client",,
+allFU_refreshIconTitle,Refresh,Refresh,,
+allFU_loadingData,"Loading data","Loading data",,
+allFU_startFollowUpAction,"Start follow-up","Start follow-up",,
+allCaseList_msg_actionNoneStatus,CLOSED,none,,
+clientEntryForm_msg_saveEventDialogTitle,"Save Event","Save Event",,
+contactLogForm_msg_askToSaveEvent,"Save ( open for edit )","Do you want to save this event and continue later ?",,
+contactLogForm_msg_askToCompletedEvent,"Save and lock","Do you want to complete event and create a new one ?",,
+clientEntryForm_btn_cancel,Cancel,Cancel,,
+contactLogForm_msg_cancelSavingEvent,Cancel,Yes,,
+todaylist_note_eventStatus,": the test has not been locked for edition","In red if the test has not been completed, in green if it has been completed",,
+todaylist_note_positiveContactLogExist,": for positives clients only, the contact information is missing","For Positives only, in red if the Contact Log form have not been completed; in green if it has been completed",,
+todaylist_note_positiveARTOpeningEventExist,": for positives clients only, the ART referral facility is missing","For Positives only, in red if the ART Referral Opening event does not exist, green if it does",,
+todaylist_note_noteMsg,"Notes / Red icons indicate something has to be reviewed:",Note,,
+common_validation_notAllowClientWith,"Not allow client with","Not allow client with EQC",,
+contactLogEvent_msg_noneDueDate,"not specified","not specified",,
+common_validation_notAllowSpecialChars,"Value with special character(s) is not allowed","Not allow value with special characters",,
+session_msg_checkedSessionExpired,"Session has expired","Session is expired",,
+session_msg_internetConnectivityLoss,"Internet connectivity is lost","Internet connectivity is loss",,
+session_msg_sessionExpiredafter5Minutes,"Session will be expired after 5 minutes","Session will be expired after 5 minutes",,
+page_headerTitle_sessionTimeOut,"Session Timeout","Session Timeout",,
+session_msg_askToExtendSession,"Do you want to extend session ?","Do you want to extend session ?",,
+dataEntryForm_tab_thisTest_msg_alreadyTodayTest,"There is already a test for today","There is already a test for today",,
+settings_rowHeader_setupProgramSection,"Program Sections","Program Sections",,
+settings_btn_setup,Setup,Setup,,
+setupProgramSection_headerTitle,"Setup Program Sections","Setup Program Sections",,
+setupProgramSection_rowHeader_name,Name,Name,,
+setupProgramSection_rowHeader_code,Code,Code,,
+setupProgramSection_rowHeader_program,Program,Program,,
+setupProgramSection_rowHeader_available,Available,Available,,
+setupProgramSection_rowHeader_selected,Selected,Selected,,
+setupProgramSection_btn_save,Save,Save,,
+setupProgramSection_msg_saving,Saving,Saving,,
+setupProgramSection_btn_addNew,"Add New","Add new",,
+setupProgramSection_btn_back,Back,Back,,
+translation_msg_loading,Loading,Loading,,
+setupProgramSection_msg_deleting,Deleting,Deleting,,
+setupProgramSection_msg_confirmDelete,"Are you sure you want to delete this one ?","Are you sure you want to delete this one ?",,
+setupProgramSection_rowHeader_addNew,"Add New",,,
+setupProgramSection_rowHeader_back,Back,Back,,
+setupProgramSection_btn_cancel,Cancel,Cancel,,
+dataEntryForm_tab_prepRefer_headerTitle,"PrEP Refer.","PrEP Refer.",,
+preRefer_tab_msg_statusNone,none,none,,
+dataEntryForm_tab_prepReferEventForm_discardChanges,Discard,Discard,,
+dataEntryForm_tab_prepReferEventForm_changesDiscarded,"Changes is discarded","Changes is discarded",,
+prepRefer_tab_msg_statusNone,none,none,,
+todaylist_note_positivePrepReferOpeningEventExist,": for negative clients only, the PrEP referral facility is missing",": for negative clients only, the PrEP referral facility is missing",,

@@ -224,7 +224,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 	
 	me.populateSelectedAttributes = function( jsonData )
 	{
-		var attributes = jsonData.programTrackedEntityAttribute;
+		var attributes = jsonData.trackedEntityAttributes;
 		
 		me.selectedAttributeTag.find("option").remove();
 		for( var i in attributes )
@@ -245,14 +245,14 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		jsonData.program = {};
 		jsonData.program.id =  me.programTag.val();
 		
-		jsonData.attributes = [];
+		jsonData.trackedEntityAttributes = [];
 		var selectedOptions = me.selectedAttributeTag.find("option");
 		for( var i=0;i<selectedOptions.length; i++ )
 		{
 			var attribute = {};
 			attribute.id = $(selectedOptions[i]).val();
 			attribute.name = $(selectedOptions[i]).text();
-			jsonData.attributes.push( attribute );
+			jsonData.trackedEntityAttributes.push( attribute );
 		}
 		
 		jsonData.sortOrder = me.metaData.attGroups.programSections.length + 1;
@@ -352,9 +352,9 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 	
 	me.saveDataAfter = function( jsonData, id )
 	{
-		// Resolve attributes in jsonData to programTrackedEntityAttribute
-		jsonData.programTrackedEntityAttribute = JSON.parse( JSON.stringify( jsonData.attributes ) );
-		delete jsonData["attributes"];
+		// Resolve attributes in jsonData to trackedEntityAttributes
+		jsonData.trackedEntityAttributes = JSON.parse( JSON.stringify( jsonData.trackedEntityAttributes ) );
+//		delete jsonData["attributes"];
 		
 		// New case
 		if( id !== undefined )
