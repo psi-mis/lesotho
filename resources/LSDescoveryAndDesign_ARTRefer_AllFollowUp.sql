@@ -63,7 +63,7 @@ left outer join ( select catOption.code as username, _openartevent.programstagei
 		inner join categoryoptioncombos_categoryoptions catoptrls on catoptrls.categoryoptioncomboid=catoptcom.categoryoptioncomboid
 		inner join dataelementcategoryoption catOption 
 			on catOption.categoryoptionid=catoptrls.categoryoptionid 
-		where catOption.code = 'TES002' 
+		where catOption.code = '${username}' 
 		group by catOption.code, _openartevent.programstageinstanceid
   ) as _openartevent_username 
 	on _openartevent_username.programstageinstanceid = openartevent.programstageinstanceid 

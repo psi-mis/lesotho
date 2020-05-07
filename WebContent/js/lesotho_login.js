@@ -77,7 +77,7 @@ function LoginForm( storageObj, translationObj )
 			setTimeout( function() 
 			{
 				me.userNameTag.val( "TES001" ).css( 'background-color', '' );
-				me.passwordTag.val( '1234' ).css( 'background-color', '' );
+				me.passwordTag.val( '4321' ).css( 'background-color', '' );
 				
 				me.userNameTag.closest("div").find("errorMsg").remove();
 				me.passwordTag.closest("div").find("errorMsg").remove();
@@ -97,7 +97,7 @@ function LoginForm( storageObj, translationObj )
 			setTimeout( function() 
 			{
 				me.userNameTag.val( "TES002" ).css( 'background-color', '' );
-				me.passwordTag.val( '1234' ).css( 'background-color', '' );
+				me.passwordTag.val( '4321' ).css( 'background-color', '' );
 				
 				me.userNameTag.closest("div").find("errorMsg").remove();
 				me.passwordTag.closest("div").find("errorMsg").remove();
