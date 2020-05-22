@@ -15,7 +15,7 @@ select psi.uid, tei.uid as clientid , psi.executiondate
 				INNER JOIN trackedentityinstance _tei on _tei.trackedentityinstanceid=_teav.trackedentityinstanceid
 			where pi.trackedentityinstanceid=_tei.trackedentityinstanceid
 					and _tea.uid='TBt2a4Bq0Lx' ) as lastname
-, psi.eventdatavalues  -> 'UuKat0HFjWS' ->> 'value' > '1' as finaltest
+, psi.eventdatavalues  -> 'UuKat0HFjWS' ->> 'value'  as finaltest
 					
 from programstageinstance psi
 inner join organisationunit org on org.organisationunitid=psi.organisationunitid
@@ -30,6 +30,5 @@ where  psi.executiondate >= '${startDate}' and psi.executiondate < '${endDate}'
  	and pgs.uid = '${stageId}'
 	and catOption.code='${username}'
 	and org.uid='${ouId}'
-	and psi.eventdatavalues  -> 'csHM60DUGkG' ->> 'value' > '1'
-	and psi.eventdatavalues  -> 'UYyCL2xz8Wz' ->> 'value' is null
-	
+        and psi.eventdatavalues  -> 'csHM60DUGkG' ->> 'value' = '1'
+	and psi.eventdatavalues  -> 'UYyCL2xz8Wz' -> 'value' is null

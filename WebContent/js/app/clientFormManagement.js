@@ -1557,11 +1557,15 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		{
 			me.setHideLogicTag( referralGivenSTITag.closest("tr"), false );
 			me.setHideLogicTag( referralGivenTBTag.closest("tr"), false );
-			me.setHideLogicTag( referralGivenFPTag.closest("tr"), false );
+			me.setHideLogicTag( referralGivenFPTag.closest("tr"), true ); // Only show if TEI is a Female
 
-			if( gender == "Male" )
+			if( gender == "M" )
 			{
 				me.setHideLogicTag( referralGivenVMMCTag.closest("tr"), false );
+			}
+			else if( gender == "F" )
+			{
+				me.setHideLogicTag( referralGivenFPTag.closest("tr"), false );
 			}
 			
 			if( resultFinalHIVStatusTag.val() == "Positive" && testResultsGivenTag.val() == "true" )

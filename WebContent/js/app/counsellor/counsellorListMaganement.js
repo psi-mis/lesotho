@@ -367,11 +367,8 @@ function CounsellorListMaganement( _mainPage  )
 				{
 					artStatus = "";
 				}
-				var openingFacility = event[8];
-				if( openingFacility == null )
-				{
-					openingFacility = "";
-				}
+				var openingFacility = ( event[9] != null ) ? event[9] : event[8];
+				var openingFacility = ( openingFacility != null ) ? openingFacility : "";
 				
 				var eventDateStr = eventDate;
 				if( eventDate !== "" )

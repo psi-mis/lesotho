@@ -30,10 +30,8 @@ public final class Util
 //  public static String LOCATION_DHIS_SERVER = "http://localhost:8080/dhis";
 
     //// https://data.psi-mis.org
-//    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
     public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
 //    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
-//    public static String LOCATION_DHIS_SERVER = "https://leap.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    
 //    // https://sandbox.psi-mis.org
@@ -423,6 +421,7 @@ public final class Util
             wr.flush();
             wr.close();
         }
+        
         // 4. Send and get Response
         responseInfo.responseCode = con.getResponseCode();
 
@@ -466,7 +465,7 @@ public final class Util
     public static void respondMsgOut( ResponseInfo responseInfo, HttpServletResponse response )
         throws IOException, Exception
     {
-        response.setContentType( "application/json" );
+        response.setContentType( "application/json; charset=utf-8" );
         response.setStatus( responseInfo.responseCode );
         
         PrintWriter out = response.getWriter();

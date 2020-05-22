@@ -11,17 +11,17 @@ select DISTINCT ON(pi.programinstanceid)
 				INNER JOIN trackedentityattribute _tea on _tea.trackedentityattributeid=_teav.trackedentityattributeid
 				INNER JOIN trackedentityinstance _tei on _tei.trackedentityinstanceid=_teav.trackedentityinstanceid
 				INNER JOIN optionset optset on optset.optionsetid=_tea.optionsetid
-				INNER JOIN optionvalue optval on optval.optionsetid=optset.optionsetid
+				INNER JOIN optionvalue optval on optval.optionsetid=optset.optionsetid and optval.code=_teav.value
 			where pi.trackedentityinstanceid=_tei.trackedentityinstanceid
-					and _tea.uid='mYdfuRItatP' and optval.code=_teav.value ) as referralstatus
+					and _tea.uid='mYdfuRItatP' ) as referralstatus
 
 , ( select optval.name from trackedentityattributevalue _teav
 				INNER JOIN trackedentityattribute _tea on _tea.trackedentityattributeid=_teav.trackedentityattributeid
 				INNER JOIN trackedentityinstance _tei on _tei.trackedentityinstanceid=_teav.trackedentityinstanceid
 				INNER JOIN optionset optset on optset.optionsetid=_tea.optionsetid
-				INNER JOIN optionvalue optval on optval.optionsetid=optset.optionsetid
+				INNER JOIN optionvalue optval on optval.optionsetid=optset.optionsetid and optval.code=_teav.value
 			where pi.trackedentityinstanceid=_tei.trackedentityinstanceid
-					and _tea.uid='NLNTtpbT3c5' and optval.code=_teav.value ) as counsil
+					and _tea.uid='NLNTtpbT3c5' ) as counsil
 	
 
 , artopeningfacility.value as facility
