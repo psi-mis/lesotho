@@ -33,7 +33,8 @@ public class ClientController
     private static final String URL_QUERY_CREATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/30/trackedEntityInstances";
     private static final String URL_QUERY_UPDATE_CLIENT = Util.LOCATION_DHIS_SERVER + "/api/30/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID;
     private static final String URL_QUERY_ENROLLMENT = Util.LOCATION_DHIS_SERVER + "/api/enrollments";
-    private static final String URL_QUERY_CLIENT_DETAILS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM;
+    private static final String URL_QUERY_CLIENT_DETAILS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM + "&fields=*";
+    private static final String URL_ADD_RELATIONSHIP = Util.LOCATION_DHIS_SERVER + "/api/relationships/";
 
 //    public static final String URL_QUERY_CLIENT_BY_ID = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances/" + ClientController.PARAM_CLIENT_ID + ".json?program=" + Util.ID_PROGRAM;
 //    private static final String URL_QUERY_SEARCH_CLIENTS = Util.LOCATION_DHIS_SERVER + "/api/trackedEntityInstances.json?ouMode=ALL&program=" + Util.ID_PROGRAM;
@@ -147,6 +148,38 @@ public class ClientController
                         responseInfo.output = output.toString();
                     }
                 }
+                else if( key.equals( Util.KEY_ADD_RELATIONSHIP ))
+                {
+                    JSONObject receivedData = Util.getJsonFromInputStream( request.getInputStream() );
+                    
+                    // Add relationship
+                    responseInfo = ClientController.addRelationship( receivedData.getJSONObject( "relationship" ) );
+                    if( responseInfo.responseCode == 200 )
+                    {
+                        // Update client attribute values
+                        JSONObject clientData = receivedData.getJSONObject( "client" );
+                        responseInfo = ClientController.updateAttrValues( clientData.getString( "trackedEntityInstance" ), clientData.getJSONArray( "attributes" ) );
+                    
+                        if( responseInfo.responseCode == 200 )
+                        {
+                            // Update events
+                           JSONArray events = receivedData.getJSONArray( "events" );
+                           for( int i=0; i<events.length(); i++ )
+                           {
+                               JSONObject jsonEvent = events.getJSONObject( i );
+                               String eventId = jsonEvent.getString( "event" );
+                               JSONArray dataValues = jsonEvent.getJSONArray( "dataValues" );
+                               
+                               for( int j=0; j<dataValues.length(); j++ )
+                               {
+                                   JSONObject dataValue = dataValues.getJSONObject( j );
+                                   EventController.updatePartEvent( eventId, dataValue );
+                               }
+                           }
+                        }
+                    }
+                    
+                }
             }
 
             // STEP 3. Send back the messages
@@ -168,6 +201,23 @@ public class ClientController
     // Supportive methods
     // ===============================================================================================================
 
+
+    private static ResponseInfo addRelationship( JSONObject jsonData )
+    {
+        ResponseInfo responseInfo = null;
+
+        try
+        {
+            String requestUrl = ClientController. URL_ADD_RELATIONSHIP;
+            responseInfo = Util.sendRequest( Util.REQUEST_TYPE_POST, requestUrl, jsonData, null );
+        }
+        catch ( Exception ex )
+        {
+            System.out.println( "Exception: " + ex.toString() );
+        }
+
+        return responseInfo;
+    }
 
     public static ResponseInfo getClientById( String clientId )
         throws UnsupportedEncodingException, ServletException, IOException, Exception
@@ -298,12 +348,11 @@ public class ClientController
                     }
                 }
             }
-
-            
             
             clientData.remove( "attributes" );
             clientData.put( "attributes", clientAttrValues );
             responseInfo = ClientController.updateClient( clientId, clientData );
+            responseInfo.output = clientData.toString();
         }
         catch ( Exception ex )
         {
@@ -413,5 +462,4 @@ public class ClientController
         return null;
     }
     
-
 }

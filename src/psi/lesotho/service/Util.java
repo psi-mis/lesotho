@@ -30,8 +30,10 @@ public final class Util
 //  public static String LOCATION_DHIS_SERVER = "http://localhost:8080/dhis";
 
     //// https://data.psi-mis.org
-    public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
-//    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://clone.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
+    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    
 //    // https://sandbox.psi-mis.org
@@ -42,8 +44,8 @@ public final class Util
     
     // Supper DHIS account
     public static String ACCESS_SERVER_USERNAME = "ls.webapp";
-    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V";
-//    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V!"; // dev.psi-mis.org server
+//    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V";
+    public static String ACCESS_SERVER_PASSWORD = "Q57pAJ9V!"; // dev.psi-mis.org server
     
     
     public static String REQUEST_PARAM_USERNAME = "usr";
@@ -92,6 +94,7 @@ public final class Util
     public static final String KEY_SAVE_CLIENT = "save";    
     public static final String KEY_SAVE_EVENT = "save"; 
     public static final String KEY_SAVE_PARTNER_CUIC = "savePartnerCUIC"; 
+    public static final String KEY_ADD_RELATIONSHIP = "addRelationship"; 
     
     // Reports
     public static final String KEY_GET_COUNSELLOR_REPORT = "counsellorReport";

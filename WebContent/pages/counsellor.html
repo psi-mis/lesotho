@@ -38,21 +38,6 @@
 <link rel="stylesheet" href="../css/jQuery/tablesorter/style.css" />
 <link type="text/css" rel="stylesheet" media="screen" href="../css/style.css" />
 
-<script src="../js/utils/lesotho_utils.js"></script>
-<script src="../js/utils/lesotho_storage.js"></script>
-<script src="../js/utils/lesotho_translation.js" type="text/javascript"></script>
-<script src="../js/utils/lesotho_validation.js"></script>
-<script src="../js/utils/lesotho_menu.js"></script>
-<script src="../js/utils/lesotho_commons.js"></script>
-<script src="../js/counsellor.js"></script>
-<script src="../js/app/inputTagGeneration.js"></script>
-<script src="../js/app/counsellor/counsellorListMaganement.js"></script>
-<script src="../js/app/settingsManagement.js"></script>
-<script src="../js/app/clientFormManagement.js"></script>
-<script src="../js/app/counsellor/counsellorReportManagement.js"></script>
-<script src="../js/app/searchClientManagement.js"></script>
-<script src="../js/app/session/sessionTimeOutPicker.js"></script>
-<script src="../js/app/programSection.js"></script>
 
 </head>
 <body>
@@ -247,7 +232,8 @@
 						
 						<div style="text-align:center;margin-bottom:10px;">
 							<button class="btn btn-default actionBtn" id="searchClientBtn" keyword="searchClient_btn_search">Search/Create</button>
-		  				</div>
+							<button class="btn btn-default actionBtn" style="background-color: #e2e2e2;" id="backTocClientDetailsBtn" keyword="searchClient_btn_backToRelationshipList">Back</button>
+						</div>
 	  				</div>
 	  				
 				</div>	
@@ -267,6 +253,7 @@
 									<th keyword="searchClient_result_tableHeader_birthOrder">Birth Order</th>
 									<th keyword="searchClient_result_tableHeader_adquisition">Adquisition</th>
 									<th keyword="searchClient_result_tableHeader_lastTestNS">Last test NS</th>
+									<th class="action">#</th>
 								</tr>
 							</thead>
 							<tbody></tbody>
@@ -274,10 +261,17 @@
 					</div>
 					
 					<div id="searchResultOptions" >
-						<p><span id="searchResultHeader" keyword="searchClient_result_optionTitle" class="searchOptMsg">Select a client from from above or</span> <span id="searchResultKey"  class="searchOptMsg"></span><p> 
-						<button id="showAddNewClientForm" keyword="searchClient_result_btn_addClient" class="btn btn-default actionBtn">Add a client</button>
-						<button id="backToSearchClientForm" keyword="searchClient_result_btn_backToSearch" class="btn btn-default actionBtn">Back to search</button>
-						<button id="showTodayCase" keyword="searchClient_result_btn_todayCases" class="btn btn-default actionBtn">Today's Cases</button>
+						<div id="clientSearchBtnDiv">
+							<p><span id="searchResultHeader" keyword="searchClient_result_optionTitle" class="searchOptMsg">Select a client from from above or</span> <span id="searchResultKey"  class="searchOptMsg"></span><p> 
+							<button id="showAddNewClientForm" keyword="searchClient_result_btn_addClient" class="btn btn-default actionBtn">Add a client</button>
+							<button id="backToSearchClientForm" keyword="searchClient_result_btn_backToSearch" class="btn btn-default actionBtn">Back to search</button>
+							<button id="showTodayCase" keyword="searchClient_result_btn_todayCases" class="btn btn-default actionBtn">Today's Cases</button>
+						</div>
+						
+						<div id="relationshipSearchBtnDiv" style="display:none;">
+							<button id="backToSearchRelationshipForm" keyword="relationship_search_result_btn_backSearchForm" class="btn btn-default actionBtn">Back to search</button>
+							<button id="backToClientForm" keyword="relationship_search_result_btn_back_clientForm" class="btn btn-default actionBtn">Back to client</button>
+						</div>
 					</div>
 				</div>
 				
@@ -294,6 +288,8 @@
 				    		<li><a href="#contactLogDiv"><span keyword="dataEntryForm_tab_contactLog_headerTitle">Contact Log</span> <span style="color:red;padding-left: 10px;" class="tabIcon glyphicon glyphicon-user"></span></a></li>
 				    		<li><a href="#artReferDiv"><span keyword="dataEntryForm_tab_ARTRefer_headerTitle">ART Refer.</span> <span style="color:red;padding-left: 10px;" class="tabIcon glyphicon glyphicon-plus"></span></a></li>
 				  			<li><a href="#prepReferDiv"><span keyword="dataEntryForm_tab_prepRefer_headerTitle">PrEP Refer.</span> <span style="color:red;padding-left: 10px;" class="tabIcon glyphicon glyphicon-minus"></span></a></li>
+				  			<li><a href="#indexingDiv" keyword="dataEntryForm_tab_indexing_headerTitle">Indexing</a></li>
+				  			
 				  		</ul>
 				  		
 				  		
@@ -552,7 +548,30 @@
 								</table>
 							</form>
 						</div>		
+						
+						<div id="indexingDiv">
+							<table class='table table-hover table-striped panel panel-default previousTestTb'>
+								<thead>
+									<th keyword="indexingDiv_tab_indexing_date">Indexing date</th>
+									<th keyword="indexingDiv_tab_relationship">Relationship</th>
+									<th keyword="indexingDiv_tab_CUICOrName">CUIC/Name</th>
+									<th keyword="indexingDiv_tab_HIV_Status" colspan='2'>HIV Status</th>
+								</thead>
+								<tbody id="indexingListTb"></tbody>
 								
+								<!--  Action bar -->
+  								<tbody>
+									<tr class="actionBar">
+										<th colspan="4">
+											<span style="float:right;" keyword="contactLogForm_tab_btn_add">Add</span>
+										</th>
+										<th style="width:20px;background-color:#afc3d8;" class="actionCell">
+											<button id="addRelationship" class="imgBtn"><span class="glyphicon glyphicon-plus"></span></button>
+										</th>
+									</tr>
+								</tbody>
+							</table>
+						</div>		
 					</div>	
 					
 					
@@ -563,6 +582,157 @@
 					</div>
 						
 		  		</div>	
+				
+				<!--  Dialog to add a relationship with exiting client -->
+				
+				<div id="addRelationshipFormDiv" style="display:none;justify-content: center;">
+					<!--  <form class="form-horizontal">
+					
+			  			<div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">Relationship Type</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" dataElementid="Ghs7vYIWIpi" mandatory="true">
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">First Name</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="R9Lw1uNtRuj" mandatory="true">
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">Last Name</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="TBt2a4Bq0Lx" mandatory="true">
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">Gender</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="JcGai6pHG1M" mandatory="true">
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Client Info – Age</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="eOZJ5fonziS" mandatory="true">
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Phone number</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="Rl2hRelrfur" mandatory="true">
+					      </div>
+					    </div>
+					    
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">Address 1 - #Landmark</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="gY1FrhX5UTn">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 2</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="gn35714pj4p" mandatory="true" maxlength="200">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 3 </span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="qynN2cqRe71" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 4 – Council</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="NLNTtpbT3c5">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 5 – Village</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="jQilj6Wjweq" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Village chief Name</span> </label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="Wea8fAtYVwx" >
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - Test - Final HIV status</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" dataElementId="UuKat0HFjWS" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - Background - HIV Status</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" dataElementId="bCVRuaX7LwG" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - Background - Notification Method</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" dataElementId="Eis9qerhBFg" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - 1Physically hurt you</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="n8m5JoVrapA" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - 2Threatened you</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="QnSYmezcVi0" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - 3Forced you sexually</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="JRV6Z03Cu5H" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - Screening Outcome</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" attributeId="UTNfpVZjHcF" mandatory="true">
+					      </div>
+					    </div>
+			
+					    <div class="form-group">
+					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - ContactLog - Due Date</span> <span class="required"> *</span></label>
+					      <div class="col-sm-10">
+					      	<input type="text" class="form-control" dataElementId="HcBFZsCt8Sy" mandatory="true">
+					      </div>
+					    </div>
+					    
+					</form>  -->
+					
+					<button id="saveRelationshipBtn" keyword="relationship_btn_addRelationship" class="btn btn-default">Save</button>
+					<button id="cancelRelationshipBtn" keyword="relationship_btn_cancelRelationship" class="btn btn-default">Back</button>
+				</div>
 				
 				
 				<!-- Dialog to ask users if they want to complete event OR just want to save and edit later -->
@@ -829,6 +999,26 @@
 	</div>
 	
 </body>
+
+<script src="../js/app/metaDataId.js"></script>
+<script src="../js/app/element.js"></script>
+<script src="../js/utils/lesotho_utils.js"></script>
+<script src="../js/utils/lesotho_storage.js"></script>
+<script src="../js/utils/lesotho_translation.js" type="text/javascript"></script>
+<script src="../js/utils/lesotho_validation.js"></script>
+<script src="../js/utils/lesotho_menu.js"></script>
+<script src="../js/utils/lesotho_commons.js"></script>
+<script src="../js/utils/clientUtil.js"></script>
+<script src="../js/counsellor.js"></script>
+<script src="../js/app/inputTagGeneration.js"></script>
+<script src="../js/app/counsellor/counsellorListMaganement.js"></script>
+<script src="../js/app/relationship/relationships.js"></script>
+<script src="../js/app/settingsManagement.js"></script>
+<script src="../js/app/clientFormManagement.js"></script>
+<script src="../js/app/counsellor/counsellorReportManagement.js"></script>
+<script src="../js/app/searchClientManagement.js"></script>
+<script src="../js/app/session/sessionTimeOutPicker.js"></script>
+<script src="../js/app/programSection.js"></script>
 
 <script>
 

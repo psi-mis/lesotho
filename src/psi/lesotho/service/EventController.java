@@ -136,7 +136,7 @@ public class EventController
                     // Update Event
                     else
                     {
-                        responseInfo = EventController.updateEvent( eventId, receivedData, loginUsername );
+                        responseInfo = EventController.updateEvent( eventId, receivedData );
                     }
                 } 
                 // Load event by ID
@@ -260,7 +260,7 @@ public class EventController
                     jsonEvent.getJSONArray( "dataValues" ).put( dataValueCoupleStatus );
                     
                     
-                    responseInfo = EventController.updateEvent( partnerEventId, jsonEvent, loginUsername );
+                    responseInfo = EventController.updateEvent( partnerEventId, jsonEvent );
                     
                     
                     // Save Client information
@@ -284,7 +284,7 @@ public class EventController
                     jsonClientEvent.getJSONArray( "dataValues" ).put( dataValueClientCoupleStatus );
                     
                     
-                    responseInfo_Client = EventController.updateEvent( clientEventId, jsonClientEvent, loginUsername );
+                    responseInfo_Client = EventController.updateEvent( clientEventId, jsonClientEvent );
                     
                 } 
                
@@ -529,7 +529,7 @@ public class EventController
         return responseInfo;
     }
     
-    public static ResponseInfo updateEvent( String eventId, JSONObject eventData, String loginUsername )
+    public static ResponseInfo updateEvent( String eventId, JSONObject eventData )
         throws IOException, Exception
     {
         ResponseInfo responseInfo = new ResponseInfo();
@@ -545,6 +545,28 @@ public class EventController
                 responseInfo.output = eventData.toString();
             }
 
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return responseInfo;
+    }
+    
+
+    public static ResponseInfo updatePartEvent( String eventId, JSONObject updatedDataValue )
+        throws IOException, Exception
+    {
+        ResponseInfo responseInfo = new ResponseInfo();
+        
+        try
+        {     
+            String requestUrl = URL_QUERY_UPDATE_EVENT;
+            requestUrl = requestUrl.replace( EventController.PARAM_EVENT_ID, eventId );
+            requestUrl += "/" + updatedDataValue.getString( "dataElement" );
+
+            responseInfo = Util.sendRequest( Util.REQUEST_TYPE_PUT, requestUrl, updatedDataValue, null );
         }
         catch ( Exception ex )
         {

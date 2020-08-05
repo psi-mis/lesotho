@@ -25,25 +25,6 @@ function Counsellor( storageObj, translationObj )
 	me.dateFormat = "dd M yy";
 	me.dateTimeFormat = "YYYY-MM-DD HH:mm";
 
-	// [Menu] links
-	me.todayCaseLinkTag = $("#todayCaseLink");
-	me.previousCaseLinkTag = $("#previousCaseLink");
-	me.positiveCaseLinkTag = $("#positiveCaseLink");
-	me.searchClientLinkTag = $("#searchClientLink");
-	me.aboutLinkTag = $("#aboutLink");
-	me.settingsLinkTag = $("#settingsLink");
-	me.consumablesLinkTag = $("#consumablesLink");
-	me.reportLinkTag = $("#reportLink");
-	
-	// [Today] list	
-	me.registerClientBtnTag = $("#registerClientBtn");
-	
-	// [Client Registration] form	
-	me.moveToSettingLinkTag = $("#moveToSettingLink");
-	
-	
-	// [Consumables]
-	me.consumablesDivTag = $("#consumablesDiv");
 	
 	me.currentList = "";	
 	
@@ -114,7 +95,7 @@ function Counsellor( storageObj, translationObj )
 	
 	me.setUp_Events_Menus = function()
 	{
-		me.todayCaseLinkTag.click(function(e){
+		Element.todayCaseLinkTag.click(function(e){
 			console.log("todayCaseLinkTag");
 			$('.overlay').click();
 			
@@ -123,7 +104,7 @@ function Counsellor( storageObj, translationObj )
 			});
 		});
 		
-		me.previousCaseLinkTag.click(function(){
+		Element.previousCaseLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
@@ -131,7 +112,7 @@ function Counsellor( storageObj, translationObj )
 			});
 		});
 		
-		me.positiveCaseLinkTag.click(function(){
+		Element.positiveCaseLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
@@ -139,12 +120,14 @@ function Counsellor( storageObj, translationObj )
 			});
 		});
 		
-		me.searchClientLinkTag.click(function(){
+		Element.searchClientLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
 				Util.resetPageDisplay();
-
+				ClientUtil.setSearchClientStatus();
+				Element.backTocClientDetailsBtnTag.hide();
+				
 				me.storageObj.removeItem("clientId");
 				me.storageObj.removeItem("eventId");
 				
@@ -153,40 +136,40 @@ function Counsellor( storageObj, translationObj )
 			});
 		});
 		
-		me.settingsLinkTag.click(function(){
+		Element.settingsLinkTag.click(function(){
 			me.storageObj.addItem("page", me.settingsManagement.PAGE_SETTINGS);
 			Util.resetPageDisplay();
-			me.settingsManagement.settingsDivTag.show("fast");
+			Element.settingsDivTag.show("fast");
 			$('.overlay').click();
 		});
 		
-		me.aboutLinkTag.click(function(){
+		Element.aboutLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
 				me.storageObj.addItem("page", me.settingsManagement.PAGE_ABOUT);
 				Util.resetPageDisplay();
-				me.settingsManagement.aboutDivTag.show("fast");
+				Element.aboutDivTag.show("fast");
 			});
 		});
 		
-		me.moveToSettingLinkTag.click(function(){
+		Element.moveToSettingLinkTag.click(function(){
 			Util.resetPageDisplay();
-			me.settingsManagement.settingsDivTag.show("fast");
+			Element.settingsDivTag.show("fast");
 			$('.overlay').click();
 		});
 		
-		me.consumablesLinkTag.click(function(){
+		Element.consumablesLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
 				me.storageObj.addItem("page", me.settingsManagement.PAGE_COMSUMABLES);
 				Util.resetPageDisplay();
-				me.consumablesDivTag.show("fast");
+				Element.consumablesDivTag.show("fast");
 			});
 		});
 		
-		me.reportLinkTag .click(function(){
+		Element.reportLinkTag .click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
@@ -286,7 +269,7 @@ function Counsellor( storageObj, translationObj )
 		}
 		else if( page == me.settingsManagement.PAGE_COMSUMABLES )
 		{
-			me.consumablesDivTag.show("fast");
+			Element.consumablesDivTag.show("fast");
 		}
 		else if( page == me.settingsManagement.PAGE_REPORT_PARAM )
 		{
@@ -333,7 +316,7 @@ function Counsellor( storageObj, translationObj )
 				{
 					var attributeId = clientSearch[i].attribute;
 					var value = clientSearch[i].value;
-					var field = me.searchClientManagement.searchClientFormTag.find("[attribute='" + attributeId + "']");
+					var field = Element.searchClientFormTag.find("[attribute='" + attributeId + "']");
 	
 					if( field.attr("isDate") == "true" )
 					{

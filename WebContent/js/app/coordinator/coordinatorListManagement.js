@@ -742,14 +742,14 @@ function CoordinatorListManagement( _mainPage )
 	{
 		rowTag.css("cursor", "pointer");
 		rowTag.click( function(){
-			me.mainPage.searchClientManagement.backToSearchClientResultBtnTag.hide();
+			Element.backToSearchClientResultBtnTag.hide();
 			me.backToCaseListBtnTag.show();
 			var clientId = rowTag.attr("clientId");
 			var eventId = rowTag.attr("eventId");
 			
 			Util.resetPageDisplay();
 			me.mainPage.clientFormManagement.loadClientDetails( clientId, eventId, function(){
-				me.mainPage.clientFormManagement.addClientFormDivTag.show();
+				Element.addClientFormDivTag.show();
 				me.mainPage.clientFormManagement.showTabInClientForm( me.mainPage.clientFormManagement.TAB_NAME_CONTACT_LOG );
 			} );
 		});

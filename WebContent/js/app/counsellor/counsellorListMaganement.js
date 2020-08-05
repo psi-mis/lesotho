@@ -102,7 +102,7 @@ function CounsellorListMaganement( _mainPage  )
 	
 	me.listTodayCases = function( exeFunc )
 	{
-		me.mainPage.registerClientBtnTag.show();
+		Element.registerClientBtnTag.show();
 		
 		me.mainPage.setCurrentPage( me.mainPage.settingsManagement.PAGE_TODAY_LIST );
 		me.storageObj.addItem( "page", me.mainPage.settingsManagement.PAGE_TODAY_LIST );
@@ -420,14 +420,14 @@ function CounsellorListMaganement( _mainPage  )
 	{
 		rowTag.css("cursor", "pointer");
 		rowTag.click( function(){
-			me.mainPage.searchClientManagement.backToSearchClientResultBtnTag.hide();
+			Element.backToSearchClientResultBtnTag.hide();
 			me.backToCaseListBtnTag.show();
 			var clientId = rowTag.attr("clientId");
 			var eventId = rowTag.attr("eventId");
 			
 			Util.resetPageDisplay();
 			me.clientFormManagement.loadClientDetails( clientId, eventId, function(){
-				me.clientFormManagement.addClientFormDivTag.show();
+				Element.addClientFormDivTag.show();
 			} );
 		});
 	};

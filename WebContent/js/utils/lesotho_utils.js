@@ -256,6 +256,14 @@ Util.getArrayJsonData = function( key, formTag, isGetEmptyValue )
 	return jsonData;
 };
 
+Util.populateDataValues = function( formTag, dataList, propertyId )
+{
+	for( var i=0; i<dataList.length; i++ )
+	{
+		var id = dataList[i][propertyId];
+		formTag.find("[" + propertyId + "='" + id + "']" ).val( dataList[i].value );
+	}
+};
 
 //-------------------------------------------------------------------
 // Utils - List
@@ -1082,7 +1090,9 @@ Util.getCurrentQuarterly = function( reportPeriodList )
 	return period;
 };
 
+//-------------------------------------------------------------------------------------
 // Get data from JSON FILE
+
 Util.getAttributeValue = function( list, propertyName, id )
 {
 	var found = Util.findItemFromList( list, propertyName, id );

@@ -8,12 +8,6 @@ function CounsellorReportManagement( mainPage )
 	me.translationObj = me.mainPage.translationObj;
 
 	
-	// [Report]
-	me.reportParamDivTag = $("#reportParamDiv");
-	me.reportTblTag = $("#reportTbl");
-	me.analyticTimeTag = $("#analyticTime");
-	
-	
 	//[Ids]
 	
 	me.de_AllClient_Tested = "KDgzpKX3h2S.QLMo6Kh3eVP";
@@ -57,14 +51,14 @@ function CounsellorReportManagement( mainPage )
 			            	var translatedText = me.translationObj.getTranslatedValueByKey( "report_msg_loadingReport" );
 			            	MsgManager.appBlock( translatedText );
 			            	
-			            	me.reportTblTag.hide();
-			            	me.reportTblTag.find("tbody td[dataelement]").find("span").html("");
-			            	me.reportParamDivTag.show();
+			            	Element.reportTblTag.hide();
+			            	Element.reportTblTag.find("tbody td[dataelement]").find("span").html("");
+			            	Element.reportParamDivTag.show();
 			            }
 						,success: function( response ) 
 						{
 							// STEP 1. Add analytic time
-							me.analyticTimeTag.html(response.analyticsTime);
+							Element.analyticTimeTag.html(response.analyticsTime);
 							
 							// --------------------------------------------------------------------
 							// Generate report
@@ -145,7 +139,7 @@ function CounsellorReportManagement( mainPage )
 								}
 							}
 							
-							me.reportTblTag.show();
+							Element.reportTblTag.show();
 						}
 						,error: function(response)
 						{
@@ -164,7 +158,7 @@ function CounsellorReportManagement( mainPage )
 	me.setDataInReportCell = function( clazzTableName, deId, peId, value )
 	{
 		value = Util.formatNumber( eval( value ) );
-		var colTag = me.reportTblTag.find("tbody." + clazzTableName ).find("td[dataelement='" + deId + "'][period='" + peId + "']");
+		var colTag = Element.reportTblTag.find("tbody." + clazzTableName ).find("td[dataelement='" + deId + "'][period='" + peId + "']");
 		colTag.find("span.value").html( value );
 		
 		var trafficLightTag = colTag.find("span.trafficLight");

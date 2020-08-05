@@ -11,28 +11,12 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	me.validationObj = me.mainPage.validationObj;
 	me.inputTagGeneration;
 	
-	// Search Form	
-	me.searchClientFormTag = $("#searchClientForm");
-	me.searchClientBtnTag = $("#searchClientBtn");
-	me.searchResultTag = $("#searchResult");
-	me.searchResultTbTag = $("#searchResultTb");
-	me.searchResultKeyTag = $("#searchResultKey");
-	me.searchMatchResultKeyTag = $("#searchMatchResultKey");
-	me.searchResultOptionsTag = $("#searchResultOptions");
-	me.seachAddClientFormTag = $("#seachAddClientForm");
-	me.backToSearchClientResultBtnTag = $("[name=backToSearchClientResultBtn]");
-	me.searchResultHeaderTag = $("#searchResultHeader");
-	me.showAddNewClientFormTag = $("#showAddNewClientForm");
-	me.backToSearchClientFormTag = $("#backToSearchClientForm");
-	me.showTodayCaseTag = $("#showTodayCase");
-	
 	// Ids
-	me.attr_DoB = me.mainPage.settingsManagement.attr_DoB;
-	me.attr_DistrictOB = me.mainPage.settingsManagement.attr_DistrictOB;
-	me.attr_FirstName = me.mainPage.settingsManagement.attr_FirstName;
-	me.attr_LastName = me.mainPage.settingsManagement.attr_LastName;
-	me.attr_BirthOrder = me.mainPage.settingsManagement.attr_BirthOrder;
-	me.attr_HIVEventDate = me.mainPage.settingsManagement.attr_HIVEventDate;
+	me.attr_DoB = MetaDataID.attr_DoB;
+	me.attr_DistrictOB = MetaDataID.attr_DistrictOB;
+	me.attr_FirstName = MetaDataID.attr_FirstName;
+	me.attr_LastName = MetaDataID.attr_LastName;
+	me.attr_BirthOrder = MetaDataID.attr_BirthOrder;
 	    
 	me.searchClientAttributeIds = [me.attr_DoB, me.attr_DistrictOB, me.attr_FirstName, me.attr_LastName, me.attr_BirthOrder];
 	
@@ -51,8 +35,8 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		// Not allow coordinator to add a new client
 		if( me.appPage == Commons.APPPAGE_COORDINATOR )
 		{
-			me.searchResultKeyTag.hide();
-			me.showAddNewClientFormTag.hide();
+			Element.searchResultKeyTag.hide();
+			Element.showAddNewClientFormTag.hide();
 		}
 		
 	};
@@ -65,41 +49,41 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	{
 		// Back to [Search Client Result]
 		
-		me.backToSearchClientResultBtnTag.click(function(){
+		Element.backToSearchClientResultBtnTag.click(function(){
 			MsgManager.msgAreaHide();
-			me.mainPage.clientFormManagement.addClientFormDivTag.hide();
-			me.mainPage.clientFormManagement.selectOrgUnitWarningMsgTag.hide();
-			me.searchResultTbTag.show();
-			me.searchResultTag.show();
+			Element.addClientFormDivTag.hide();
+			Element.selectOrgUnitWarningMsgTag.hide();
+			Element.searchResultTbTag.show();
+			Element.searchResultTag.show();
 		});
 			
 		// Add Datepicker to date fields
 			
-		me.seachAddClientFormTag.find("[isDate='true']").each(function(){
+		Element.seachAddClientFormTag.find("[isDate='true']").each(function(){
 			Util.datePicker($(this));
 		});
 		
 		// Search Result buttons
 				
-		me.showAddNewClientFormTag.click( function(){
+		Element.showAddNewClientFormTag.click( function(){
 			me.mainPage.clientFormManagement.showAddClientForm();
 		});
 
-		me.backToSearchClientFormTag.click( function(){
+		Element.backToSearchClientFormTag.click( function(){
 			Util.resetPageDisplay();
 			me.showSearchClientForm();
 		});
 		
-		me.showTodayCaseTag.click( function(){
+		Element.showTodayCaseTag.click( function(){
 			me.mainPage.listManagement.listTodayCases();
 		});
 				
 		// Call [Search clients] function
 		
-		me.searchClientBtnTag.click(function(e){
+		Element.searchClientBtnTag.click(function(e){
 			e.preventDefault();
 			
-			var clientData = Util.getArrayJsonData( "attribute", me.searchClientFormTag );
+			var clientData = Util.getArrayJsonData( "attribute", Element.searchClientFormTag );
 			var requestData = { "attributes": clientData };
 			
 			if( requestData.attributes.length == 0 )
@@ -117,17 +101,21 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			
 		});
 
-		me.seachAddClientFormTag.find("input,select").keyup(function(e){
+		Element.seachAddClientFormTag.find("input,select").keyup(function(e){
 			if ( e.keyCode === 13 ) {
 				e.preventDefault();
 				me.runSearchClients();
 			}
 		});
 		
+		Element.backTocClientDetailsBtnTag.click( function(){
+			Element.addClientFormDivTag.show("fast");
+			Element.searchClientFormTag.hide();
+		});
 		
 		// Validation for fields in [Search Client] form
 		
-		me.seachAddClientFormTag.find("input,select").change(function(){
+		Element.seachAddClientFormTag.find("input,select").change(function(){
 			
 			if( $(this).val() != "" )
 			{
@@ -136,7 +124,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		});
 		
 		
-		me.setUp_validationCheck( me.seachAddClientFormTag.find( 'input,select' ) );
+		me.setUp_validationCheck( Element.seachAddClientFormTag.find( 'input,select' ) );
 			
 		
 	};
@@ -175,27 +163,27 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 						fieldInputTag.append( inputTag );
 						fieldTag.append( fieldInputTag );
 						
-						me.seachAddClientFormTag.append( fieldTag );
+						Element.seachAddClientFormTag.append( fieldTag );
 					}
 				}
 			}
 		}
 		
 		// Remove all of mandatory attribute for all fields
-		me.seachAddClientFormTag.find("input,select").removeAttr("mandatory");
-		me.validationObj.setUp_isNumberOnly_OlderBrowserSupport( me.seachAddClientFormTag );
+		Element.seachAddClientFormTag.find("input,select").removeAttr("mandatory");
+		me.validationObj.setUp_isNumberOnly_OlderBrowserSupport( Element.seachAddClientFormTag );
 		
 		// set validation for firstName and lastName
 		me.getAttributeField( me.attr_FirstName ).attr( "notAllowSpecialChars", true );
 		me.getAttributeField( me.attr_LastName ).attr( "notAllowSpecialChars", true );
 		
 		
-		var dobTag = me.seachAddClientFormTag.find( "input[attribute='" + me.attr_DoB + "']" );
+		var dobTag = Element.seachAddClientFormTag.find( "input[attribute='" + me.attr_DoB + "']" );
 		dobTag.attr( "readonly", true );
 	
 
 		// Remove the 'mandatory' SPAN from the Search table
-		me.seachAddClientFormTag.find("span.required").remove();
+		Element.seachAddClientFormTag.find("span.required").remove();
 		
 	};	
 
@@ -206,27 +194,27 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	
 	me.runSearchClients = function( exeFunc )
 	{
-		if( me.validationObj.checkFormEntryTagsData( me.searchClientFormTag ) )
+		if( me.validationObj.checkFormEntryTagsData( Element.searchClientFormTag ) )
 		{
 			Commons.checkSession( function( isInSession ) {
 				if ( isInSession ) {
-					var clientData = Util.getArrayJsonData( "attribute", me.searchClientFormTag );
+					var clientData = Util.getArrayJsonData( "attribute", Element.searchClientFormTag );
 					var requestData = {
 						"attributes": clientData
 					};
 					
-					if( requestData.attributes.length > 0 && me.validationObj.checkFormEntryTagsData( me.searchClientFormTag ) )
+					if( requestData.attributes.length > 0 && me.validationObj.checkFormEntryTagsData( Element.searchClientFormTag ) )
 					{
-						me.searchResultTbTag.find("tbody").html("");
-						me.backToSearchClientResultBtnTag.show();
-						me.mainPage.listManagement.backToCaseListBtnTag.hide();
+						Element.searchResultTbTag.find("tbody").html("");
+						Element.backToSearchClientResultBtnTag.show();
+						Element.backToCaseListBtnTag.hide();
 						
 						me.searchClients( requestData, event, function( searchResult ){
-							var searchCriteria = me.getSearchCriteria( me.searchClientFormTag );
-							me.searchMatchResultKeyTag.html( searchCriteria );
+							var searchCriteria = me.getSearchCriteria( Element.searchClientFormTag );
+							Element.searchMatchResultKeyTag.html( searchCriteria );
 							
 							var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchResult_msg_add" );
-							me.searchResultKeyTag.html( tranlatedText + " " + searchCriteria );
+							Element.searchResultKeyTag.html( tranlatedText + " " + searchCriteria );
 							
 							var clientList = searchResult.listGrid.rows;
 							if( clientList.length > 0 )
@@ -259,6 +247,8 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	
 	me.populateSearchClientData = function( clientList )
 	{		
+		me.resolveSearchResultTbHeader();
+		
 		var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchClient_result_rowTooltip" );
 		
 		for( var i in clientList )
@@ -273,13 +263,13 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			
 			var district = client[4].trim();
 			if( district != "" ) {
-				var optionText = me.searchClientFormTag.find("[attribute='" + me.attr_DistrictOB + "'] option[value='" + district + "']").text();
+				var optionText = Element.searchClientFormTag.find("[attribute='" + me.attr_DistrictOB + "'] option[value='" + district + "']").text();
 				district = ( optionText == "" ) ? district :  optionText;
 			}
 			
 			var birthOrder = client[5].trim();
 			if( birthOrder != "" ) {
-				var optionText = me.searchClientFormTag.find("[attribute='" + me.attr_BirthOrder + "'] option[value='" + birthOrder + "']").text();
+				var optionText = Element.searchClientFormTag.find("[attribute='" + me.attr_BirthOrder + "'] option[value='" + birthOrder + "']").text();
 				birthOrder = ( optionText == "" ) ? birthOrder :  optionText;
 			}
 			
@@ -302,21 +292,90 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			rowTag.append( "<td>" + adquisition + "</td>" ); // The create date is the enrollement date
 			rowTag.append( "<td>" + lastTestNS + "</td>" ); // The latest event date
 			
-			
 			// -------------------------------------------------------------------
-			// Add [Click] event for row
+			// Add [Click] event for row OR Add the relationship link 
 			// -------------------------------------------------------------------
-
-			me.addEventForSearchResultRow( rowTag );
+			if( ClientUtil.searchStatus == ClientUtil.SEARCH_STATUS_CLIENT )
+			{
+				me.addEventForSearchResultRow( rowTag );
+			}
+			else
+			{
+				var translationLink = me.translationObj.getTranslatedValueByKey( "searchClient_result_link" );
+				var linkColTag = $( "<td><a>" + translationLink + "</a></td>" );
+				rowTag.append( linkColTag );
+				
+				me.showAddRelationshipForm( linkColTag, clientId );
+			}
 			
-			me.searchResultTbTag.find("tbody").append( rowTag );
+			Element.searchResultTbTag.find("tbody").append( rowTag );
 		}
 		
 	};
 	
+	me.resolveSearchResultTbHeader = function()
+	{
+		if( ClientUtil.searchStatus == ClientUtil.SEARCH_STATUS_CLIENT )
+		{
+			Element.searchResultTbTag.find(".action").hide();
+		}
+		else
+		{
+			Element.searchResultTbTag.find(".action").show();
+		}
+	}
+	
+	me.showAddRelationshipForm = function( colTag, clientId )
+	{
+		var loadingMsg = me.translationObj.getTranslatedValueByKey( "relationship_add_loadingClientMsg" );
+		
+		ClientUtil.getDetails( clientId, loadingMsg, function( jsonData ){
+			var titleTranslated = me.translationObj.getTranslatedValueByKey( "relationship_add_relationship" );
+			
+			colTag.click( function(){
+				
+				var testingEvent = ClientUtil.getLatestEvent( jsonData.events.events, MetaDataID.stage_HIVTesting );
+				var contactLogEvent = ClientUtil.getLatestEvent( jsonData.events.events, MetaDataID.stage_ContactLog );
+				
+				
+				// Populate data in [Add Relationship] FORM
+
+				Element.addRelationshipFormDivTag.attr( "clientId", clientId );
+				Util.populateDataValues( Element.addRelationshipFormDivTag, jsonData.client.attributes, "attribute" );
+				
+				if( testingEvent )
+				{
+					Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
+					Element.addRelationshipFormDivTag.attr( "hivTestEventId", testingEvent.event );
+				}
+				
+				if( contactLogEvent )
+				{
+					Util.populateDataValues( Element.addRelationshipFormDivTag, contactLogEvent.dataValues, "dataElement" );
+					Element.addRelationshipFormDivTag.attr( "contactLogEventId", contactLogEvent.event );
+				}
+				
+
+				
+				// Show the form
+				Element.addRelationshipFormDivTag.dialog({
+					title: titleTranslated
+					,maximize: true
+					,closable: true
+					,modal: true
+					,resizable: true
+					,width: 700
+					,height: 500
+				}).show('fast' );
+			});
+			
+		} );
+		
+	}
+	
 	me.highlightSearchMatches = function()
 	{
-		me.searchClientFormTag.find("input,select").each( function(){
+		Element.searchClientFormTag.find("input,select").each( function(){
 			var value = $(this).val().toLowerCase();
 			var colIdx = 0;
 			if( value != "" )
@@ -341,7 +400,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					value = $(this).find("option:selected").text().toLowerCase();
 				}
 				
-				me.searchResultTbTag.find('td:nth-child(' + colIdx + ')').each( function(){
+				Element.searchResultTbTag.find('td:nth-child(' + colIdx + ')').each( function(){
 					var colTag = $(this);
 					if( colTag.html().toLowerCase().indexOf( value ) >= 0 )
 					{
@@ -396,7 +455,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	
 	me.getAttributeField = function( attrId )
 	{
-		return me.seachAddClientFormTag.find("[attribute='" + attrId + "']");
+		return Element.seachAddClientFormTag.find("[attribute='" + attrId + "']");
 	};
 	
 
@@ -407,28 +466,28 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	me.showSearchClientForm = function()
 	{	
 		me.storageObj.addItem("page", me.mainPage.settingsManagement.PAGE_SEARCH_PARAM);
-		me.searchResultTag.find("span.labelOpt").css("font-size","");		
-		me.searchClientFormTag.show("fast");
+		Element.searchResultTag.find("span.labelOpt").css("font-size","");		
+		Element.searchClientFormTag.show("fast");
 	};
 
 	me.resetSearchClientForm = function()
 	{
-		me.searchResultTag.find("span.labelOpt").css("font-size","");
-		me.searchResultTag.find("input:radio:checked").attr("checked", false );
-		me.searchClientFormTag.find("input,select").val("");
+		Element.searchResultTag.find("span.labelOpt").css("font-size","");
+		Element.searchResultTag.find("input:radio:checked").attr("checked", false );
+		Element.searchClientFormTag.find("input,select").val("");
 	};
 	
 	
 	me.showSearchClientTableResult = function()
 	{
-		me.searchClientFormTag.hide();
+		Element.searchClientFormTag.hide();
 		
-		me.searchResultTbTag.css( "cursor", "pointer" );
+		Element.searchResultTbTag.css( "cursor", "pointer" );
 		var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchClient_result_optionTitle" );
-		me.searchResultHeaderTag.html( tranlatedText );
+		Element.searchResultHeaderTag.html( tranlatedText );
 
-		me.searchResultTbTag.show();
-		me.searchResultTag.show("fast");
+		Element.searchResultTbTag.show();
+		Element.searchResultTag.show("fast");
 	};
 	
 	
@@ -484,13 +543,13 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	
 	me.showSearchClientNoResult = function()
 	{
-		me.searchClientFormTag.hide();
-		me.searchResultTbTag.hide();
+		Element.searchClientFormTag.hide();
+		Element.searchResultTbTag.hide();
 		
 		var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchClient_result_noClientFound" );		
-		me.searchResultHeaderTag.html( tranlatedText );
+		Element.searchResultHeaderTag.html( tranlatedText );
 		
-		me.searchResultTag.show("fast");
+		Element.searchResultTag.show("fast");
 	};
 
 	
