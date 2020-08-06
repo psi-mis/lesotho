@@ -2,10 +2,13 @@
 function MetaDataID() { }
 
 
+// Relationship attribute
 
+MetaDataID.attr_IPV1 = "n8m5JoVrapA";
+MetaDataID.attr_IPV2 = "QnSYmezcVi0";
+MetaDataID.attr_IPV3 = "JRV6Z03Cu5H";
+MetaDataID.attr_IPVOutcome = "UTNfpVZjHcF";
 
-// --------------------------------------------------------------------------------------------
-// -- Ids
 
 // [Program Stage] Ids
 MetaDataID.stage_HIVTesting = "lVglvBnE3TY";
@@ -122,6 +125,13 @@ MetaDataID.de_HIVTestChannel = "quOYwc0SOqD";
 MetaDataID.de_HIVTestChannel_OtherReason = "Tjw4iDAjyy6";
 MetaDataID.de_BecomeIndexLead = "bqYQjEXXJfW";
 
+
+MetaDataID.de_RelationshipType = "Ghs7vYIWIpi";  // Client Information Tab
+MetaDataID.de_HIV_Status = "bCVRuaX7LwG"; // New Test Tab
+MetaDataID.de_Notification_Method = "Eis9qerhBFg"; // New Test Tab
+
+
+
 MetaDataID.de_WhereLeadIdentified = "ptFGsslAyI6";
 MetaDataID.de_WhereLeadIdentified_OtherReason = "QXxJ02noL8t";
 MetaDataID.de_HealthFacilityOfLead = "BgOvD4ZA7E8";
@@ -201,13 +211,8 @@ MetaDataID.attr_PrEPReferClosure_Usernames = "";
 // [Relationship]
 
 
-
 MetaDataID.reType_ParentChild = "CnrPOhfTfoV";
 MetaDataID.reType_SexParner = "FB65LN5U5Jv";
-
-MetaDataID.de_RelationshipType = "Ghs7vYIWIpi";  // Client Information Tab
-MetaDataID.de_HIV_Status = "bCVRuaX7LwG"; // New Test Tab
-MetaDataID.de_Notification_Method = "Eis9qerhBFg"; // New Test Tab
 
 
 

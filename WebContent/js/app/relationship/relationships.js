@@ -49,8 +49,10 @@ function Relationships( )
 		for( var i=0; i<jsonRelationships.length; i++ )
 		{
 			me.relationshipTEI_List[ jsonRelationships[i].to.trackedEntityInstance.trackedEntityInstance ] = {
-				"relationshipType" : jsonRelationships[i].relationshipName
+				"relationshipType" : jsonRelationships[i].relationshipName,
+				"created": jsonRelationships[i].created
 			};
+			
 		}
 		
 	}

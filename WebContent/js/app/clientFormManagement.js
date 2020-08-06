@@ -9,6 +9,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.storageObj = me.mainPage.storageObj;
 	me.translationObj = me.mainPage.translationObj;
 	me.validationObj = me.mainPage.validationObj;
+	me.relationshipsObj;
 	me.inputTagGeneration;
 	
 	
@@ -959,7 +960,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		Element.addRelationshipBtnTag.click( function(){
 			Element.addClientFormDivTag.hide();
 			ClientUtil.setSearchRelationshipStatus();
-			Element.backTocClientDetailsBtnTag.show();
 			
 			
 			me.mainPage.searchClientManagement.resetSearchClientForm();
@@ -1255,15 +1255,24 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.setUp_IndexedContactLogic = function()
 	{	
 		var indexedContactTag = me.getDataElementField( Element.addEventFormTag, MetaDataID.de_IndexedContact );
+
+		var relationshipTypeTag = me.getDataElementField( Element.addEventFormTag, MetaDataID.de_RelationshipType ); 
 		var sectionTag = Element.addEventFormTag.find("[sectionid='" + MetaDataID.sectionIndexing + "']");
 		var inputTags = sectionTag.find( "input,select,textarea");
+		
+		
 		if( indexedContactTag.val() == "true" )
 		{
 			sectionTag.show();
+			
+			me.setHideLogicTag( relationshipTypeTag.closest("tr"), false );
 		}
 		else
 		{
 			sectionTag.hide();
+			
+			me.setHideLogicTag( relationshipTypeTag.closest("tr"), true );
+			relationshipTypeTag.val("");
 		}
 			
 	};
@@ -1431,6 +1440,19 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			otherReasonTag.val("");
 		}
 		
+		// indexed Contact
+		var indexedContactTag = me.getDataElementField( Element.addEventFormTag, MetaDataID.de_IndexedContact );
+		var relationshipTypeTag = me.getDataElementField( Element.addEventFormTag, MetaDataID.de_RelationshipType ); 
+		if( indexedContactTag.val() == "true" )
+		{
+			me.setHideLogicTag( relationshipTypeTag.closest("tr"), true );
+			relationshipTypeTag.val("");
+		}
+		else
+		{
+			me.setHideLogicTag( relationshipTypeTag.closest("tr"), false );
+		}
+	
 		
 		// ---------------------------------------------------------------------
 		// Indexing section
@@ -1856,8 +1878,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		me.createAttributeClientForm( Element.artAttributeFormTag, "LSHTC_ART_", false );
 		me.createAttributeClientForm( Element.artReferCloseFormTag, "LSHTC_ARTClosure_G1", false );
-//		me.createAttributeClientForm( Element.addClientAttrEventFormTag, "LSHTC_EVENT", false );
-//		me.createAttributeClientForm( Element.attrContactLogEventFormTag, "LSHTC_CONTACT_LOG_EVENT", false );
 		
 		me.createAttributeClientForm( Element.prepReferAttributeFormTag, "LSHTC_PREPREF_G1", false );
 		me.createAttributeClientForm( Element.prepReferCloseFormTag, "LSHTC_PrepReferClosure_G1", false );
@@ -2006,7 +2026,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			var idConfig = idConfigList[i];
 			var detailsConfig;
 			
-			
 			if( idConfig.type == "dataElement" && me.metadata_dataElements[idConfig.id] )
 			{
 				detailsConfig = me.metadata_dataElements[idConfig.id].dataElement;
@@ -2014,7 +2033,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			}
 			else if( idConfig.type == "attribute" &&  me.metadata_Attributes[idConfig.id] )
 			{
-				detailsConfig =me.metadata_Attributes[idConfig.id].trackedEntityAttribute;
+				detailsConfig = me.metadata_Attributes[idConfig.id].trackedEntityAttribute;
 				detailsConfig.displayName = detailsConfig.name;
 			}
 
@@ -2057,16 +2076,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			}
 		});
 		
+
+		me.validationObj.checkFormEntryTagsData( Element.addRelationshipFormDivTag );
 		
 		me.setUp_Events_AddRelationshipForm();
 	};
-	
-	
-	MetaDataID.de_RelationshipType = "Ghs7vYIWIpi";
-	MetaDataID.attr_IPV1 = "n8m5JoVrapA";
-	MetaDataID.attr_IPV2 = "QnSYmezcVi0";
-	MetaDataID.attr_IPV3 = "JRV6Z03Cu5H";
-	MetaDataID.attr_IPVOutcome = "UTNfpVZjHcF";
 	
 	
 	me.setUp_Events_AddRelationshipForm = function()
@@ -2079,7 +2093,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			
 			var value = $(this).val();
 			
-			if( value == "CH")
+			if( value == "CH") // "Biological Child"
 			{
 				me.setHideLogicTag( IPV1Tag, true );
 				me.setHideLogicTag( IPV2Tag, true );
@@ -2097,36 +2111,39 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		Element.saveRelationshipBtnTag.click( function(){
 			
-			var jsonData = me.createRelationshipJsonData();
-			var loadingMsg = me.translationObj.getTranslatedValueByKey( "relationship_addRelationshipForm_msg_saving" );
-			
-			$.ajax(
-				{
-					type: "POST"
-					,url: "../client/addRelationship"
-					,dataType: "json"
-					,data: JSON.stringify( jsonData )
-		            ,contentType: "application/json;charset=utf-8"
-		            ,beforeSend: function( xhr ) 
-		            {
-		            	MsgManager.appBlock( loadingMsg + " ..." );
-		            }
-					,success: function( response ) 
-					{		
-						Element.addRelationshipFormDivTag.dialog( "close" );	
-						
-						var savedSuccessedMsg = me.translationObj.getTranslatedValueByKey( "relationship_addRelationshipForm_msg_saved" );
-						MsgManager.msgAreaShow( savedSuccessedMsg );
-						
-						// Update list of relationship here
-					}
-					,error: function(response)
+			if( me.validationObj.checkFormEntryTagsData( Element.addRelationshipFormDivTag ) )
+			{
+				var jsonData = me.createRelationshipJsonData();
+				var loadingMsg = me.translationObj.getTranslatedValueByKey( "relationship_addRelationshipForm_msg_saving" );
+				
+				$.ajax(
 					{
-						console.log( response );
-					}
-				}).always( function( data ) {
-					MsgManager.appUnblock();
-				});
+						type: "POST"
+						,url: "../client/addRelationship"
+						,dataType: "json"
+						,data: JSON.stringify( jsonData )
+			            ,contentType: "application/json;charset=utf-8"
+			            ,beforeSend: function( xhr ) 
+			            {
+			            	MsgManager.appBlock( loadingMsg + " ..." );
+			            }
+						,success: function( response ) 
+						{		
+							Element.addRelationshipFormDivTag.dialog( "close" );	
+							
+							var savedSuccessedMsg = me.translationObj.getTranslatedValueByKey( "relationship_addRelationshipForm_msg_saved" );
+							MsgManager.msgAreaShow( savedSuccessedMsg );
+							
+							// Update list of relationship here
+						}
+						,error: function(response)
+						{
+							console.log( response );
+						}
+					}).always( function( data ) {
+						MsgManager.appUnblock();
+					});
+			}
 		});
 		
 		Element.cancelRelationshipBtnTag.click( function(){
@@ -4309,6 +4326,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			{
 				me.showTabInClientForm( me.TAB_NAME_PREVIOUS_TEST );
 				me.showTabInClientForm( me.TAB_NAME_CONTACT_LOG );
+				me.showTabInClientForm( me.TAB_NAME_INDEXING );
 			}
 			
 
@@ -4320,8 +4338,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			
 			
 			var jsonClient = JSON.parse( Element.addClientFormTabTag.attr( "client" ) );
-			var firstName = Util.getAttributeValue( jsonClient.attributes, "attribute", Element.attr_FirstName ).toUpperCase();
-			var surName = Util.getAttributeValue( jsonClient.attributes, "attribute", Element.attr_LastName ).toUpperCase();
+			var firstName = Util.getAttributeValue( jsonClient.attributes, "attribute", MetaDataID.attr_FirstName ).toUpperCase();
+			var surName = Util.getAttributeValue( jsonClient.attributes, "attribute", MetaDataID.attr_LastName ).toUpperCase();
 			
 			if( me.isTodayEvent( jsonEvent ) && !(( firstName == "EQC" && ( surName == "POS" || surName == "NEG" ) )))
 			{
@@ -4447,7 +4465,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		Element.addClientFormDivTag.find(".headerList").html(tranlatedText);
 		
 		// Populate values from Search form to Add client form
-		me.mainPage.searchClientManagement.seachAddClientFormTag.find("input[attribute],select[attribute],textarea[attribute]").each(function(){
+		Element.seachAddClientFormTag.find("input[attribute],select[attribute],textarea[attribute]").each(function(){
 			var attrId = $(this).attr("attribute");
 			var value = $(this).val();
 			var field = Element.addClientFormTag.find("input[attribute='" + attrId + "'],select[attribute='" + attrId + "'],textarea[attribute='" + attrId + "']");
@@ -4482,6 +4500,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		me.hideTabInClientForm( me.TAB_NAME_CONTACT_LOG );
 		me.hideTabInClientForm( me.TAB_NAME_ART_REFER );
 		me.hideTabInClientForm( me.TAB_NAME_PREP_REFER );
+		me.hideTabInClientForm( me.TAB_NAME_INDEXING );
 		
 		// Show "Add Client" form
 		Element.addClientFormDivTag.show("fast");
@@ -4783,27 +4802,44 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.populateRelationShips = function( relationshipData ){
 		Element.indexingListTbTag.html( "" );
 		var tranlatedTextMsg = me.translationObj.getTranslatedValueByKey( "indexing_loadingRelationships" );
-
+		
 		me.relationshipsObj.loadAllRelationshipTEIs( relationshipData, tranlatedTextMsg, function( teiList ){
 			
 			for( var i in teiList )
 			{
-				var lastUpdated = Util.formatDate_DisplayDate( teiList[i].client.lastUpdated );
-				var relationshipType = teiList[i].relationshipType;
+				var created = Util.formatDate_DisplayDate( teiList[i].created );
 				
-				var attrCIC =  Util.findItemFromList( teiList[i].client.attributes, "attribute", "rw3W9pDCPb2" );
-				var CIC = ( attrCIC ) ? attrCIC.value : "";
+				var CIC = "";
+				var attrCIC =  Util.findItemFromList( teiList[i].client.attributes, "attribute", MetaDataID.attr_ClientCUIC );
+				if( attrCIC )
+				{
+					CIC = attrCIC.value;
+				}
+				else
+				{
+					var firstNameAttrValue = Util.findItemFromList( teiList[i].client.attributes, "attribute", MetaDataID.attr_FirstName );
+					var lastNameAttrValue = Util.findItemFromList( teiList[i].client.attributes, "attribute", MetaDataID.attr_LastName );
+					if( firstNameAttrValue && lastNameAttrValue )
+					{
+						CIC = firstNameAttrValue.value + " " + lastNameAttrValue.value;
+					}
+				}	
 				
 				var hivStatus = "";
+				var relationshipType = "";
 				var hivStatusEvent = ClientUtil.getLatestEventByEnrollments( teiList[i].client.enrollments, MetaDataID.stage_HIVTesting );
-				if( hivStatusEvent != undefined ) {
+				if( hivStatusEvent != undefined )
+				{
 					var hivStatusData = Util.findItemFromList( hivStatusEvent.dataValues, "dataElement", MetaDataID.de_FinalResult_HIVStatus );
 					hivStatus = ( hivStatusData != undefined ) ? hivStatusData.value : "";
+					
+					var relationshipData = Util.findItemFromList( hivStatusEvent.dataValues, "dataElement", MetaDataID.de_RelationshipType );
+					relationshipType = ( relationshipData != undefined ) ? relationshipData.value : "";
 				}
 				
 				
 				var rowTag = $("<tr></tr>");
-				rowTag.append("<td>" + lastUpdated + "</td>");
+				rowTag.append("<td>" + created + "</td>");
 				rowTag.append("<td>" + relationshipType + "</td>");
 				rowTag.append("<td>" + CIC + "</td>");
 				rowTag.append("<td colspan='2'>" + hivStatus + "</td>");
@@ -5236,7 +5272,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		if( firstName == "EQC" && ( surName == "POS" || surName == "NEG" ) )
 		{
 			me.hideTabInClientForm( me.TAB_NAME_CONTACT_LOG );
-//			me.hideTabInClientForm( me.TAB_NAME_ART_REFER );
 		}
 		else if( latestEvent !== undefined )
 		{
@@ -5598,7 +5633,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.setUp_DataInPreviousTestTab = function( events, selectedEventId )
 	{
 		var jsonClient = JSON.parse( Element.addClientFormTabTag.attr("client") );
-		var firstName = Util.getAttributeValue( jsonClient.attributes, "attribute", Element.attr_FirstName ).toUpperCase();
+		var firstName = Util.getAttributeValue( jsonClient.attributes, "attribute", MetaDataID.attr_FirstName ).toUpperCase();
 		if( firstName != "EQC" )
 		{
 			for( var i=0; i<events.length; i++ )
@@ -5748,8 +5783,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			
 			var partnerCUICVal = Util.getAttributeValue( arrValues, "attribute", MetaDataID.attr_ClientCUIC );
 			var lastHIVTest = Util.getAttributeValue( eventData.dataValues, "dataElement", MetaDataID.de_FinalResult_HIVStatus );
-			var firstName = Util.getAttributeValue( arrValues, "attribute", Element.attr_FirstName );
-			var lastName = Util.getAttributeValue( arrValues, "attribute", Element.attr_LastName );
+			var firstName = Util.getAttributeValue( arrValues, "attribute", MetaDataID.attr_FirstName );
+			var lastName = Util.getAttributeValue( arrValues, "attribute", MetaDataID.attr_LastName );
 			
 			partnerCUICTag.val( partnerCUICVal );
 			partnerCUICTag.attr("lastHIVTest", lastHIVTest );
@@ -6064,11 +6099,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		// Year(YY) Month(MM) DistrictOfBirth(DB) FirstName(2 Chars) LastName(2 Chars) BirthOrder(2 Chars)
 		
-		var dateOfBirth = Element.addClientFormTabTag.find("[attribute='" + Element.attr_DoB + "']").val();
-		var districtOfBirth = Element.addClientFormTabTag.find("[attribute='" + Element.attr_DistrictOB + "']").val();
-		var firstName = Element.addClientFormTabTag.find("[attribute='" + Element.attr_FirstName + "']").val().toUpperCase();
-		var lastName = Element.addClientFormTabTag.find("[attribute='" + Element.attr_LastName + "']").val().toUpperCase();
-		var birthOrder = Element.addClientFormTabTag.find("[attribute='" + Element.attr_BirthOrder + "']").val();
+		var dateOfBirth = Element.addClientFormTabTag.find("[attribute='" + MetaDataID.attr_DoB + "']").val();
+		var districtOfBirth = Element.addClientFormTabTag.find("[attribute='" + MetaDataID.attr_DistrictOB + "']").val();
+		var firstName = Element.addClientFormTabTag.find("[attribute='" + MetaDataID.attr_FirstName + "']").val().toUpperCase();
+		var lastName = Element.addClientFormTabTag.find("[attribute='" + MetaDataID.attr_LastName + "']").val().toUpperCase();
+		var birthOrder = Element.addClientFormTabTag.find("[attribute='" + MetaDataID.attr_BirthOrder + "']").val();
 		
 		// Remove white space and ' from firstName and lastName
 		
@@ -6086,7 +6121,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			clientCUIC = dateOfBirth.substring(9, 12) + Util.MONTH_INDEXES[dateOfBirth.substring(3, 6)] + districtOfBirth.substring(0, 2).toUpperCase() + firstCharsFirstName + firstCharsLastName + birthOrder;
 		}
 		
-		Element.addClientFormTag.find("input[attribute='" + Element.attr_ClientCUIC + "']").val( clientCUIC );
+		Element.addClientFormTag.find("input[attribute='" + MetaDataID.attr_ClientCUIC + "']").val( clientCUIC );
 	};
 	
 	me.populateParterCUIC = function()

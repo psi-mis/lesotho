@@ -232,7 +232,7 @@
 						
 						<div style="text-align:center;margin-bottom:10px;">
 							<button class="btn btn-default actionBtn" id="searchClientBtn" keyword="searchClient_btn_search">Search/Create</button>
-							<button class="btn btn-default actionBtn" style="background-color: #e2e2e2;" id="backTocClientDetailsBtn" keyword="searchClient_btn_backToRelationshipList">Back</button>
+							<button class="btn btn-default actionBtn" style="background-color: #e2e2e2;" name="backToClientFormBtn" keyword="searchClient_btn_backToRelationshipList">Back</button>
 						</div>
 	  				</div>
 	  				
@@ -269,8 +269,9 @@
 						</div>
 						
 						<div id="relationshipSearchBtnDiv" style="display:none;">
-							<button id="backToSearchRelationshipForm" keyword="relationship_search_result_btn_backSearchForm" class="btn btn-default actionBtn">Back to search</button>
-							<button id="backToClientForm" keyword="relationship_search_result_btn_back_clientForm" class="btn btn-default actionBtn">Back to client</button>
+							<button id="showAddNewRelationClientFormBtn" keyword="searchClient_result_btn_addRelationshipClient" class="btn btn-default actionBtn">Add a client</button>
+							<button id="backToSearchRelationshipResultBtn" keyword="relationship_search_result_btn_backSearchForm" class="btn btn-default actionBtn">Back to search</button>
+							<button name="backToClientFormBtn" keyword="relationship_search_result_btn_back_clientForm" class="btn btn-default actionBtn">Back to client</button>
 						</div>
 					</div>
 				</div>
@@ -586,152 +587,10 @@
 				<!--  Dialog to add a relationship with exiting client -->
 				
 				<div id="addRelationshipFormDiv" style="display:none;justify-content: center;">
-					<!--  <form class="form-horizontal">
-					
-			  			<div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">Relationship Type</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" dataElementid="Ghs7vYIWIpi" mandatory="true">
-					      </div>
-					    </div>
-					    
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">First Name</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="R9Lw1uNtRuj" mandatory="true">
-					      </div>
-					    </div>
-					    
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">Last Name</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="TBt2a4Bq0Lx" mandatory="true">
-					      </div>
-					    </div>
-					    
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">Gender</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="JcGai6pHG1M" mandatory="true">
-					      </div>
-					    </div>
-					    
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Client Info – Age</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="eOZJ5fonziS" mandatory="true">
-					      </div>
-					    </div>
-					    
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Phone number</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="Rl2hRelrfur" mandatory="true">
-					      </div>
-					    </div>
-					    
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">Address 1 - #Landmark</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="gY1FrhX5UTn">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 2</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="gn35714pj4p" mandatory="true" maxlength="200">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 3 </span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="qynN2cqRe71" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 4 – Council</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="NLNTtpbT3c5">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Address 5 – Village</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="jQilj6Wjweq" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - Contact - Village chief Name</span> </label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="Wea8fAtYVwx" >
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - Test - Final HIV status</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" dataElementId="UuKat0HFjWS" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - Background - HIV Status</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" dataElementId="bCVRuaX7LwG" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - Background - Notification Method</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" dataElementId="Eis9qerhBFg" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - 1Physically hurt you</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="n8m5JoVrapA" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - 2Threatened you</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="QnSYmezcVi0" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - 3Forced you sexually</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="JRV6Z03Cu5H" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS - IPV - Screening Outcome</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" attributeId="UTNfpVZjHcF" mandatory="true">
-					      </div>
-					    </div>
-			
-					    <div class="form-group">
-					      <label class="col-sm-2 control-label"><span class="label">LS HTS TRK - ContactLog - Due Date</span> <span class="required"> *</span></label>
-					      <div class="col-sm-10">
-					      	<input type="text" class="form-control" dataElementId="HcBFZsCt8Sy" mandatory="true">
-					      </div>
-					    </div>
-					    
-					</form>  -->
-					
-					<button id="saveRelationshipBtn" keyword="relationship_btn_addRelationship" class="btn btn-default">Save</button>
-					<button id="cancelRelationshipBtn" keyword="relationship_btn_cancelRelationship" class="btn btn-default">Back</button>
+					<div style="text-align:center;">
+						<button id="saveRelationshipBtn" keyword="relationship_btn_addRelationship" class="btn btn-default">Save</button>
+						<button id="cancelRelationshipBtn" keyword="relationship_btn_cancelRelationship" class="btn btn-default">Back</button>
+					</div>
 				</div>
 				
 				

@@ -126,7 +126,6 @@ function Counsellor( storageObj, translationObj )
 			me.settingsManagement.checkOrgunitSetting( function(){
 				Util.resetPageDisplay();
 				ClientUtil.setSearchClientStatus();
-				Element.backTocClientDetailsBtnTag.hide();
 				
 				me.storageObj.removeItem("clientId");
 				me.storageObj.removeItem("eventId");

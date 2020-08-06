@@ -8,11 +8,17 @@ ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_CLIENT;
 ClientUtil.setSearchClientStatus = function()
 {
 	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_CLIENT;
+
+	Element.clientSearchBtnDivTag.show();
+	Element.relationshipSearchBtnDivTag.hide();
 }
 
 ClientUtil.setSearchRelationshipStatus = function()
 {
 	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_RELATIONSHIP;
+	
+	Element.clientSearchBtnDivTag.hide();
+	Element.relationshipSearchBtnDivTag.show();
 }
 
 

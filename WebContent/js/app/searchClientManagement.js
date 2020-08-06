@@ -9,6 +9,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	me.storageObj = me.mainPage.storageObj;
 	me.translationObj = me.mainPage.translationObj;
 	me.validationObj = me.mainPage.validationObj;
+	me.clientFormManagementObj = me.mainPage.clientFormManagement;
 	me.inputTagGeneration;
 	
 	// Ids
@@ -63,7 +64,8 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			Util.datePicker($(this));
 		});
 		
-		// Search Result buttons
+		
+		// Search client - Result buttons
 				
 		Element.showAddNewClientFormTag.click( function(){
 			me.mainPage.clientFormManagement.showAddClientForm();
@@ -78,6 +80,24 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			me.mainPage.listManagement.listTodayCases();
 		});
 				
+
+		// [Search relationship clients] - Result buttons
+
+		Element.showAddNewRelationClientFormBtnTag.click( function(){
+			me.showAddRelationshipFormDialog();
+		});
+		
+		Element.backToSearchRelationshipResultBtnTag.click( function(){
+			Element.searchResultTag.hide();
+			Element.searchClientFormTag.show("fast");
+		});
+
+		Element.backToClientFormBtnTag.click( function(){
+			Element.searchResultTag.hide();
+			Element.addClientFormDivTag.show("fast");
+		});
+		
+		
 		// Call [Search clients] function
 		
 		Element.searchClientBtnTag.click(function(e){
@@ -108,10 +128,6 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			}
 		});
 		
-		Element.backTocClientDetailsBtnTag.click( function(){
-			Element.addClientFormDivTag.show("fast");
-			Element.searchClientFormTag.hide();
-		});
 		
 		// Validation for fields in [Search Client] form
 		
@@ -249,73 +265,89 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	{		
 		me.resolveSearchResultTbHeader();
 		
-		var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchClient_result_rowTooltip" );
+		var tranlatedText;
+		var removedTEIs = []; // If the search result is "relation client" search, then remove exiting relationship client in search result
+		if( ClientUtil.isSearchClientStatus() )
+		{
+			tranlatedText = me.translationObj.getTranslatedValueByKey( "searchClient_result_rowTooltip" );
+		}
+		else
+		{
+			tranlatedText = me.translationObj.getTranslatedValueByKey( "searchRelationshipClient_result_rowTooltip" );
+			removedTEIs = Object.keys( me.clientFormManagementObj.relationshipsObj.relationshipTEI_List );
+		}
+		
 		
 		for( var i in clientList )
 		{
 			var client = clientList[i];
 			var clientId = client[0];
-			var firstName = client[1].trim();
-			var lastName = client[2].trim();
 			
-			var dob = client[3].trim();
-			dob = ( dob != "" ) ? Util.formatDate_LocalDisplayDate( dob ) : "";
-			
-			var district = client[4].trim();
-			if( district != "" ) {
-				var optionText = Element.searchClientFormTag.find("[attribute='" + me.attr_DistrictOB + "'] option[value='" + district + "']").text();
-				district = ( optionText == "" ) ? district :  optionText;
-			}
-			
-			var birthOrder = client[5].trim();
-			if( birthOrder != "" ) {
-				var optionText = Element.searchClientFormTag.find("[attribute='" + me.attr_BirthOrder + "'] option[value='" + birthOrder + "']").text();
-				birthOrder = ( optionText == "" ) ? birthOrder :  optionText;
-			}
-			
-			var adquisition = client[6].trim();
-			adquisition = ( adquisition != "" ) ? Util.formatDate_DisplayDate( adquisition ) : "";
-			var lastTestNS = "";
-			
-			if( client[7] != null ) 
+			if( !removedTEIs.includes( clientId ) )
 			{
-				lastTestNS = client[7].trim();
-				lastTestNS = ( lastTestNS != "" ) ? Util.formatDate_DisplayDate( lastTestNS ) : "";
-			}
 			
-			var rowTag = $("<tr title='" + tranlatedText + "' clientId='" + clientId + "'></tr>");
-			rowTag.append( "<td>" + firstName + "</td>" );
-			rowTag.append( "<td>" + lastName + "</td>" );
-			rowTag.append( "<td>" + dob + "</td>" );
-			rowTag.append( "<td>" + district + "</td>" );
-			rowTag.append( "<td>" + birthOrder + "</td>" );
-			rowTag.append( "<td>" + adquisition + "</td>" ); // The create date is the enrollement date
-			rowTag.append( "<td>" + lastTestNS + "</td>" ); // The latest event date
-			
-			// -------------------------------------------------------------------
-			// Add [Click] event for row OR Add the relationship link 
-			// -------------------------------------------------------------------
-			if( ClientUtil.searchStatus == ClientUtil.SEARCH_STATUS_CLIENT )
-			{
-				me.addEventForSearchResultRow( rowTag );
-			}
-			else
-			{
-				var translationLink = me.translationObj.getTranslatedValueByKey( "searchClient_result_link" );
-				var linkColTag = $( "<td><a>" + translationLink + "</a></td>" );
-				rowTag.append( linkColTag );
+				var firstName = client[1].trim();
+				var lastName = client[2].trim();
 				
-				me.showAddRelationshipForm( linkColTag, clientId );
+				var dob = client[3].trim();
+				dob = ( dob != "" ) ? Util.formatDate_LocalDisplayDate( dob ) : "";
+				
+				var district = client[4].trim();
+				if( district != "" ) {
+					var optionText = Element.searchClientFormTag.find("[attribute='" + me.attr_DistrictOB + "'] option[value='" + district + "']").text();
+					district = ( optionText == "" ) ? district :  optionText;
+				}
+				
+				var birthOrder = client[5].trim();
+				if( birthOrder != "" ) {
+					var optionText = Element.searchClientFormTag.find("[attribute='" + me.attr_BirthOrder + "'] option[value='" + birthOrder + "']").text();
+					birthOrder = ( optionText == "" ) ? birthOrder :  optionText;
+				}
+				
+				var adquisition = client[6].trim();
+				adquisition = ( adquisition != "" ) ? Util.formatDate_DisplayDate( adquisition ) : "";
+				var lastTestNS = "";
+				
+				if( client[7] != null ) 
+				{
+					lastTestNS = client[7].trim();
+					lastTestNS = ( lastTestNS != "" ) ? Util.formatDate_DisplayDate( lastTestNS ) : "";
+				}
+				
+				var rowTag = $("<tr title='" + tranlatedText + "' clientId='" + clientId + "'></tr>");
+				rowTag.append( "<td>" + firstName + "</td>" );
+				rowTag.append( "<td>" + lastName + "</td>" );
+				rowTag.append( "<td>" + dob + "</td>" );
+				rowTag.append( "<td>" + district + "</td>" );
+				rowTag.append( "<td>" + birthOrder + "</td>" );
+				rowTag.append( "<td>" + adquisition + "</td>" ); // The create date is the enrollement date
+				rowTag.append( "<td>" + lastTestNS + "</td>" ); // The latest event date
+				
+				// -------------------------------------------------------------------
+				// Add [Click] event for row OR Add the relationship link 
+				// -------------------------------------------------------------------
+				if( ClientUtil.isSearchClientStatus() )
+				{
+					me.addEventForSearchResultRow( rowTag );
+				}
+				else
+				{
+					var translationLink = me.translationObj.getTranslatedValueByKey( "searchClient_result_link" );
+					var linkColTag = $( "<td><a>" + translationLink + "</a></td>" );
+					rowTag.append( linkColTag );
+					
+					me.showAddRelationshipForm( linkColTag, clientId );
+				}
+				
+				Element.searchResultTbTag.find("tbody").append( rowTag );
 			}
-			
-			Element.searchResultTbTag.find("tbody").append( rowTag );
 		}
 		
 	};
 	
 	me.resolveSearchResultTbHeader = function()
 	{
-		if( ClientUtil.searchStatus == ClientUtil.SEARCH_STATUS_CLIENT )
+		if( ClientUtil.isSearchClientStatus() )
 		{
 			Element.searchResultTbTag.find(".action").hide();
 		}
@@ -339,38 +371,73 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				
 				
 				// Populate data in [Add Relationship] FORM
-
-				Element.addRelationshipFormDivTag.attr( "clientId", clientId );
+				var hivTestEventId, contactLogEventId;
 				Util.populateDataValues( Element.addRelationshipFormDivTag, jsonData.client.attributes, "attribute" );
 				
 				if( testingEvent )
 				{
 					Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
-					Element.addRelationshipFormDivTag.attr( "hivTestEventId", testingEvent.event );
+					hivTestEventId = testingEvent.event;
 				}
 				
 				if( contactLogEvent )
 				{
 					Util.populateDataValues( Element.addRelationshipFormDivTag, contactLogEvent.dataValues, "dataElement" );
-					Element.addRelationshipFormDivTag.attr( "contactLogEventId", contactLogEvent.event );
+					contactLogEventId = contactLogEvent.event;
 				}
 				
-
-				
-				// Show the form
-				Element.addRelationshipFormDivTag.dialog({
-					title: titleTranslated
-					,maximize: true
-					,closable: true
-					,modal: true
-					,resizable: true
-					,width: 700
-					,height: 500
-				}).show('fast' );
+				// Show [Add relationship] form
+				me.showAddRelationshipFormDialog( clientId, hivTestEventId, contactLogEventId );
 			});
 			
 		} );
 		
+	}
+	
+	me.showAddRelationshipFormDialog = function( clientId, hivTestEventId, contactLogEventId )
+	{
+		// Add attribute
+		if( clientId )
+		{
+			Element.addRelationshipFormDivTag.attr( "clientId", clientId );
+		}
+		else
+		{
+			Element.addRelationshipFormDivTag.removeAttr( "clientId" );
+		}
+		
+		if( hivTestEventId )
+		{
+			Element.addRelationshipFormDivTag.attr( "hivTestEventId", hivTestEventId );
+		}
+		else
+		{
+			Element.addRelationshipFormDivTag.removeAttr( "hivTestEventId" );
+		}
+		
+		if( contactLogEventId )
+		{
+			Element.addRelationshipFormDivTag.attr( "contactLogEventId", contactLogEventId );
+		}
+		else
+		{
+			Element.addRelationshipFormDivTag.removeAttr( "contactLogEventId" );
+		}
+		
+
+		// Show the form
+		
+		var titleTranslated = me.translationObj.getTranslatedValueByKey( "relationship_add_relationship" );
+		
+		Element.addRelationshipFormDivTag.dialog({
+			title: titleTranslated
+			,maximize: true
+			,closable: true
+			,modal: true
+			,resizable: true
+			,width: 700
+			,height: 500
+		}).show('fast' );
 	}
 	
 	me.highlightSearchMatches = function()

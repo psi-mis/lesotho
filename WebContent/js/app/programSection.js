@@ -5,7 +5,6 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 	me.mainPage = _mainPage;
 	me.metaData = _metaData;
 	me.translationObj = _translationObj;
-	me.settingsManagement = _mainPage.settingsManagement;
 	
 	
 	// -------------------------------------------------------------------------
@@ -21,7 +20,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 
 	        	me.setupProgramSectionDivTag = $("#setupProgramSectionDiv");
 	        	me.programSectionListDivTag = $("#programSectionListDiv");
-	        	me.programSectionFormTag = $("#programSectionForm");
+	        	me.setupProgramSectionFormTag = $("#programSectionForm");
 	        	me.addNewBtnTag = $("#addNewBtn");
 	        	me.backToSettingPageBtnTag = $("#backToSettingPageBtn");
 	        	
@@ -74,8 +73,8 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 	{
 		// Add Event for Settings [Program section]
 		me.setupProgamSectionBtnTag.click(function(){
-			me.settingsManagement.settingsDivTag.hide();
-        	me.programSectionFormTag.hide(); 
+			Element.settingsDivTag.hide();
+        	me.setupProgramSectionFormTag.hide(); 
 			me.setupProgramSectionDivTag.show();
         	me.programSectionListDivTag.show("fast");
 		});
@@ -83,10 +82,10 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		// Show Add/Update Attribute FORM
 		me.addNewBtnTag.click( function(){
 			me.setupProgramSectionDivTag.removeAttr("selectedId");
-			me.programSectionFormTag.find("input,select").val("");
+			me.setupProgramSectionFormTag.find("input,select").val("");
 			me.programTag.val("KDgzpKX3h2S");
         	me.programSectionListDivTag.hide();
-        	me.programSectionFormTag.show("fast"); 
+        	me.setupProgramSectionFormTag.show("fast"); 
 
         	me.availableAttributeTag.find("option").remove();
         	me.selectedAttributeTag.find("option").remove();
@@ -95,7 +94,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		
 		// Back to Setting Page
     	me.backToSettingPageBtnTag.click( function(){
-    		me.settingsManagement.settingsDivTag.show("fast");
+    		Element.settingsDivTag.show("fast");
 			me.setupProgramSectionDivTag.hide("fast");
 		});
     	
@@ -143,7 +142,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		});
 		
 		me.cancelBtnTag.click( function(){
-        	me.programSectionFormTag.hide(); 
+        	me.setupProgramSectionFormTag.hide(); 
 			me.programSectionListDivTag.show("fast");
 		});
 	};
@@ -209,7 +208,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 	
 	me.populateDataInForm = function( jsonData )
 	{
-		me.programSectionFormTag.find("input,select").val("");
+		me.setupProgramSectionFormTag.find("input,select").val("");
 		me.programTag.val("KDgzpKX3h2S");
 		me.availableAttributeTag.find("option").show();
 		
@@ -219,7 +218,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		me.populateSelectedAttributes( jsonData );
 		
     	me.programSectionListDivTag.hide();
-    	me.programSectionFormTag.show("fast"); 
+    	me.setupProgramSectionFormTag.show("fast"); 
 	};
 	
 	me.populateSelectedAttributes = function( jsonData )
@@ -374,7 +373,7 @@ function ProgramSection( _mainPage, _metaData, _translationObj )
 		// Show list data
 		MsgManager.appUnblock();
 		me.programSectionListDivTag.show("fast");
-    	me.programSectionFormTag.hide(); 
+    	me.setupProgramSectionFormTag.hide(); 
 	};
 	
 

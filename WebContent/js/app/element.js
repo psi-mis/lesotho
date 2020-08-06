@@ -140,15 +140,14 @@ Element.backToSearchClientFormTag = $("#backToSearchClientForm");
 Element.showTodayCaseTag = $("#showTodayCase");
 
 
+//For relationship
+
 Element.relationshipSearchBtnDivTag = $("#relationshipSearchBtnDiv");
-Element.backToSearchRelationshipFormTag = $("#relationshipSearchBtnDiv");
-Element.backToClientFormTag = $("#relationshipSearchBtnDiv");
+Element.showAddNewRelationClientFormBtnTag = $("#showAddNewRelationClientFormBtn");
+Element.backToSearchRelationshipResultBtnTag = $("#backToSearchRelationshipResultBtn");
+Element.backToClientFormBtnTag = $("[name='backToClientFormBtn']");
 
-
-// For relationship
-Element.backTocClientDetailsBtnTag = $("#backTocClientDetailsBtn");
 Element.addRelationshipFormDivTag = $("#addRelationshipFormDiv");
-
 
 
 // ----------------------------------------------------------------------------
@@ -183,7 +182,6 @@ Element.mainContentTags = $("div.mainContent");
 
 // [Program Section]
 Element.setupProgamSectionBtnTag = $("#setupProgamSectionBtn");
-
 
 // -----------------------------------------------------------------------------------
 // Counselling Main Page
