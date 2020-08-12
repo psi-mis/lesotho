@@ -13,6 +13,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 
@@ -141,6 +143,7 @@ public final class Util
     // Program Ids
     public static final String ID_PROGRAM = "KDgzpKX3h2S";
     public static final String ID_STAGE = "lVglvBnE3TY";
+    public static final String ID_STAGE_CONTACTLOG = "gmBozy0KAMC";
     
     // Category Ids
     public static final String USER_CATEGORY_ID = "qVl8p3w3fI5";
@@ -178,7 +181,7 @@ public final class Util
     public static final String ID_DE_PARTNER_CUIC = "UYyCL2xz8Wz";
     public static final String ID_DE_PARTNER_EVENTID = "UV2AsoZJ7fw";
     public static final String ID_DE_COPUPLE_STATUS = "Umu8i2QXCZk";
-    
+    public static final String ID_DE_HIVSTATUS = "UuKat0HFjWS";
     
     // SQL Views
     public static final String ID_SQLVIEW_LOAD_TODAY_CASE = "IdFgIYoRINL";
@@ -257,6 +260,8 @@ public final class Util
             else
                 responseInfo = Util.sendRequestHTTP( responseInfo, responseMsg, requestType, url, jsonData, params,
                     username, password );
+            
+            responseInfo.inputData = jsonData;
         }
         catch ( Exception ex )
         {
@@ -602,5 +607,19 @@ public final class Util
             responseInfo.outMessage = "{ \"id\": \"" + responseInfo.referenceId + "\" }";
         }
     }
-    
+
+    public static JSONArray findItemFromList( JSONArray list, String propertyName, String value )
+    {
+        JSONArray result = new JSONArray();
+        for(int i=0; i<list.length(); i++ )
+        {
+            JSONObject temp = list.getJSONObject( i );
+            if( temp.getString( propertyName ).equals( value ) )
+            {
+                result.put( temp );
+            }
+        }
+        
+        return result;
+    }
 }

@@ -23,12 +23,13 @@ public class MetaDataController
     
     private static String URL_QUERY_LOAD_PROGRAM_STAGE_SECTIONS = Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=programStages[id,name,programStageDataElements[compulsory,dataElement[id,formName,valueType,optionSet[id,name,options[code,name]]]],programStageSections[id,displayName,dataElements[id]]";
     private static String URL_QUERY_LOAD_ATTRIBUTE_GROUPS = Util.LOCATION_DHIS_SERVER + "/api/programSections.json?filter=code:like:LSHTC&paging=false&fields=id,name,code,trackedEntityAttributes[id,name,shortName,valueType,optionSet[id,name,options[code,name]]";
-    private static String URL_QUERY_LOAD_PROGRAM_ATTRIBUTES = Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name,optionSet[id,name,options[code,name]]]]";
+    private static String URL_QUERY_LOAD_PROGRAM_ATTRIBUTES = Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=programTrackedEntityAttributes[mandatory,trackedEntityAttribute[id,name,valueType,optionSet[id,name,options[code,name]]]]";
     private static String URL_QUERY_LOAD_ORGUNIT_CHILDREN =  Util.LOCATION_DHIS_SERVER + "/api/organisationUnits/" + MetaDataController.PARAM_DISTRICT_ID + ".json?fields=children[id,name,code]";
     private static String URL_QUERY_LOAD_ORGUNITS_BY_LEVEL =  Util.LOCATION_DHIS_SERVER + "/api/organisationUnits/" + Util.ROOT_ORGTUNIT_LESOTHO + ".json?includeDescendants=true&fields=id,name,code&filter=level:eq:" + Util.REGISTER_DISTRICT_LEVEL;
     private static String URL_QUERY_LOAD_ORGUNITS_BY_PROGRAM =  Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=organisationUnits[id]";
     private static String URL_QUERY_GET_CATEGORY_OPTION_COMBO =  Util.LOCATION_DHIS_SERVER + "/api/categories/" + Util.USER_CATEGORY_ID + ".json?fields=categoryOptions[id,name,code]";
     private static String URL_QUERY_GET_TRACKEDENTITYATTRIBUTE =  Util.LOCATION_DHIS_SERVER + "/api/trackedEntityAttributes.json?fields=id,name,shortName&paging=false";
+    private static String URL_QUERY_GET_RELATIONSHIPTYPE = Util.LOCATION_DHIS_SERVER + "/api/relationshipTypes.json?fields=id,displayName&paging=false";
     
     private static String URL_QUERY_SAVE_PROGRAMSECTION =  Util.LOCATION_DHIS_SERVER + "/api/programSections";
     
@@ -86,6 +87,13 @@ public class MetaDataController
                                         if( responseInfo.responseCode == 200 )
                                         {
                                             outputData.append( ",\"attributes\":" + responseInfo.output );
+                                            
+                                            responseInfo = MetaDataController.getTrackedEntityAttributes();
+                                            if( responseInfo.responseCode == 200 )
+                                            {
+                                                responseInfo = MetaDataController.getRelationshipTypes();
+                                                outputData.append( ",\"relationshipTypes\":" + responseInfo.data.getJSONArray( "relationshipTypes" ) );
+                                            }
                                         }   
                                         
                                     }
@@ -315,6 +323,25 @@ public class MetaDataController
         return responseInfo;
     }
    
+
+    private static ResponseInfo getRelationshipTypes()
+    {
+        ResponseInfo responseInfo = null;
+        try
+        {
+            String url = MetaDataController.URL_QUERY_GET_RELATIONSHIPTYPE;
+            responseInfo = Util.sendRequest( Util.REQUEST_TYPE_GET, url, null, null );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+
+        return responseInfo;
+    }
+    
+    
+    
     private static ResponseInfo addProgramSection( JSONObject receivedData )
     {
         ResponseInfo responseInfo = null;

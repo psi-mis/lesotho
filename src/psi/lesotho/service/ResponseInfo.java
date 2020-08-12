@@ -9,6 +9,7 @@ public class ResponseInfo
     String output = "";
     
     JSONObject data = null;
+    JSONObject inputData = null;
 
     String outMessage = "";
     

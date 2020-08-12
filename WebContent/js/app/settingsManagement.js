@@ -17,6 +17,7 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 	me.closureARTStatus;
 	me.contactLogTypeName;
 	me.nextActionName;
+	me.relationshipTypes = {};
 		
 	me.userInfoLoaded = false;
 	me.metadataLoaded = false;
@@ -217,6 +218,15 @@ function SettingsManagement( mainPage, _afterLoadedMetaDataFunc )
 			,success: function( jsonData ) 
 			{
 				me.metaData = jsonData;
+				
+				// Add relationshipTypes
+				var types = jsonData.relationshipTypes;
+				for( var i in jsonData.relationshipTypes )
+				{
+					var relationshipType = jsonData.relationshipTypes[i];
+					me.relationshipTypes[relationshipType.id] = relationshipType.displayName;
+				}
+				
 				
 				// Look for option values of Districts/Councils/Health facilities for filtering
 				var attrGroups = jsonData.attGroups.programSections;

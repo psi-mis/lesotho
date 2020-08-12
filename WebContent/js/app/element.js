@@ -5,6 +5,9 @@ function Element() { }
 // Client Form
 //----------------------------------------------------------------------------------
 
+Element.relationshipMsgTag = $("#relationshipMsg");
+Element.headerListTag = $("#addClientFormHeader");
+
 // [Client Registration] form	
 Element.addNewClientBtnTag = $("#addNewClientBtn");
 Element.addClientFormTabTag = $("#addClientFormTab");
@@ -16,6 +19,9 @@ Element.discardClientRegFormBtnTag = $("#discardClientRegFormBtn");
 Element.selectOrgUnitWarningMsgTag = $("#selectOrgUnitWarningMsg");
 
 Element.backToCaseListBtnTag = $("[name='backToCaseListBtn']");
+
+Element.backToMainClientFormBtnTag = $("#backToMainClientFormBtn");
+
 
 
 // [Contact Log] data Entry form
@@ -92,10 +98,10 @@ Element.saveEventDialogFormTag = $("#saveEventDialogForm");
 
 Element.indexingDivTag = $("#indexingDiv");
 Element.indexingListTbTag = $("#indexingListTb");
-Element.addRelationshipBtnTag = $("#addRelationship");
+Element.showSearchClientRelationshipFromBtnTag = $("#showSearchClientRelationshipFromBtn");
 Element.addRelationshipFormDivTag = $("#addRelationshipFormDiv");
 
-Element.saveRelationshipBtnTag = $("#saveRelationshipBtn");
+Element.addRelationshipBtnTag = $("#addRelationshipBtn");
 Element.cancelRelationshipBtnTag = $("#cancelRelationshipBtn");
 
 
@@ -139,6 +145,8 @@ Element.showAddNewClientFormTag = $("#showAddNewClientForm");
 Element.backToSearchClientFormTag = $("#backToSearchClientForm");
 Element.showTodayCaseTag = $("#showTodayCase");
 
+//Element.searchRelationshipClientBtnTag = $("#searchRelationshipClientBtn");
+Element.searchResultRelationshipTbTag = $("#searchResultRelationshipTb");
 
 //For relationship
 
@@ -146,6 +154,7 @@ Element.relationshipSearchBtnDivTag = $("#relationshipSearchBtnDiv");
 Element.showAddNewRelationClientFormBtnTag = $("#showAddNewRelationClientFormBtn");
 Element.backToSearchRelationshipResultBtnTag = $("#backToSearchRelationshipResultBtn");
 Element.backToClientFormBtnTag = $("[name='backToClientFormBtn']");
+//Element.backToSearchRelationshipClientResultBtnTag = $("#backToSearchRelationshipClientResultBtn");
 
 Element.addRelationshipFormDivTag = $("#addRelationshipFormDiv");
 

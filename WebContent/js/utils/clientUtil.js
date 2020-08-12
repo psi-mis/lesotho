@@ -5,32 +5,101 @@ ClientUtil.SEARCH_STATUS_CLIENT = "searchClient";
 ClientUtil.SEARCH_STATUS_RELATIONSHIP = "searchRelationship";
 ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_CLIENT;
 
+
+ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS = "mainClient";
+ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS = "relationshipClient";
+ClientUtil.clientRelationShip = ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS;
+
+// --------------------------------------------------------------------------------
+// For main client
+//---------------------------------------------------------------------------------
+
 ClientUtil.setSearchClientStatus = function()
 {
 	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_CLIENT;
 
-	Element.clientSearchBtnDivTag.show();
-	Element.relationshipSearchBtnDivTag.hide();
-}
-
-ClientUtil.setSearchRelationshipStatus = function()
-{
-	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_RELATIONSHIP;
 	
-	Element.clientSearchBtnDivTag.hide();
-	Element.relationshipSearchBtnDivTag.show();
-}
+//	Element.searchClientBtnTag.show();
+	Element.clientSearchBtnDivTag.show();
+	Element.searchResultTbTag.show();
 
+	Element.backToClientFormBtnTag.hide();
+	Element.relationshipSearchBtnDivTag.hide();
+	Element.searchResultRelationshipTbTag.hide();
+	
+//
+//	Element.backToCaseListBtnTag.hide();
+	
+}
 
 ClientUtil.isSearchClientStatus = function()
 {
 	return ( ClientUtil.searchStatus == ClientUtil.SEARCH_STATUS_CLIENT );
 }
 
+
+ClientUtil.getSearchResultTag = function()
+{
+	return ( ClientUtil.isSearchClientStatus() ) ? Element.searchResultTbTag : Element.searchResultRelationshipTbTag ;
+}
+
+// For [ClientForm]
+ClientUtil.setMainClientFormStatus = function()
+{
+//	Element.backToMainClientFormBtnTag.hide();
+	ClientUtil.clientRelationShip = ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS;
+}
+
+ClientUtil.isMainClientFormStatus = function()
+{
+	return ClientUtil.clientRelationShip == ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS;
+}
+
+//--------------------------------------------------------------------------------
+//For relationship client
+//---------------------------------------------------------------------------------
+
+ClientUtil.setSearchRelationshipStatus = function()
+{
+	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_RELATIONSHIP;
+	
+//	Element.backToSearchClientResultBtnTag.hide();
+//	Element.searchClientBtnTag.hide();
+	Element.clientSearchBtnDivTag.hide();
+//	Element.backToCaseListBtnTag.hide();
+	Element.searchResultTbTag.hide();
+
+//	Element.searchRelationshipClientBtnTag.show();
+	Element.backToClientFormBtnTag.show();
+//	Element.backToSearchRelationshipClientResultBtnTag.show();
+	Element.relationshipSearchBtnDivTag.show();
+	Element.searchResultRelationshipTbTag.show();
+//	
+//	Element.backToCaseListBtnTag.hide();
+}
+
+
 ClientUtil.isSearchRelationshipStatus = function()
 {
-	return ( ClientUtil.searchStatus == ClientUtil.SEARCH_STATUS_RELATIONSHIP );
+	return ( ClientUtil.searchStatus == ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS );
 }
+
+
+ClientUtil.setRelationshipClientFormStatus = function()
+{
+//	Element.backToSearchClientResultBtnTag.hide();
+//	Element.backToCaseListBtnTag.hide();
+//	
+//	Element.backToMainClientFormBtnTag.show();
+	ClientUtil.clientRelationShip = ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS;
+}
+
+
+ClientUtil.isRelationshipClientFormStatus = function()
+{
+	return ClientUtil.clientRelationShip == ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS;
+}
+
 
 
 ClientUtil.getDetails = function( clientId, loadingMsg, exeFunc )
@@ -57,13 +126,33 @@ ClientUtil.getDetails = function( clientId, loadingMsg, exeFunc )
 		});
 }
 
+
+ClientUtil.getLatestEnrollment = function( enrollments  )
+{
+	if( enrollments != undefined && enrollments.length > 0 )
+	{
+		var foundItem = Util.findItemFromList( enrollments, "status", "ACTIVE" );
+	
+		if( foundItem ) return foundItem;
+		
+		var orderedEnrollments = Util.sortDescByKey( enrollments, "enrollmentDate" );
+		return orderedEnrollments[0];
+	}
+	
+	return undefined;
+	
+}
+
+
 ClientUtil.getLatestEventByEnrollments = function( enrollments, stageId )
 {
-	var orderedEnrollments = Util.sortDescByKey( enrollments, "enrollmentDate" );
-	for( var i=0; i<orderedEnrollments.length; i++ )
+	var enrollment = ClientUtil.getLatestEnrollment( enrollments );
+	
+	if( enrollment )
 	{
-		var orderedEvents = Util.sortDescByKey( orderedEnrollments[i].events, "eventDate" );
-		for( var j=0; j<orderedEvents.length; j++ )
+		// We need to sort events list becasue there are some stages are repeatable
+		var orderedEvents = Util.sortDescByKey( enrollment.events, "eventDate" );
+		for( var i=0; i<orderedEvents.length; i++ )
 		{
 			if( orderedEvents[i].programStage == stageId )
 			{

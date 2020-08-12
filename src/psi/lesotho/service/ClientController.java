@@ -3,8 +3,11 @@ package psi.lesotho.service;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ClientController
@@ -76,35 +80,42 @@ public class ClientController
                     String outputData = "";
                     String clientId = request.getParameter( "clientId" );
                     responseInfo = ClientController.getClientDetails( clientId );
+                    
                     if ( responseInfo.responseCode == 200 )
                     {
-                        outputData = "\"client\":" + responseInfo.output;
-                        
-                        JSONObject checkEQCFistname = getAttributeValue( responseInfo.data, Util.ID_ATTR_FIRSTNAME );
+                        JSONObject clientData = responseInfo.data;
+                        JSONObject checkEQCFistname = getAttributeValue( clientData, Util.ID_ATTR_FIRSTNAME );
+
+                        JSONArray enrollmentList = new JSONArray( clientData.getJSONArray( "enrollments" ).toString() );
+                        clientData.remove( "enrollments" );
+                        outputData = "\"client\":" + clientData.toString();
+
                         if( !checkEQCFistname.getString( "value" ).equals("EQC") )
                         {
-                            responseInfo = EventController.getEventsByClient( clientId );
-                            if ( responseInfo.responseCode == 200 )
-                            {
-                                outputData += ",\"events\":" + responseInfo.output;
-                                
-                                // STEP 2.2.1 Get active event
-                                JSONArray eventList = responseInfo.data.getJSONArray( "events" );
-                                JSONObject activeHIVTestingEvent = EventController.getActiveEvent( eventList, Util.ID_STAGE );
-                                String partnerEventId = EventController.getPartnerEventId( activeHIVTestingEvent );
-                                if( partnerEventId != null )
-                                {
-                                    responseInfo = EventController.getPartnerByEventId( partnerEventId );
-                                    if ( responseInfo.responseCode == 200 )
-                                    {
-                                        outputData += ",\"partner\":" + responseInfo.output;
-                                    }
-                                }
-                            }
+                            outputData += ",\"enrollments\":" + enrollmentList.toString();
+
+                          // STEP 2.2.1 Get active event
+                          JSONObject latestEnrollment = ClientController.getLatestEnrollments( enrollmentList );
+                          if( latestEnrollment != null )
+                          {
+                              JSONArray eventList = latestEnrollment.getJSONArray( "events" );
+                              JSONObject activeHIVTestingEvent = EventController.getActiveEvent( eventList, Util.ID_STAGE );
+
+                              String partnerEventId = EventController.getPartnerEventId( activeHIVTestingEvent );
+                              if( partnerEventId != null )
+                              {
+                                  responseInfo = EventController.getPartnerByEventId( partnerEventId );
+                                  if ( responseInfo.responseCode == 200 )
+                                  {
+                                      outputData += ",\"partner\":" + responseInfo.output;
+                                  }
+                              }
+                          }
+                          
                         }
                         else
                         {
-                            outputData += ",\"events\":{\"events\": []}";
+                            outputData += ",\"enrollments\":[]";
                         }
                         
                         outputData = "{" + outputData + "}";
@@ -118,56 +129,43 @@ public class ClientController
                     String ouId = request.getParameter( Util.PAMAM_ORGUNIT_ID );
                     JSONObject receivedData = Util.getJsonFromInputStream( request.getInputStream() );
 
-                    // Update client
-                    if( clientId != null )
-                    {
-                        responseInfo = ClientController.updateClient( clientId, receivedData );
-                    }
-                    // Add client
-                    else
-                    {
-                        responseInfo = ClientController.createClient( receivedData, ouId );
-                        StringBuffer output = new StringBuffer();
-                        output.append( responseInfo.output );
-
-                        if ( responseInfo.responseCode == 200 )
-                        {
-                            // Enroll client
-                            clientId = responseInfo.referenceId;
-                            responseInfo = ClientController.enrollClient( clientId, ouId );
-                        }
-                        
-                        responseInfo.output = output.toString();
-                    }
+                    responseInfo = ClientController.saveClient( clientId, ouId, receivedData );
                 }
                 else if( key.equals( Util.KEY_ADD_RELATIONSHIP ))
                 {
                     JSONObject receivedData = Util.getJsonFromInputStream( request.getInputStream() );
                     
-                    // Add relationship
-                    responseInfo = ClientController.addRelationship( receivedData.getJSONObject( "relationship" ) );
+                    String clientAId = receivedData.getString( "clientAId" );
+                    String clientBId = null;
+                    if( receivedData.has( "clientBId" ) )
+                    {
+                        clientBId = receivedData.getString( "clientBId" );
+                    }
+                    String ouId = receivedData.getString( Util.PAMAM_ORGUNIT_ID );
+                    String relationshipType = receivedData.getString( "relationshipType" );
+                    String loginUsername = receivedData.getString( "loginUsername" );
+                    
+                    // Save Or Update client
+                    responseInfo = ClientController.saveRelationshipClient( clientBId, ouId, receivedData.getJSONObject( "client" ) );
+                    
+                    clientBId = responseInfo.data.getString("trackedEntityInstance");
+//                    if( !responseInfo.data.has( "relationships" ) )
+//                    {
+//                        responseInfo.data.put( "relationships", new JSONArray() );
+//                    }
+                    
                     if( responseInfo.responseCode == 200 )
                     {
-                        // Update client attribute values
-                        JSONObject clientData = receivedData.getJSONObject( "client" );
-                        responseInfo = ClientController.updateAttrValues( clientData.getString( "trackedEntityInstance" ), clientData.getJSONArray( "attributes" ) );
+                        // Add relationship
+                        ResponseInfo responseInfo_Relationship = ClientController.addRelationship( clientAId, clientBId, relationshipType );
                     
-                        if( responseInfo.responseCode == 200 )
+                        // Add new event for "HIVTest" and "ContactLog" if any
+                        if( responseInfo_Relationship.responseCode == 200 
+                            && receivedData.has( Util.ID_STAGE ) )
                         {
-                            // Update events
-                           JSONArray events = receivedData.getJSONArray( "events" );
-                           for( int i=0; i<events.length(); i++ )
-                           {
-                               JSONObject jsonEvent = events.getJSONObject( i );
-                               String eventId = jsonEvent.getString( "event" );
-                               JSONArray dataValues = jsonEvent.getJSONArray( "dataValues" );
-                               
-                               for( int j=0; j<dataValues.length(); j++ )
-                               {
-                                   JSONObject dataValue = dataValues.getJSONObject( j );
-                                   EventController.updatePartEvent( eventId, dataValue );
-                               }
-                           }
+                            EventController.createRelationEvents( receivedData, clientBId, ouId, loginUsername );
+                            
+//                            responseInfo.data.getJSONArray( "relationships" ).put( responseInfo_Relationship.inputData );
                         }
                     }
                     
@@ -192,14 +190,96 @@ public class ClientController
     // ===============================================================================================================
     // Supportive methods
     // ===============================================================================================================
+    
+    private static ResponseInfo saveClient( String clientId, String ouId, JSONObject attributes ) throws IOException, Exception
+    {
+        ResponseInfo responseInfo;
+        
+        // Update client
+        if( clientId != null )
+        {
+            responseInfo = ClientController.updateClient( clientId, attributes );
+            responseInfo.data.put( "trackedEntityInstance", clientId );
+        }
+        // Add client
+        else
+        {
+            responseInfo = ClientController.createClient( attributes, ouId );
+            StringBuffer output = new StringBuffer();
+            output.append( responseInfo.output );
 
+            if ( responseInfo.responseCode == 200 )
+            {
+                // Enroll client
+                clientId = responseInfo.referenceId;
+                responseInfo = ClientController.enrollClient( clientId, ouId );
+            }
+            
+            responseInfo.output = output.toString();
+        }
+        
+        return responseInfo;
+    }
+    
 
-    private static ResponseInfo addRelationship( JSONObject jsonData )
+    private static ResponseInfo saveRelationshipClient( String clientId, String ouId, JSONObject clientData ) throws IOException, Exception
+    {
+        ResponseInfo responseInfo;
+
+        // Update client
+        if( clientId != null )
+        {
+            responseInfo = ClientController.updateAttrValues( clientId, clientData.getJSONArray( "attributes" ), ouId );
+        }
+        // Add client
+        else
+        {
+            responseInfo = ClientController.createClient( clientData, ouId );
+
+            responseInfo.data = responseInfo.inputData;
+            if ( responseInfo.responseCode == 200 )
+            {
+                // Enroll client
+                clientId = responseInfo.referenceId;
+                responseInfo.data.put( "trackedEntityInstance", clientId );
+
+                ResponseInfo responseInfo_Enrollment = ClientController.enrollClient( clientId, ouId );
+                responseInfo.data.put( "enrollments", responseInfo_Enrollment.inputData );
+
+                responseInfo.output = responseInfo.data.toString();
+            }
+
+        }
+
+System.out.println( "\n\n === saveRelationshipClient : " + responseInfo.data.toString() );
+        
+        return responseInfo;
+    }
+    
+    private static JSONObject generateRelationshipJsonData( String clientAId, String clientBId, String relationshipTypeId )
+    {
+        JSONObject jsonData_From = new JSONObject();
+        jsonData_From.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientAId )  );
+        
+        JSONObject jsonData_To = new JSONObject();
+        jsonData_To.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientBId )  );
+        
+        JSONObject jsonData = new JSONObject();
+        jsonData.put( "relationshipType", relationshipTypeId );
+        jsonData.put( "from", jsonData_From );
+        jsonData.put( "to", jsonData_To );
+        
+        return jsonData;
+    }
+
+    private static ResponseInfo addRelationship( String clientAId, String clientBId, String relationshipTypeId )
     {
         ResponseInfo responseInfo = null;
 
         try
         {
+            JSONObject jsonData = ClientController.generateRelationshipJsonData( clientAId, clientBId, relationshipTypeId );
+            
             String requestUrl = ClientController. URL_ADD_RELATIONSHIP;
             responseInfo = Util.sendRequest( Util.REQUEST_TYPE_POST, requestUrl, jsonData, null );
         }
@@ -279,6 +359,7 @@ public class ClientController
             String requestUrl = ClientController.URL_QUERY_CREATE_CLIENT;
             responseInfo = Util.sendRequest( Util.REQUEST_TYPE_POST, requestUrl, receivedData, null );
             Util.processResponseMsg( responseInfo, "" );
+            
             String clientId = responseInfo.referenceId;
             receivedData.put( "trackedEntityInstance", clientId );
             responseInfo.output = receivedData.toString();
@@ -317,7 +398,7 @@ public class ClientController
         return responseInfo;
     }
     
-    public static ResponseInfo updateAttrValues( String clientId, JSONArray updatedAttrValues )
+    public static ResponseInfo updateAttrValues( String clientId, JSONArray updatedAttrValueList, String ouId )
         throws IOException, Exception
     {
         ResponseInfo responseInfo = null;
@@ -327,9 +408,9 @@ public class ClientController
             responseInfo = ClientController.getClientById( clientId );
             JSONObject clientData = responseInfo.data;
             JSONArray clientAttrValues = clientData.getJSONArray( "attributes" );
-            for( int i=0; i< updatedAttrValues.length(); i++ )
+            for( int i=0; i< updatedAttrValueList.length(); i++ )
             {
-                JSONObject updatedAttrValue = updatedAttrValues.getJSONObject( i );
+                JSONObject updatedAttrValue = updatedAttrValueList.getJSONObject( i );
                 for( int j=0; j< clientAttrValues.length(); j++ )
                 {
                     JSONObject clientAttrValue = clientAttrValues.getJSONObject( j );
@@ -343,7 +424,20 @@ public class ClientController
             
             clientData.remove( "attributes" );
             clientData.put( "attributes", clientAttrValues );
+            
+            
             responseInfo = ClientController.updateClient( clientId, clientData );
+            
+            
+            JSONArray enrollements = clientData.getJSONArray( "enrollments" );
+            if( ClientController.checkEnrollmentForProgram( enrollements, Util.ID_PROGRAM ) )
+            {
+                ResponseInfo responseInfo_Enrollment = ClientController.enrollClient(clientId, ouId );
+                
+                clientData.put( "enrollments", responseInfo_Enrollment.inputData );
+            }
+            
+            responseInfo.data = clientData;
             responseInfo.output = clientData.toString();
         }
         catch ( Exception ex )
@@ -454,4 +548,65 @@ public class ClientController
         return null;
     }
     
+    public static JSONObject getLatestEnrollments( JSONArray enrollements ) throws JSONException, ParseException
+    {
+        if( enrollements.length() > 0 )
+        { 
+            // Get "Active" enrollment if any
+            JSONArray foundItems_LSEnrollements = Util.findItemFromList( enrollements, "program", Util.ID_PROGRAM );
+            if( foundItems_LSEnrollements.length() == 0 )
+            {
+                return null;
+            }
+            if( foundItems_LSEnrollements.length() == 1 )
+            {
+                return foundItems_LSEnrollements.getJSONObject( 0 );
+            }
+            else
+            {
+                JSONArray foundItems = Util.findItemFromList( foundItems_LSEnrollements, "status", "ACTIVE" );
+                if( foundItems.length() > 0 ) // Get "Active" enrollment if any
+                {
+                    return foundItems.getJSONObject( 0 );
+                }
+                else // Find the latest enrollment by "enrollmentDate"
+                {
+                    // If not active enrollment exitst, Get latest enrollment
+                    JSONObject latestEnrollment = foundItems_LSEnrollements.getJSONObject( 0 );
+
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    Date enrolllmentDate = format.parse( latestEnrollment.getString( "enrollmentDate" ).substring( 0,  10 ) );
+                    for(int i=1; i<foundItems_LSEnrollements.length(); i++ )
+                    {
+                        JSONObject temp = foundItems_LSEnrollements.getJSONObject( i );
+                        Date tempDate = format.parse( temp.getString( "enrollmentDate" ).substring( 0,  10 ) );
+
+                        if ( enrolllmentDate.compareTo( tempDate ) <= 0) 
+                        {
+                            latestEnrollment = temp;
+                            enrolllmentDate = tempDate;
+                        }
+                    }
+                    
+                    return latestEnrollment;
+                }
+            }
+        }
+           
+        return null;
+    }
+    
+    public static boolean checkEnrollmentForProgram( JSONArray enrollements, String programId ) throws JSONException, ParseException
+    {
+        JSONArray foundEnrollments = Util.findItemFromList( enrollements, "program", programId );
+        
+        if( foundEnrollments.length() > 0 )
+        {
+            JSONArray foundItems = Util.findItemFromList( foundEnrollments, "status", "ACTIVE" );
+            return ( foundItems.length() > 0 );
+        }
+        
+        return false;
+    }
+
 }

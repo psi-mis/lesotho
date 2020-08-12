@@ -865,4 +865,8 @@ button
     background-color: #f2f2f2 !IMPORTANT;
 }
 
+a
+{
+	cursor:pointer;
+}
 

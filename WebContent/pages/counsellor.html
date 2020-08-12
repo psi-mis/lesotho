@@ -253,6 +253,21 @@
 									<th keyword="searchClient_result_tableHeader_birthOrder">Birth Order</th>
 									<th keyword="searchClient_result_tableHeader_adquisition">Adquisition</th>
 									<th keyword="searchClient_result_tableHeader_lastTestNS">Last test NS</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+						
+						<table class='table table-hover table-striped listTable tablesorter' id="searchResultRelationshipTb">
+							<thead>
+								<tr style='background-color:#cfe2f3;'>
+									<th keyword="searchClient_result_tableHeader_firstName">First Name</th>
+									<th keyword="searchClient_result_tableHeader_surname">Surname</th>
+									<th keyword="searchClient_result_tableHeader_dob">DoB</th>
+									<th keyword="searchClient_result_tableHeader_districtOfBirth">District o B</th>
+									<th keyword="searchClient_result_tableHeader_birthOrder">Birth Order</th>
+									<th keyword="searchClient_result_tableHeader_adquisition">Adquisition</th>
+									<th keyword="searchClient_result_tableHeader_lastTestNS">Last test NS</th>
 									<th class="action">#</th>
 								</tr>
 							</thead>
@@ -278,8 +293,9 @@
 				
 					
 				<div id="addClientFormDiv" style="display:none;" class="mainContent">	
-					<h4 class="headerList">Add Client</h4>
-		  					
+					<a><h4 id="addClientFormHeader">Add Client</h4></a>
+		  			<h5 id="relationshipMsg" style="display:none;"><span id="headerList" keyword="relationship_clientForm_TrackLink"></span></h5>
+				    
 					<div id="addClientFormTab">
 		  				
 						<ul>
@@ -567,7 +583,7 @@
 											<span style="float:right;" keyword="contactLogForm_tab_btn_add">Add</span>
 										</th>
 										<th style="width:20px;background-color:#afc3d8;" class="actionCell">
-											<button id="addRelationship" class="imgBtn"><span class="glyphicon glyphicon-plus"></span></button>
+											<button id="showSearchClientRelationshipFromBtn" class="imgBtn"><span class="glyphicon glyphicon-plus"></span></button>
 										</th>
 									</tr>
 								</tbody>
@@ -588,7 +604,7 @@
 				
 				<div id="addRelationshipFormDiv" style="display:none;justify-content: center;">
 					<div style="text-align:center;">
-						<button id="saveRelationshipBtn" keyword="relationship_btn_addRelationship" class="btn btn-default">Save</button>
+						<button id="addRelationshipBtn" keyword="relationship_btn_addRelationship" class="btn btn-default">Save</button>
 						<button id="cancelRelationshipBtn" keyword="relationship_btn_cancelRelationship" class="btn btn-default">Back</button>
 					</div>
 				</div>

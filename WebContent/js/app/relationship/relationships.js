@@ -1,5 +1,5 @@
 
-function Relationships( )
+function Relationships()
 {
 	var me = this;
 	
@@ -16,9 +16,13 @@ function Relationships( )
 	// -----------------------------------------------------------------------
 	// 
 	
-	me.loadAllRelationshipTEIs = function( jsonRelationships, loadingMsg, exeFunc  )
+	me.loadAllRelationshipTEIs = function( loadedClientDataList, clientAId, jsonRelationships, loadingMsg, exeFunc  )
 	{
-		me.getRelationshipTEI_IDs( jsonRelationships );
+		me.relationshipTEI_Total = 0;
+		me.relationshipTEI_Processing = 0;
+		me.relationshipTEI_List = {};
+		
+		me.getRelationshipTEI_IDs( clientAId, jsonRelationships );
 		
 		var teiIdList = Object.keys( me.relationshipTEI_List );
 		me.relationshipTEI_Total = teiIdList.length;
@@ -28,27 +32,48 @@ function Relationships( )
 		for( var i=0; i<teiIdList.length; i++ )
 		{
 			var teiId = teiIdList[i];
-			ClientUtil.getDetails( teiId, loadingMsg, function( response ){
-				me.relationshipTEI_List[response.client.trackedEntityInstance].client = response.client;
-				me.relationshipTEI_List[response.client.trackedEntityInstance].events = response.events.events;
-
-				me.relationshipTEI_Processing++;
-				if( me.relationshipTEI_Processing == me.relationshipTEI_Total && exeFunc )
-				{
-					me.relationshipTEI_Total = 0;
-					me.relationshipTEI_Processing = 0;
-					
-					exeFunc( me.relationshipTEI_List );
-				}
-			} );
+			
+			if( loadedClientDataList[teiId] == undefined )
+			{
+				ClientUtil.getDetails( teiId, loadingMsg, function( response ){
+					me.afterLoadedRelationship( response, exeFunc );
+				} );
+			}
+			else
+			{
+				me.afterLoadedRelationship( loadedClientDataList[teiId], exeFunc );
+			}
+			
 		}
 	}
 	
-	me.getRelationshipTEI_IDs = function( jsonRelationships )
+	me.afterLoadedRelationship = function( clientData, exeFunc )
+	{
+		// I have to assigned one by one properties ( "client", "enrollments" of client because 
+		// in "relationshipTEI_List[index]", there are some more properties ( "created", "relationshipType" )
+		me.relationshipTEI_List[clientData.client.trackedEntityInstance].client = clientData.client;
+		me.relationshipTEI_List[clientData.client.trackedEntityInstance].enrollments = clientData.enrollments;
+
+		me.relationshipTEI_Processing++;
+		if( me.relationshipTEI_Processing == me.relationshipTEI_Total && exeFunc )
+		{
+			me.relationshipTEI_Total = 0;
+			me.relationshipTEI_Processing = 0;
+			
+			exeFunc( me.relationshipTEI_List );
+		}
+	}
+	
+	me.getRelationshipTEI_IDs = function( clientAId, jsonRelationships )
 	{
 		for( var i=0; i<jsonRelationships.length; i++ )
 		{
-			me.relationshipTEI_List[ jsonRelationships[i].to.trackedEntityInstance.trackedEntityInstance ] = {
+			var teiId = jsonRelationships[i].from.trackedEntityInstance.trackedEntityInstance;
+			if( clientAId == teiId )
+			{
+				teiId = jsonRelationships[i].to.trackedEntityInstance.trackedEntityInstance;
+			}
+			me.relationshipTEI_List[ teiId ] = {
 				"relationshipType" : jsonRelationships[i].relationshipName,
 				"created": jsonRelationships[i].created
 			};
@@ -92,3 +117,21 @@ Relationships.addRelationShipFormIds = [
 	{ "type": "dataElement", "id" : "HcBFZsCt8Sy", "mandatory" : "true" }
 ];
 
+Relationships.genrateRelationshipJson = function( clientAId, clientBId, relationshipTypeId, relationshipName )
+{
+	return {
+	  "relationshipType": relationshipTypeId,
+	  "relationshipName": relationshipName,
+	  "from": {
+	    "trackedEntityInstance": {
+	      "trackedEntityInstance": clientAId
+	    }
+	  },
+	  "to": {
+	    "trackedEntityInstance": {
+	      "trackedEntityInstance": clientBId
+	    }
+	  }
+	}
+	
+}

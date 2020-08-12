@@ -58,6 +58,14 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			Element.searchResultTag.show();
 		});
 			
+//		Element.backToSearchRelationshipClientResultBtnTag.click( function(){
+//			MsgManager.msgAreaHide();
+//			Element.addClientFormDivTag.hide();
+//			Element.selectOrgUnitWarningMsgTag.hide();
+//			Element.searchResultRelationshipTbTag.show();
+//			Element.searchResultTag.show();
+//		});
+		
 		// Add Datepicker to date fields
 			
 		Element.seachAddClientFormTag.find("[isDate='true']").each(function(){
@@ -73,6 +81,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 
 		Element.backToSearchClientFormTag.click( function(){
 			Util.resetPageDisplay();
+			ClientUtil.setSearchClientStatus();
 			me.showSearchClientForm();
 		});
 		
@@ -84,7 +93,18 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		// [Search relationship clients] - Result buttons
 
 		Element.showAddNewRelationClientFormBtnTag.click( function(){
-			me.showAddRelationshipFormDialog();
+			
+			me.showAddRelationshipFormDialog( true );
+			
+			Element.addRelationshipFormDivTag.find("[attribute]").each(function(){
+				var attrId = $(this).attr("attribute");
+				var value = Element.searchClientFormTag.find("[attribute='" + attrId + "']").val();
+				if( value != "" )
+				{
+					$(this).val( value );
+				}
+			});
+			
 		});
 		
 		Element.backToSearchRelationshipResultBtnTag.click( function(){
@@ -93,6 +113,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		});
 
 		Element.backToClientFormBtnTag.click( function(){
+			Element.searchClientFormTag.hide();
 			Element.searchResultTag.hide();
 			Element.addClientFormDivTag.show("fast");
 		});
@@ -120,6 +141,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			}
 			
 		});
+		
 
 		Element.seachAddClientFormTag.find("input,select").keyup(function(e){
 			if ( e.keyCode === 13 ) {
@@ -221,9 +243,10 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					
 					if( requestData.attributes.length > 0 && me.validationObj.checkFormEntryTagsData( Element.searchClientFormTag ) )
 					{
-						Element.searchResultTbTag.find("tbody").html("");
-						Element.backToSearchClientResultBtnTag.show();
-						Element.backToCaseListBtnTag.hide();
+						var searchResultTbTag = ClientUtil.getSearchResultTag();
+						searchResultTbTag.find("tbody").html("");
+//						Element.backToSearchClientResultBtnTag.show();
+//						Element.backToCaseListBtnTag.hide();
 						
 						me.searchClients( requestData, event, function( searchResult ){
 							var searchCriteria = me.getSearchCriteria( Element.searchClientFormTag );
@@ -235,7 +258,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 							var clientList = searchResult.listGrid.rows;
 							if( clientList.length > 0 )
 							{
-								me.populateSearchClientData( clientList );
+								me.populateSearchClientData( clientList, searchResultTbTag );
 								me.highlightSearchMatches();
 								me.showSearchClientTableResult();
 							}
@@ -261,7 +284,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		
 	};
 	
-	me.populateSearchClientData = function( clientList )
+	me.populateSearchClientData = function( clientList, searchReulstTag )
 	{		
 		me.resolveSearchResultTbHeader();
 		
@@ -339,7 +362,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					me.showAddRelationshipForm( linkColTag, clientId );
 				}
 				
-				Element.searchResultTbTag.find("tbody").append( rowTag );
+				searchReulstTag.find("tbody").append( rowTag );
 			}
 		}
 		
@@ -366,65 +389,94 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			
 			colTag.click( function(){
 				
-				var testingEvent = ClientUtil.getLatestEvent( jsonData.events.events, MetaDataID.stage_HIVTesting );
-				var contactLogEvent = ClientUtil.getLatestEvent( jsonData.events.events, MetaDataID.stage_ContactLog );
-				
-				
-				// Populate data in [Add Relationship] FORM
-				var hivTestEventId, contactLogEventId;
+				Util.resetForm( Element.addRelationshipFormDivTag );
+				Util.disableForm( Element.addRelationshipFormDivTag, false );
 				Util.populateDataValues( Element.addRelationshipFormDivTag, jsonData.client.attributes, "attribute" );
 				
-				if( testingEvent )
+				var latestEnrollment = ClientUtil.getLatestEnrollment( jsonData.enrollments );
+				if( latestEnrollment )
 				{
-					Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
-					hivTestEventId = testingEvent.event;
-				}
-				
-				if( contactLogEvent )
-				{
-					Util.populateDataValues( Element.addRelationshipFormDivTag, contactLogEvent.dataValues, "dataElement" );
-					contactLogEventId = contactLogEvent.event;
+					// Populate dataValue in [Add Relationship] FORM - 
+					var testingEvent = ClientUtil.getLatestEvent( latestEnrollment.events, MetaDataID.stage_HIVTesting );
+					var hivTestFinalStatus;
+					
+					if( testingEvent )
+					{
+						// Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
+						var hivTestFinalStatusDV = Util.findItemFromList( testingEvent.dataValues, "dataElement", MetaDataID.de_FinalResult_HIVStatus );
+						if( hivTestFinalStatusDV )
+						{
+							hivTestFinalStatus = hivTestFinalStatusDV.value;							
+						}
+					}
+					
 				}
 				
 				// Show [Add relationship] form
-				me.showAddRelationshipFormDialog( clientId, hivTestEventId, contactLogEventId );
+				me.showAddRelationshipFormDialog( false, clientId, hivTestFinalStatus );
 			});
 			
 		} );
 		
 	}
 	
-	me.showAddRelationshipFormDialog = function( clientId, hivTestEventId, contactLogEventId )
+	me.showAddRelationshipFormDialog = function( isAddNew, clientId, hivTestFinalStatus )
 	{
-		// Add attribute
+		Element.addRelationshipFormDivTag.find( "[dataElement]" ).closest("tr").show();
+		Element.addRelationshipFormDivTag.removeAttr( "clientId" );
+		
+		// Add some attributes
 		if( clientId )
 		{
 			Element.addRelationshipFormDivTag.attr( "clientId", clientId );
+			Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
+		}
+		
+		// Disable some fields if the form is used for editting relationship.
+		// Enable all fields if the form is used for adding relationship.
+		if( isAddNew )
+		{
+			Util.resetForm( Element.addRelationshipFormDivTag );
+			Util.disableForm( Element.addRelationshipFormDivTag, false );
+			
+			var hivStatus = Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+			hivStatus.closest("tr").hide();
 		}
 		else
 		{
-			Element.addRelationshipFormDivTag.removeAttr( "clientId" );
-		}
-		
-		if( hivTestEventId )
-		{
-			Element.addRelationshipFormDivTag.attr( "hivTestEventId", hivTestEventId );
-		}
-		else
-		{
-			Element.addRelationshipFormDivTag.removeAttr( "hivTestEventId" );
-		}
-		
-		if( contactLogEventId )
-		{
-			Element.addRelationshipFormDivTag.attr( "contactLogEventId", contactLogEventId );
-		}
-		else
-		{
-			Element.addRelationshipFormDivTag.removeAttr( "contactLogEventId" );
-		}
-		
 
+			if( hivTestFinalStatus == "Positive" )
+			{
+				Element.addRelationshipFormDivTag.find( "[dataElement]" ).closest("tr").hide();
+				Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
+			}
+			else
+			{
+				var hivStatus = Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+				hivStatus.closest("tr").show();
+			}
+			
+			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
+			{
+				var idConfig = Relationships.addRelationShipFormIds[i];
+				if( idConfig.id == MetaDataID.de_FinalResult_HIVStatus )
+				{
+					var hivStatus = Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+					hivStatus.closest("tr").show();
+				}
+				
+				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
+				var disabled = ( idConfig.readOnly && inputTag.val() != "" );
+				
+				if( idConfig.readOnly )
+				{
+					console.log( idConfig.id + " - inputTag.val() :  " + inputTag.val() + " - disabled : " + disabled );
+				}
+				Util.disableTag( inputTag, disabled );
+			}
+		}
+		
+		
 		// Show the form
 		
 		var titleTranslated = me.translationObj.getTranslatedValueByKey( "relationship_add_relationship" );
@@ -484,7 +536,18 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 	me.addEventForSearchResultRow = function( rowTag )
 	{
 		rowTag.click(function(){
-			me.mainPage.clientFormManagement.loadClientDetails( rowTag.attr("clientId") );
+			var clientId = rowTag.attr("clientId");
+			
+			ClientUtil.setMainClientFormStatus();
+
+			Element.backToSearchClientResultBtnTag.show();
+			Element.backToCaseListBtnTag.hide();
+
+			Element.headerListTag.attr("clientId", clientId );
+			Element.relationshipMsgTag.hide();
+			Element.relationshipMsgTag.find("[clientId]").remove();
+			
+			me.mainPage.clientFormManagement.loadClientDetails( clientId );
 		});	
 	};
 	
@@ -553,7 +616,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		var tranlatedText = me.translationObj.getTranslatedValueByKey( "searchClient_result_optionTitle" );
 		Element.searchResultHeaderTag.html( tranlatedText );
 
-		Element.searchResultTbTag.show();
+		ClientUtil.getSearchResultTag().show();
 		Element.searchResultTag.show("fast");
 	};
 	

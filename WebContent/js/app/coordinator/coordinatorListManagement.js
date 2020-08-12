@@ -743,7 +743,7 @@ function CoordinatorListManagement( _mainPage )
 		rowTag.css("cursor", "pointer");
 		rowTag.click( function(){
 			Element.backToSearchClientResultBtnTag.hide();
-			me.backToCaseListBtnTag.show();
+			Element.backToCaseListBtnTag.show();
 			var clientId = rowTag.attr("clientId");
 			var eventId = rowTag.attr("eventId");
 			

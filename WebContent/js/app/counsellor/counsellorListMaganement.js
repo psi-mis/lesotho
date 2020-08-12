@@ -78,8 +78,16 @@ function CounsellorListMaganement( _mainPage  )
 		// Open "Search/Add client" form from "Today Cases" list
 		
 		me.registerClientBtnTag.click(function(){
+			
 			Util.resetPageDisplay();
-
+			
+			ClientUtil.setSearchClientStatus();
+			
+			Element.headerListTag.removeAttr("clientId");
+			Element.relationshipMsgTag.hide();
+			Element.relationshipMsgTag.attr( "clientId", clientId );
+			Element.relationshipMsgTag.find("[clientId]").remove();
+			
 			me.storageObj.removeItem("clientId");
 			me.storageObj.removeItem("eventId");
 			
@@ -421,13 +429,21 @@ function CounsellorListMaganement( _mainPage  )
 		rowTag.css("cursor", "pointer");
 		rowTag.click( function(){
 			Element.backToSearchClientResultBtnTag.hide();
-			me.backToCaseListBtnTag.show();
+			Element.backToCaseListBtnTag.show();
+			Element.relationshipMsgTag.hide();
+			
+			Element.headerListTag.removeAttr("clientId");
+			Element.relationshipMsgTag.attr( "clientId", clientId );
+			Element.relationshipMsgTag.find("[clientId]").remove();
+			
 			var clientId = rowTag.attr("clientId");
 			var eventId = rowTag.attr("eventId");
+			Element.addClientFormTabTag.removeAttr( "client" );
 			
 			Util.resetPageDisplay();
 			me.clientFormManagement.loadClientDetails( clientId, eventId, function(){
 				Element.addClientFormDivTag.show();
+				Element.headerListTag.attr("clientId", clientId);
 			} );
 		});
 	};

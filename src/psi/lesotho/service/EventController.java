@@ -2,6 +2,9 @@ package psi.lesotho.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EventController
@@ -799,6 +803,28 @@ public class EventController
         return responseInfo;
     }
 
+
+    public static ResponseInfo createRelationEvents( JSONObject receivedData, String clientBId, String ouId, String loginUsername )
+    {
+        ResponseInfo responseInfo = null;
+        
+        try
+        {
+            // Create "HIVTest" event
+            JSONObject hivEventJsonData = receivedData.getJSONObject( Util.ID_STAGE );
+            responseInfo = EventController.createEvent( hivEventJsonData, clientBId, ouId, loginUsername );
+            
+            // Create "ContactLog" event
+            JSONObject contactLogJsonData = receivedData.getJSONObject( Util.ID_STAGE_CONTACTLOG );
+            responseInfo = EventController.createEvent( contactLogJsonData, clientBId, ouId, loginUsername );
+        }
+        catch ( Exception ex )
+        {
+            System.out.println( "Exception: " + ex.toString() );
+        }
+        
+        return responseInfo;
+    }
     
     // ===============================================================================================================
     // Supportive methods
@@ -835,6 +861,31 @@ public class EventController
         }
         
         return null;
+    }
+    
+    
+    public static JSONObject getLatestEvent( JSONArray eventList, String stageId ) throws JSONException, ParseException
+    {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        JSONObject foundItem = null;
+        Date eventDate = null;
+        
+        for( int i=0; i < eventList.length(); i++ )
+        {
+            JSONObject event = eventList.getJSONObject( i );
+            if( event.getString( "programStage" ).equals( stageId ) )
+            {
+                Date tempDate = format.parse( event.getString( "eventDate" ).substring( 0,  10 ) );
+                if( foundItem == null || eventDate.compareTo( tempDate ) <= 0 )
+                {
+                    foundItem = event;
+                    eventDate = tempDate;
+                }
+            }
+        }
+        
+        return foundItem;
+        
     }
 
     // CREATE JSON FOR THIS - add voucher Id, linking info.. etc..
