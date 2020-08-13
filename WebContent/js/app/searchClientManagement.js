@@ -297,7 +297,10 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		else
 		{
 			tranlatedText = me.translationObj.getTranslatedValueByKey( "searchRelationshipClient_result_rowTooltip" );
+			
 			removedTEIs = Object.keys( me.clientFormManagementObj.relationshipsObj.relationshipTEI_List );
+			var jsonClient = JSON.parse( Element.addClientFormTabTag.attr("client") );
+			removedTEIs.push( jsonClient.trackedEntityInstance );
 		}
 		
 		
@@ -308,7 +311,6 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			
 			if( !removedTEIs.includes( clientId ) )
 			{
-			
 				var firstName = client[1].trim();
 				var lastName = client[2].trim();
 				
@@ -337,7 +339,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					lastTestNS = ( lastTestNS != "" ) ? Util.formatDate_DisplayDate( lastTestNS ) : "";
 				}
 				
-				var rowTag = $("<tr title='" + tranlatedText + "' clientId='" + clientId + "'></tr>");
+				var rowTag = $("<tr title='" + tranlatedText + "' clientId='" + clientId + "' style='pointer:cursor;'></tr>");
 				rowTag.append( "<td>" + firstName + "</td>" );
 				rowTag.append( "<td>" + lastName + "</td>" );
 				rowTag.append( "<td>" + dob + "</td>" );

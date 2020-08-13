@@ -487,7 +487,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			
 		});
 		
-		me.setUp_validationCheck( Element.artReferCloseFormTag.find( 'input,select' ) );
+		me.setUp_validationCheck( Element.artReferCloseFormTag.find( 'input,select,textarea' ) );
 	};
 	
 	me.setUp_Events_prepReferTab = function()
@@ -2075,7 +2075,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		});
 		
 
-		me.validationObj.checkFormEntryTagsData( Element.addRelationshipFormDivTag );
+		me.setUp_validationCheck( Element.addRelationshipFormDivTag.find( 'input,select,textarea' ) );
 		
 		me.setUp_Events_AddRelationshipForm();
 	};
@@ -4841,7 +4841,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	
 	me.addRelationshipRow = function( clientData, relationshipCreated, relationshipTypeName )
 	{
-		var rowTitle = me.translationObj.getTranslatedValueByKey( "indexing_table_clickToShowDetails" );
+		var rowTitle = me.translationObj.getTranslatedValueByKey( "indexing_table_clickToSeeDetails" );
 		
 		var clientId = clientData.client.trackedEntityInstance;
 		var created = Util.formatDate_DisplayDate( relationshipCreated );
