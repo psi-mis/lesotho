@@ -30,7 +30,8 @@ public final class Util
 //  public static String LOCATION_DHIS_SERVER = "http://localhost:8080/dhis";
 
     //// https://data.psi-mis.org
-    public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
+    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
 //    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    

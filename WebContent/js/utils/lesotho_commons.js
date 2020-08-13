@@ -1,11 +1,11 @@
 
 function Commons() {}
 
-Commons.VERSION = "v0.54.7 SNAPSHOT 1";
+Commons.VERSION = "v0.54.7";
 Commons.VERSION_DATE = "May 06 2020";
-Util.SITE_INFO = "This is developing version";
+Util.SITE_INFO = "";
 
-Commons.wsUrl = "ls-dev1";
+Commons.wsUrl = "ls";
 
 Commons.dateFormat = "DD MMM YYYY";
 Commons.dateTimeFormat = "YYYY-MM-DD HH:mm";
