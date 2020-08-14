@@ -268,7 +268,8 @@
 						
 						<div style="text-align:center;margin-bottom:10px;">
 							<button class="btn btn-default actionBtn" id="searchClientBtn" keyword="searchClient_btn_search">Search/Create</button>
-		  				</div>
+							<button class="btn btn-default actionBtn" style="background-color: #e2e2e2;" name="backToClientFormBtn" keyword="searchClient_btn_backToRelationshipList">Back</button>
+						</div>
 	  				</div>
 	  				
 				</div>	
@@ -292,20 +293,45 @@
 							</thead>
 							<tbody></tbody>
 						</table>
+						
+						<table class='table table-hover table-striped listTable tablesorter' id="searchResultRelationshipTb">
+							<thead>
+								<tr style='background-color:#cfe2f3;'>
+									<th keyword="searchClient_result_tableHeader_firstName">First Name</th>
+									<th keyword="searchClient_result_tableHeader_surname">Surname</th>
+									<th keyword="searchClient_result_tableHeader_dob">DoB</th>
+									<th keyword="searchClient_result_tableHeader_districtOfBirth">District o B</th>
+									<th keyword="searchClient_result_tableHeader_birthOrder">Birth Order</th>
+									<th keyword="searchClient_result_tableHeader_adquisition">Adquisition</th>
+									<th keyword="searchClient_result_tableHeader_lastTestNS">Last test NS</th>
+									<th class="action">#</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
 					</div>
 					
 					<div id="searchResultOptions" >
-						<p><span id="searchResultHeader" keyword="searchClient_result_optionTitle" class="searchOptMsg">Select a client from from above or</span> <span id="searchResultKey"  class="searchOptMsg"></span><p> 
-						<button id="showAddNewClientForm" keyword="searchClient_result_btn_addClient" class="btn btn-default actionBtn">Add a client</button>
-						<button id="backToSearchClientForm" keyword="searchClient_result_btn_backToSearch" class="btn btn-default actionBtn">Back to search</button>
-						<button id="showTodayCase" keyword="searchClient_result_btn_todayCases" class="btn btn-default actionBtn">Today's Cases</button>
+						<div id="clientSearchBtnDiv">
+							<p><span id="searchResultHeader" keyword="searchClient_result_optionTitle" class="searchOptMsg">Select a client from from above or</span> <span id="searchResultKey"  class="searchOptMsg"></span><p> 
+							<button id="showAddNewClientForm" keyword="searchClient_result_btn_addClient" class="btn btn-default actionBtn">Add a client</button>
+							<button id="backToSearchClientForm" keyword="searchClient_result_btn_backToSearch" class="btn btn-default actionBtn">Back to search</button>
+							<button id="showTodayCase" keyword="searchClient_result_btn_todayCases" class="btn btn-default actionBtn">Today's Cases</button>
+						</div>
+						
+						<div id="relationshipSearchBtnDiv" style="display:none;">
+							<button id="showAddNewRelationClientFormBtn" keyword="searchClient_result_btn_addRelationshipClient" class="btn btn-default actionBtn">Add a client</button>
+							<button id="backToSearchRelationshipResultBtn" keyword="relationship_search_result_btn_backSearchForm" class="btn btn-default actionBtn">Back to search</button>
+							<button name="backToClientFormBtn" keyword="relationship_search_result_btn_back_clientForm" class="btn btn-default actionBtn">Back to client</button>
+						</div>
 					</div>
 				</div>
 				
 					
 				<div id="addClientFormDiv" style="display:none;" class="mainContent">	
-					<h4 class="headerList">Add Client</h4>
-		  					
+					<a><h4 id="addClientFormHeader">Add Client</h4></a>
+		  			<h5 id="relationshipMsg" style="display:none;"><span id="headerList" keyword="relationship_clientForm_TrackLink"></span></h5>
+				    
 					<div id="addClientFormTab">
 		  				
 						<ul>
@@ -315,6 +341,7 @@
 				    		<li><a href="#contactLogDiv"><span keyword="dataEntryForm_tab_contactLog_headerTitle">Contact Log</span> <span style="color:red;padding-left: 10px;" class="tabIcon glyphicon glyphicon-user"></span></a></li>
 				    		<li><a href="#artReferDiv"><span keyword="dataEntryForm_tab_ARTRefer_headerTitle">ART Refer.</span> <span style="color:red;padding-left: 10px;" class="tabIcon glyphicon glyphicon-plus"></span></a></li>
 				  			<li><a href="#prepReferDiv"><span keyword="dataEntryForm_tab_prepRefer_headerTitle">PrEP Refer.</span> <span style="color:red;padding-left: 10px;" class="tabIcon glyphicon glyphicon-plus"></span></a></li>
+							<li><a href="#indexingDiv" keyword="dataEntryForm_tab_indexing_headerTitle">Indexing</a></li>
 				  		</ul>
 				  		
 				  		
@@ -354,7 +381,7 @@
 				      			</table>
 				      		</form>
 				      		
-				  			<form class="form-horizontal"">
+				  			<form class="form-horizontal">
 				  				<table class='table table-hover table-striped previousTestTb panel panel-default' id="addEventForm">
 				  						
 	  								<!--  Action bar -->
@@ -570,16 +597,50 @@
 								</table>
 							</form>
 						</div>		
+						
+						<div id="indexingDiv">
+							<table class='table table-hover table-striped panel panel-default previousTestTb'>
+								<thead>
+									<th keyword="indexingDiv_tab_indexing_date">Indexing date</th>
+									<th keyword="indexingDiv_tab_relationship">Relationship</th>
+									<th keyword="indexingDiv_tab_CUICOrName">CUIC/Name</th>
+									<th keyword="indexingDiv_tab_HIV_Status" colspan='2'>HIV Status</th>
+								</thead>
+								<tbody id="indexingListTb"></tbody>
 								
+								<!--  Action bar -->
+  								<tbody>
+									<tr class="actionBar">
+										<th colspan="4">
+											<span style="float:right;" keyword="contactLogForm_tab_btn_add">Add</span>
+										</th>
+										<th style="width:20px;background-color:#afc3d8;" class="actionCell">
+											<button id="showSearchClientRelationshipFromBtn" class="imgBtn"><span class="glyphicon glyphicon-plus"></span></button>
+										</th>
+									</tr>
+								</tbody>
+							</table>
+						</div>		
 					</div>	
+					
 					
 					<div class="form-group" style="text-align:center;">
 						<br>
-						<button class="btn btn-default actionBtn" name="backToSearchClientResultBtn" keyword="dataEntryForm_tab_btn_back">Back</button>
-						<button class="btn btn-default actionBtn" name="backToCaseListBtn" keyword="dataEntryForm_tab_btn_back">Back</button>
+						<button class="btn btn-default actionBtn" style="background-color: #e2e2e2;" name="backToSearchClientResultBtn" keyword="dataEntryForm_tab_btn_back">Back</button>
+						<button class="btn btn-default actionBtn" style="background-color: #e2e2e2;" name="backToCaseListBtn" keyword="dataEntryForm_tab_btn_back">Back</button>
 					</div>
 						
 		  		</div>	
+				
+				<!--  Dialog to add a relationship with exiting client -->
+				
+				<div id="addRelationshipFormDiv" style="display:none;justify-content: center;">
+					<div style="text-align:center;">
+						<button id="addRelationshipBtn" keyword="relationship_btn_addRelationship" class="btn btn-default">Save</button>
+						<button id="cancelRelationshipBtn" keyword="relationship_btn_cancelRelationship" class="btn btn-default">Back</button>
+					</div>
+				</div>
+				
 				
 				<!-- Dialog to ask users if they want to complete event OR just want to save and edit later -->
 				
@@ -664,7 +725,7 @@
 						</tr>
 						
 						<tr>
-							<td  keyword="settings_rowHeader_setupProgramSection"></td>
+							<td  keyword="settings_rowHeader_setupProgramSection">Program Sections</td>
 							<td>	
 						        <button style="margin-top: 10px;" id="setupProgamSectionBtn" class="btn btn-default" keyword="settings_btn_setup">Setup</button>
 							</td>

@@ -82,10 +82,11 @@ function CounsellorListMaganement( _mainPage  )
 			Util.resetPageDisplay();
 			
 			ClientUtil.setSearchClientStatus();
+			Element.backToSearchClientResultBtnTag.hide();
 			
 			Element.headerListTag.removeAttr("clientId");
 			Element.relationshipMsgTag.hide();
-			Element.relationshipMsgTag.attr( "clientId", clientId );
+//			Element.relationshipMsgTag.removeAttr( "clientId" );
 			Element.relationshipMsgTag.find("[clientId]").remove();
 			
 			me.storageObj.removeItem("clientId");

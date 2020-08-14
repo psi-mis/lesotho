@@ -29,7 +29,7 @@ public class MetaDataController
     private static String URL_QUERY_LOAD_ORGUNITS_BY_PROGRAM =  Util.LOCATION_DHIS_SERVER + "/api/programs/" + Util.ID_PROGRAM + ".json?fields=organisationUnits[id]";
     private static String URL_QUERY_GET_CATEGORY_OPTION_COMBO =  Util.LOCATION_DHIS_SERVER + "/api/categories/" + Util.USER_CATEGORY_ID + ".json?fields=categoryOptions[id,name,code]";
     private static String URL_QUERY_GET_TRACKEDENTITYATTRIBUTE =  Util.LOCATION_DHIS_SERVER + "/api/trackedEntityAttributes.json?fields=id,name,shortName&paging=false";
-    private static String URL_QUERY_GET_RELATIONSHIPTYPE = Util.LOCATION_DHIS_SERVER + "/api/relationshipTypes.json?fields=id,displayName&paging=false";
+    private static String URL_QUERY_GET_RELATIONSHIPTYPE = Util.LOCATION_DHIS_SERVER + "/api/relationshipTypes.json?fields=id,displayName,toFromName,fromToName&paging=false";
     
     private static String URL_QUERY_SAVE_PROGRAMSECTION =  Util.LOCATION_DHIS_SERVER + "/api/programSections";
     

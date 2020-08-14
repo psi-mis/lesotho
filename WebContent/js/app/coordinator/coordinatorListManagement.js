@@ -385,6 +385,7 @@ function CoordinatorListManagement( _mainPage )
 	me.populateTodayFU = function( list )
 	{		
 		var tbodyTag = me.todayCaseTblTag.find("tbody");
+		tbodyTag.find("tr").remove();
 		
 		if( list.length > 0 )
 		{
@@ -744,8 +745,15 @@ function CoordinatorListManagement( _mainPage )
 		rowTag.click( function(){
 			Element.backToSearchClientResultBtnTag.hide();
 			Element.backToCaseListBtnTag.show();
+			Element.relationshipMsgTag.hide();
+			
+			Element.headerListTag.removeAttr("clientId");
+			Element.relationshipMsgTag.attr( "clientId", clientId );
+			Element.relationshipMsgTag.find("[clientId]").remove();
+			
 			var clientId = rowTag.attr("clientId");
 			var eventId = rowTag.attr("eventId");
+			Element.addClientFormTabTag.removeAttr( "client" );
 			
 			Util.resetPageDisplay();
 			me.mainPage.clientFormManagement.loadClientDetails( clientId, eventId, function(){

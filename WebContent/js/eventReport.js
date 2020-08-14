@@ -45,7 +45,7 @@ function EventReport()
 			,success: function( response ) 
 			{
 				// Attribute OptionSet
-				var psAttributes = response.metaData.programAttributes.programTrackedEntityAttributes;					
+				var psAttributes = response.metaData.programTrackedEntityAttributes;					
 				for( var i in psAttributes )
 				{
 					var attribute = psAttributes[i].trackedEntityAttribute;
@@ -65,20 +65,24 @@ function EventReport()
 					
 				// Data Element OptionSet
 					
-				var psDEs = response.metaData.programStages[0].programStageDataElements;					
-				for( var i in psDEs )
+				for( var j in response.metaData.programStages )
 				{
-					var dataElement = psDEs[i].dataElement;
-					
-					me.metaData[dataElement.id] = {};
-					me.metaData[dataElement.id].shortName = dataElement.formName;
-					if( dataElement.optionSet !== undefined )
+					var psDEs = response.metaData.programStages[j].programStageDataElements;					
+				
+					for( var i in psDEs )
 					{
-						var options = dataElement.optionSet.options;
-						for( var i in options )
+						var dataElement = psDEs[i].dataElement;
+						
+						me.metaData[dataElement.id] = {};
+						me.metaData[dataElement.id].shortName = dataElement.formName;
+						if( dataElement.optionSet !== undefined )
 						{
-							var option = options[i];
-							me.metaData[dataElement.id][option.code] = option.name;
+							var options = dataElement.optionSet.options;
+							for( var i in options )
+							{
+								var option = options[i];
+								me.metaData[dataElement.id][option.code] = option.name;
+							}
 						}
 					}
 				}

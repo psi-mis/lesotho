@@ -122,12 +122,14 @@ function Coordinator( storageObj, translationObj )
 			});
 		});
 		
-		me.searchClientLinkTag.click(function(){
+		Element.searchClientLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
 				Util.resetPageDisplay();
+				ClientUtil.setSearchClientStatus();
 
+				Element.addClientFormTabTag.removeAttr( "client" );
 				me.storageObj.removeItem("clientId");
 				me.storageObj.removeItem("eventId");
 				
@@ -136,30 +138,30 @@ function Coordinator( storageObj, translationObj )
 			});
 		});
 		
-		me.settingsLinkTag.click(function(){
+		Element.settingsLinkTag.click(function(){
 			me.storageObj.addItem("page", me.settingsManagement.PAGE_SETTINGS);
 			Util.resetPageDisplay();
-			me.settingsManagement.settingsDivTag.show("fast");
+			Element.settingsDivTag.show("fast");
 			$('.overlay').click();
 		});
 		
-		me.aboutLinkTag.click(function(){
+		Element.aboutLinkTag.click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
 				me.storageObj.addItem("page", me.settingsManagement.PAGE_ABOUT);
 				Util.resetPageDisplay();
-				me.settingsManagement.aboutDivTag.show("fast");
+				Element.aboutDivTag.show("fast");
 			});
 		});
 		
-		me.moveToSettingLinkTag.click(function(){
+		Element.moveToSettingLinkTag.click(function(){
 			Util.resetPageDisplay();
-			me.settingsManagement.settingsDivTag.show("fast");
+			Element.settingsDivTag.show("fast");
 			$('.overlay').click();
 		});
 		
-		me.reportLinkTag .click(function(){
+		Element.reportLinkTag .click(function(){
 			$('.overlay').click();
 			
 			me.settingsManagement.checkOrgunitSetting( function(){
@@ -251,7 +253,7 @@ function Coordinator( storageObj, translationObj )
 		}
 		else if( page == me.settingsManagement.PAGE_COMSUMABLES )
 		{
-			me.consumablesDivTag.show("fast");
+			Element.consumablesDivTag.show("fast");
 		}
 		else if( page == me.settingsManagement.PAGE_REPORT_PARAM )
 		{
@@ -298,7 +300,7 @@ function Coordinator( storageObj, translationObj )
 				{
 					var attributeId = clientSearch[i].attribute;
 					var value = clientSearch[i].value;
-					var field = me.searchClientFormTag.find("[attribute='" + attributeId + "']");
+					var field = Element.searchClientFormTag.find("[attribute='" + attributeId + "']");
 	
 					if( field.attr("isDate") == "true" )
 					{
@@ -309,7 +311,7 @@ function Coordinator( storageObj, translationObj )
 				
 				// STEP 2. Search clients by criteria
 				
-				me.runSearchClients( function(){
+				me.searchClientManagement.runSearchClients( function(){
 	
 					if( subPage == me.settingsManagement.PAGE_SEARCH_EDIT_CLIENT )
 					{

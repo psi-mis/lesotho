@@ -172,7 +172,7 @@ function Validation( translationObj )
 	me.checkValueInteger = function( inputTag, divTag )
 	{
 		var value = inputTag.val();
-		var valid = !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
+		var valid = value!="" && !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 		
 		if( !valid )
 		{
@@ -184,7 +184,7 @@ function Validation( translationObj )
 	me.checkValueIntegerPositive = function( inputTag, divTag )
 	{
 		var value = inputTag.val();
-		var valid = ( !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) ) && value > 0 ;
+		var valid = ( value!="" && !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) ) && value > 0 ;
 		
 		if( !valid )
 		{
@@ -196,7 +196,7 @@ function Validation( translationObj )
 	me.checkValueIntegerZeroOrPositive = function( inputTag, divTag )
 	{
 		var value = inputTag.val();
-		var valid = ( !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) ) && value >= 0 ;
+		var valid = ( value!="" && !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) ) && value >= 0 ;
 		
 		if( !valid )
 		{
@@ -208,7 +208,7 @@ function Validation( translationObj )
 	me.checkValueIntegerNegative = function( inputTag, divTag )
 	{
 		var value = inputTag.val();
-		var valid = ( !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) ) && value < 0 ;
+		var valid = ( value!="" && !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) ) && value < 0 ;
 		
 		if( !valid )
 		{
@@ -222,7 +222,7 @@ function Validation( translationObj )
 		var valid = true;
 		var value = inputTag.val();
 		
-		if ( value && !( !isNaN(parseFloat(value)) && isFinite(value) ) )
+		if ( value!="" && !( !isNaN(parseFloat(value)) && isFinite(value) ) )
 		{
 			divTag.append( me.getErrorSpanTag( 'common_validation_valueNumber' ) );
 			valid = false;

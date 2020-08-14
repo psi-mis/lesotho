@@ -2013,7 +2013,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			var idConfig = idConfigList[i];
 			var detailsConfig;
 			
-			if( idConfig.type == "dataElement" && me.metadata_dataElements[idConfig.id] )
+			if( idConfig.type == "dataelement" && me.metadata_dataElements[idConfig.id] )
 			{
 				detailsConfig = me.metadata_dataElements[idConfig.id].dataElement;
 				detailsConfig.displayName = detailsConfig.formName;
@@ -2023,7 +2023,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				detailsConfig = me.metadata_Attributes[idConfig.id].trackedEntityAttribute;
 				detailsConfig.displayName = detailsConfig.name;
 			}
-			
+		
 			
 			if( detailsConfig )
 			{
@@ -2148,21 +2148,53 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 								}
 								
 								jsonData[MetaDataID.stage_HIVTesting].eventDate = Util.getCurrentDate();
+								jsonData[MetaDataID.stage_HIVTesting].event = response.hivEventId;
+								
 								latestEnrollment.events.push( jsonData[MetaDataID.stage_HIVTesting] );
 								
 								jsonData[MetaDataID.stage_ContactLog].eventDate = Util.getCurrentDate();
+								jsonData[MetaDataID.stage_ContactLog].event = response.contactLogEventId;
 								latestEnrollment.events.push( jsonData[MetaDataID.stage_ContactLog] );
 							}
 							
+							// Add relationship for clientB
 							var relationshipName = me.mainPage.settingsManagement.relationshipTypes[jsonData.relationshipType];
 							if( clientData.client.relationships == undefined )
 							{
 								clientData.client.relationships = [];
 							}
-							clientData.client.relationships.push( 
-									Relationships.genrateRelationshipJson( jsonData.clientAId, clientBId, jsonData.relationshipType, relationshipName ) );
-							
+							var newRelationship = Relationships.genrateRelationshipJson( jsonData.clientAId, clientBId, jsonData.relationshipType, relationshipName );
+							clientData.client.relationships.push( newRelationship );
 							me.clientDataList[clientBId] = clientData;
+							
+							
+							me.relationshipsObj.relationshipTEI_List[ clientBId ] = {
+									"relationshipType" : newRelationship.relationshipName,
+									"created": newRelationship.created,
+									"client": clientData.client,
+									"enrollments": clientData.enrollments
+							};
+							
+							
+							// Add relationship for clientA
+							var clientAId = jsonData.clientAId;
+							var clientAIData = me.clientDataList[clientAId];
+							
+							if( clientAIData.client.relationships == undefined )
+							{
+								clientAIData.client.relationships = [];
+							}
+							newRelationship = Relationships.genrateRelationshipJson( clientBId, clientAId, jsonData.relationshipType, relationshipName );
+							clientAIData.client.relationships.push( newRelationship );
+							me.clientDataList[clientAId] = clientAIData;
+							
+
+							me.relationshipsObj.relationshipTEI_List[ clientAId ] = {
+									"relationshipType" : newRelationship.relationshipName,
+									"created": newRelationship.created,
+									"client": clientAIData.client,
+									"enrollments": clientAIData.enrollments
+							};
 							
 							
 							// Update list of relationship information
@@ -2223,26 +2255,22 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 					"programStage": MetaDataID.stage_HIVTesting,
 					"dataValues":[
 						{
-							"dataElement" : MetaDataID.de_FinalResult_HIVStatus, 
-							"value" : Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']").val() 
-						},
-						{
 							"dataElement" : MetaDataID.de_HIV_Status, 
-							"value" : Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_HIV_Status + "']").val() 
+							"value" : Util.getJsonDataValue( Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_HIV_Status + "']"), "dataelement" ).value
 						},
 						{
 							"dataElement" : MetaDataID.de_Notification_Method, 
-							"value" : Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_Notification_Method + "']").val() 
+							"value" : Util.getJsonDataValue( Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_Notification_Method + "']"), "dataelement" ).value
 						}
 					]
 			};
 			
-			var deFinalResultHIVStatusTag = Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
-			if( !deFinalResultHIVStatusTag.attr("disabled") == undefined && deFinalResultHIVStatusTag.val() != "" )
+			var deFinalResultHIVStatusTag = Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+			if( deFinalResultHIVStatusTag.attr("disabled") == undefined && deFinalResultHIVStatusTag.val() != "" )
 			{
 				jsonData[MetaDataID.stage_HIVTesting].dataValues.push({
 					"dataElement" : MetaDataID.de_FinalResult_HIVStatus, 
-					"value" : deFinalResultHIVStatusTag.val() 
+					"value" : Util.getJsonDataValue( deFinalResultHIVStatusTag, "dataelement" ).value
 				});
 			}
 			
@@ -2252,7 +2280,19 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 					"dataValues":[
 						{
 							"dataElement" : MetaDataID.de_DueDate, 
-							"value" : Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_DueDate + "']").val() 
+							"value" : Util.getJsonDataValue( Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_DueDate + "']"), "dataelement" ).value
+						},
+						{
+							"dataElement" : MetaDataID.de_TypeOfContact,
+							"value" : "CLIENT"
+						},
+						{
+							"dataElement" : MetaDataID.de_NextAction,
+							"value" : "NONE"
+						},
+						{
+							"dataElement" : MetaDataID.de_Outcome,
+							"value" : "TBD"
 						}
 					]
 			};
@@ -3830,7 +3870,20 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.saveClientAfter = function( response, exeFunc, groupId, showSuccessMsg )
 	{
 		// STEP 1. Set the client as attribute for the form. 
-		delete response["enrollments"];
+
+		var clientId = response.trackedEntityInstance;
+		if( Element.addClientFormTabTag.attr( "client" ) == undefined )// For new client
+		{
+			me.clientDataList[clientId] ={};
+			me.clientDataList[clientId].client = response;
+			me.clientDataList[clientId].enrollment = response.enrollments;
+		}
+		else
+		{
+			me.clientDataList[clientId].client = response;
+		}
+		
+		
 		Element.addClientFormTabTag.attr( "client", JSON.stringify( response ) );
 		
 		// STEP 2. Set the header of the [Client Form] Tab
@@ -4828,7 +4881,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		me.relationshipsObj.loadAllRelationshipTEIs( me.clientDataList, clientAId, relationshipData, tranlatedTextMsg, function( teiList ){
 			
-			me.relationshipTEI_List
 			for( var i in teiList ) // "i" is teiId
 			{
 				var relationshipDetails = me.relationshipsObj.relationshipTEI_List[ i ];

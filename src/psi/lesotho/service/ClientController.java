@@ -149,10 +149,7 @@ public class ClientController
                     responseInfo = ClientController.saveRelationshipClient( clientBId, ouId, receivedData.getJSONObject( "client" ) );
                     
                     clientBId = responseInfo.data.getString("trackedEntityInstance");
-//                    if( !responseInfo.data.has( "relationships" ) )
-//                    {
-//                        responseInfo.data.put( "relationships", new JSONArray() );
-//                    }
+                    
                     
                     if( responseInfo.responseCode == 200 )
                     {
@@ -163,11 +160,25 @@ public class ClientController
                         if( responseInfo_Relationship.responseCode == 200 
                             && receivedData.has( Util.ID_STAGE ) )
                         {
-                            EventController.createRelationEvents( receivedData, clientBId, ouId, loginUsername );
+                            // Create "HIVTest" event
+                            JSONObject hivEventJsonData = receivedData.getJSONObject( Util.ID_STAGE );
+                            ResponseInfo responseInfo_HIVEvent = EventController.createEvent( hivEventJsonData, clientBId, ouId, loginUsername );
+         
+                            String hivEventId = EventController.getEventIdAfterCreated( responseInfo_HIVEvent.data );
+                            responseInfo.data.put( "hivEventId", hivEventId );
+                            
+                            // Create "ContactLog" event
+                            JSONObject contactLogJsonData = receivedData.getJSONObject( Util.ID_STAGE_CONTACTLOG );
+                            ResponseInfo responseInfo_ContactLog = EventController.createEvent( contactLogJsonData, clientBId, ouId, loginUsername );
+       
+                            String contactLogEventId = EventController.getEventIdAfterCreated( responseInfo_ContactLog.data );
+                            responseInfo.data.put( "contactLogEventId", contactLogEventId );
                             
 //                            responseInfo.data.getJSONArray( "relationships" ).put( responseInfo_Relationship.inputData );
                         }
                     }
+                    
+                    responseInfo.output = responseInfo.data.toString();
                     
                 }
             }
@@ -244,14 +255,16 @@ public class ClientController
                 responseInfo.data.put( "trackedEntityInstance", clientId );
 
                 ResponseInfo responseInfo_Enrollment = ClientController.enrollClient( clientId, ouId );
-                responseInfo.data.put( "enrollments", responseInfo_Enrollment.inputData );
+                
+                JSONObject enrollment = responseInfo_Enrollment.inputData;
+                JSONArray enrollments = new JSONArray();
+                enrollments.put( enrollment );
+                responseInfo.data.put( "enrollments", enrollments );
 
                 responseInfo.output = responseInfo.data.toString();
             }
 
         }
-
-System.out.println( "\n\n === saveRelationshipClient : " + responseInfo.data.toString() );
         
         return responseInfo;
     }
@@ -434,7 +447,9 @@ System.out.println( "\n\n === saveRelationshipClient : " + responseInfo.data.toS
             {
                 ResponseInfo responseInfo_Enrollment = ClientController.enrollClient(clientId, ouId );
                 
-                clientData.put( "enrollments", responseInfo_Enrollment.inputData );
+
+                JSONObject enrollment = responseInfo_Enrollment.inputData;
+                enrollements.put( enrollment );
             }
             
             responseInfo.data = clientData;
@@ -501,6 +516,7 @@ System.out.println( "\n\n === saveRelationshipClient : " + responseInfo.data.toS
         jsonData.put( "program", programId );
         jsonData.put( "enrollmentDate", today );
         jsonData.put( "incidentDate", today );
+        jsonData.put( "status", "ACTIVE" );
 
         return jsonData;
     }

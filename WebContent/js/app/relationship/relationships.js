@@ -95,7 +95,7 @@ function Relationships()
 // Static variables and methods
  
 Relationships.addRelationShipFormIds = [
-	{ "type": "dataElement", "id" : "Ghs7vYIWIpi", "mandatory" : "true" },
+	{ "type": "dataelement", "id" : "Ghs7vYIWIpi", "mandatory" : "true" },
 	{ "type": "attribute", "id" : "R9Lw1uNtRuj", "mandatory" : "true", "readOnly" : true },
 	{ "type": "attribute", "id" : "TBt2a4Bq0Lx", "mandatory" : "true", "readOnly" : true },
 	{ "type": "attribute", "id" : "JcGai6pHG1M", "mandatory" : "true", "readOnly" : true },
@@ -107,14 +107,14 @@ Relationships.addRelationShipFormIds = [
 	{ "type": "attribute", "id" : "NLNTtpbT3c5", "mandatory" : "false" }, 
 	{ "type": "attribute", "id" : "jQilj6Wjweq", "mandatory" : "true" }, 
 	{ "type": "attribute", "id" : "Wea8fAtYVwx", "mandatory" : "false" }, 
-	{ "type": "dataElement", "id" : "UuKat0HFjWS", "mandatory" : "true", "readOnly" : true }, 
-	{ "type": "dataElement", "id" : "bCVRuaX7LwG", "mandatory" : "true" }, 
-	{ "type": "dataElement", "id" : "Eis9qerhBFg", "mandatory" : "true" }, 
+	{ "type": "dataelement", "id" : "UuKat0HFjWS", "mandatory" : "true", "readOnly" : true }, 
+	{ "type": "dataelement", "id" : "bCVRuaX7LwG", "mandatory" : "true" }, 
+	{ "type": "dataelement", "id" : "Eis9qerhBFg", "mandatory" : "true" }, 
 	{ "type": "attribute", "id" : "n8m5JoVrapA", "mandatory" : "true" }, 
 	{ "type": "attribute", "id" : "QnSYmezcVi0", "mandatory" : "true" }, 
 	{ "type": "attribute", "id" : "JRV6Z03Cu5H", "mandatory" : "true" }, 
 	{ "type": "attribute", "id" : "UTNfpVZjHcF", "mandatory" : "true" }, 
-	{ "type": "dataElement", "id" : "HcBFZsCt8Sy", "mandatory" : "true" }
+	{ "type": "dataelement", "id" : "HcBFZsCt8Sy", "mandatory" : "true" }
 ];
 
 Relationships.genrateRelationshipJson = function( clientAId, clientBId, relationshipTypeId, relationshipName )
@@ -122,6 +122,7 @@ Relationships.genrateRelationshipJson = function( clientAId, clientBId, relation
 	return {
 	  "relationshipType": relationshipTypeId,
 	  "relationshipName": relationshipName,
+	  "created" : Util.getCurrentDate(),
 	  "from": {
 	    "trackedEntityInstance": {
 	      "trackedEntityInstance": clientAId

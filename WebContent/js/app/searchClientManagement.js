@@ -56,6 +56,8 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			Element.selectOrgUnitWarningMsgTag.hide();
 			Element.searchResultTbTag.show();
 			Element.searchResultTag.show();
+			
+			Element.searchResultRelationshipTbTag.hide();
 		});
 			
 //		Element.backToSearchRelationshipClientResultBtnTag.click( function(){
@@ -245,8 +247,6 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					{
 						var searchResultTbTag = ClientUtil.getSearchResultTag();
 						searchResultTbTag.find("tbody").html("");
-//						Element.backToSearchClientResultBtnTag.show();
-//						Element.backToCaseListBtnTag.hide();
 						
 						me.searchClients( requestData, event, function( searchResult ){
 							var searchCriteria = me.getSearchCriteria( Element.searchClientFormTag );
@@ -427,11 +427,12 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		Element.addRelationshipFormDivTag.find( "[dataElement]" ).closest("tr").show();
 		Element.addRelationshipFormDivTag.removeAttr( "clientId" );
 		
+		Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
+		
 		// Add some attributes
 		if( clientId )
 		{
 			Element.addRelationshipFormDivTag.attr( "clientId", clientId );
-			Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
 		}
 		
 		// Disable some fields if the form is used for editting relationship.

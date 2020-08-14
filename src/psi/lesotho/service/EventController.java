@@ -802,29 +802,6 @@ public class EventController
 
         return responseInfo;
     }
-
-
-    public static ResponseInfo createRelationEvents( JSONObject receivedData, String clientBId, String ouId, String loginUsername )
-    {
-        ResponseInfo responseInfo = null;
-        
-        try
-        {
-            // Create "HIVTest" event
-            JSONObject hivEventJsonData = receivedData.getJSONObject( Util.ID_STAGE );
-            responseInfo = EventController.createEvent( hivEventJsonData, clientBId, ouId, loginUsername );
-            
-            // Create "ContactLog" event
-            JSONObject contactLogJsonData = receivedData.getJSONObject( Util.ID_STAGE_CONTACTLOG );
-            responseInfo = EventController.createEvent( contactLogJsonData, clientBId, ouId, loginUsername );
-        }
-        catch ( Exception ex )
-        {
-            System.out.println( "Exception: " + ex.toString() );
-        }
-        
-        return responseInfo;
-    }
     
     // ===============================================================================================================
     // Supportive methods
@@ -888,6 +865,11 @@ public class EventController
         
     }
 
+    public static String getEventIdAfterCreated( JSONObject response )
+    {
+        return response.getJSONObject( "response" ).getJSONArray( "importSummaries" ).getJSONObject( 0 ).getString( "reference" );
+    }
+    
     // CREATE JSON FOR THIS - add voucher Id, linking info.. etc..
     private static JSONObject composeJsonEvent( JSONObject eventData, String teiId, String orgUnitId,
         String catOptionComboId )

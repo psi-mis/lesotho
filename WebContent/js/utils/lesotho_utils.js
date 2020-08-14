@@ -208,53 +208,64 @@ Util.getArrayJsonData = function( key, formTag, isGetEmptyValue )
 {
 	var jsonData = [];
 	formTag.find("input[" + key + "],select[" + key + "],textarea[" + key + "]").each(function(){
-		var item = $(this);
-		var attrId = item.attr(key);
-		var value = item.val();
 		
-		if( item.attr("type") == "checkbox" )
-		{
-			if( item.prop("checked") )
+			var data = Util.getJsonDataValue( $(this), key );
+			if( data )
 			{
-				value = "true";
+				jsonData.push(data);
 			}
-			else
-			{
-				value = "";
-			}
-		}
-		else if( item.tagName == "TEXTAREA" )
-		{
-			value = item.html();
-		}
-		
-		if( value != null && value !== "" )
-		{
-			if( item.attr("isDate") !== undefined && item.attr("isDate") == "true" && value != "" )
-			{
-				if( item.attr("isMonthYear") === "true" )
-				{
-					value = "01 " + value;
-				}
-				
-				value = Util.formatDate_DbDate( value );
-			}
-			else if( item.attr("isDateTime") !== undefined && item.attr("isDateTime") == "true" && value != "" )
-			{
-				value = Util.formatDate_DbDate( value );
-			}
-			
-			var data = {};
-			data[key] = attrId;
-			data["value"] = value;
-			//data["value"] = encodeURI(value);
-			
-			jsonData.push(data);
-		}		
 	});
 	
 	return jsonData;
 };
+
+Util.getJsonDataValue = function( item, key )
+{
+	var dataValue = null;
+	
+	var attrId = item.attr(key);
+	var value = item.val();
+	
+	if( item.attr("type") == "checkbox" )
+	{
+		if( item.prop("checked") )
+		{
+			value = "true";
+		}
+		else
+		{
+			value = "";
+		}
+	}
+	else if( item.tagName == "TEXTAREA" )
+	{
+		value = item.html();
+	}
+	
+	if( value != null && value !== "" )
+	{
+		if( item.attr("isDate") !== undefined && item.attr("isDate") == "true" && value != "" )
+		{
+			if( item.attr("isMonthYear") === "true" )
+			{
+				value = "01 " + value;
+			}
+			
+			value = Util.formatDate_DbDate( value );
+		}
+		else if( item.attr("isDateTime") !== undefined && item.attr("isDateTime") == "true" && value != "" )
+		{
+			value = Util.formatDate_DbDate( value );
+		}
+		
+		dataValue = {};
+		dataValue[key] = attrId;
+		dataValue["value"] = value;
+		//data["value"] = encodeURI(value);
+	}
+	
+	return dataValue;
+}
 
 Util.populateDataValues = function( formTag, dataList, propertyId )
 {
