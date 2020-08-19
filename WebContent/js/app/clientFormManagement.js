@@ -548,7 +548,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				
 				// Save data
 				
-				me.setAndSavePrepReferLinkageStatusAttrValue( function(){
+				me.setAndSavePrepReferLinkageStatusAttrValue( Element.prepReferOpenFormTag, function(){
 					
 					var prepReferClosureEvent = Element.prepReferCloseFormTag.attr("event");
 					if( prepReferClosureEvent !== undefined )
@@ -640,7 +640,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 					Element.prepReferCloseFormTag.attr( "event", JSON.stringify( response ) );
 					
 					// Save data
-					me.setAndSavePrepReferLinkageStatusAttrValue( function(){
+					me.setAndSavePrepReferLinkageStatusAttrValue( Element.prepReferCloseFormTag.closest("div"), function(){
 						
 						var prepReferOpenEvent = Element.prepReferOpenFormTag.attr("event");
 						prepReferOpenEvent = JSON.parse( prepReferOpenEvent );
@@ -1688,8 +1688,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		{
 			Element.artReferCloseFormTag.find("input,select").each(function(){
 				me.setHideLogicTag( $(this), false);
-				$(this).val("");
 			});
+			
 			
 			me.setHideLogicTag( droppedReasonTag, true);
 			droppedReasonTag.val("");
@@ -1720,7 +1720,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		else if( closureLinkageOutcomeVal == "DROPPED" )
 		{
 			Element.artReferCloseFormTag.find("input,select").each(function(){
-				if( $(this).attr("dataelement") != MetaDataID.de_ARTLinkageStatusDropReason )
+				if( $(this).attr("dataelement") != MetaDataID.de_ARTClosureLinkageOutcome
+					&& $(this).attr("dataelement") != MetaDataID.de_ARTLinkageStatusDropReason )
 				{
 					me.setHideLogicTag( $(this), true);
 					$(this).val("");
@@ -1753,8 +1754,10 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		{
 			Element.prepReferCloseFormTag.find("input,select").each(function(){
 				me.setHideLogicTag( $(this), false);
-				$(this).val("");
 			});
+			
+			Element.prepReferCloseFormTag.find("[dataelement='" + MetaDataID.de_prepReferLinkageStatusDropReason + "']").val("");
+			
 			
 			me.setHideLogicTag( droppedReasonTag, true);
 			me.removeMandatoryForField( droppedReasonTag );
@@ -1810,7 +1813,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		var rowTag = tab.closest("tr");
 		if( hidden )
 		{
-			rowTag.find("input,select").val("");
+			rowTag.find("input,select,textarea").val("");
 			rowTag.addClass("logicHide");
 			rowTag.hide();
 		}
@@ -3524,12 +3527,13 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			linkageStatusFieldTag = me.getAttributeField( MetaDataID.attr_PrEPReferStatus );
 			if( linkageStatusFieldTag.val() != "" )
 			{
+				
 				// Remove the old attribute value
-				var artStatusAttrValue = {
+				var prEPReferStatusAttrValue = {
 						"attribute" : MetaDataID.attr_PrEPReferStatus
 						,"value" : linkageStatusFieldTag.val()
-				}
-				Util.findAndReplaceItemFromList( attributeData, "attribute", MetaDataID.attr_ARTStatus, artStatusAttrValue );
+				}				
+				Util.findAndReplaceItemFromList( attributeData, "attribute", MetaDataID.attr_PrEPReferStatus, prEPReferStatusAttrValue );
 			}
 			
 			// Add new attribute values
@@ -3830,11 +3834,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	};
 	
 
-	me.setAndSavePrepReferLinkageStatusAttrValue = function( exeFunc )
+	me.setAndSavePrepReferLinkageStatusAttrValue = function( formTag, exeFunc )
 	{
 		me.setPrepReferLinkageStatusAttrValue();
 		
-		me.saveClient( Element.prepReferCloseFormTag.closest("div"), function(){
+		me.saveClient( formTag, function(){
 			var linkageStatusFieldTag = me.getAttributeField( MetaDataID.attr_PrEPReferStatus );
 			Element.prepReferLinkageStatusLableTag.html( linkageStatusFieldTag.find("option:selected").text() );
 			if( exeFunc != undefined ) exeFunc();
@@ -3874,14 +3878,20 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		var clientId = response.trackedEntityInstance;
 		if( Element.addClientFormTabTag.attr( "client" ) == undefined )// For new client
 		{
-			me.clientDataList[clientId] ={};
+			me.clientDataList[clientId] = {};
 			me.clientDataList[clientId].client = response;
-			me.clientDataList[clientId].enrollment = response.enrollments;
+			me.clientDataList[clientId].enrollments = [{
+				"enrollmentDate" : Util.getCurrentDate(),
+				"status" : "ACTIVE"
+			}];
+			
+			Element.headerListTag.attr("clientId", clientId);
 		}
 		else
 		{
 			me.clientDataList[clientId].client = response;
 		}
+		
 		
 		
 		Element.addClientFormTabTag.attr( "client", JSON.stringify( response ) );
@@ -4235,11 +4245,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
             		{
 	            		tranlatedText = me.translationObj.getTranslatedValueByKey( "clientEntryForm_msg_completingEvent" );
             		}
-	            	else if( eventId != undefined )
+	            	else if( eventId != undefined ) // Update event
             		{
 	            		tranlatedText = me.translationObj.getTranslatedValueByKey( "clientEntryForm_msg_editingEvent" );
             		}
-	            	else if( eventId == undefined )
+	            	else if( eventId == undefined ) // Add event
             		{
 	            		tranlatedText = me.translationObj.getTranslatedValueByKey( "clientEntryForm_msg_creatingEvent" );
             		}
@@ -4252,6 +4262,28 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 					
 					me.disableClientDetailsAndCUICAttrGroup( true );
 
+					// Update event for client
+					var clientId = JSON.parse( Element.addClientFormTabTag.attr("client") ).trackedEntityInstance;
+					var clientData = me.clientDataList[clientId];
+					
+					
+					
+					if( eventId == undefined )
+					{
+						var latestErollment = ClientUtil.getLatestEnrollment( clientData.enrollments );
+						if( latestErollment.events == undefined )
+						{
+							latestErollment.events = [];
+						}
+						latestErollment.events.push( response );
+					}
+					else
+					{
+//						var event = ClientUtil.getLatestEventByEnrollments( clientData.enrollments, jsonData.programStage );
+//						event = response;
+						
+						ClientUtil.replaceLatestEventByEnrollments( clientData.enrollments, jsonData.programStage, response );
+					}
 					
 //					if( me.checkIfARTEvent( jsonData ) )
 //					{
@@ -4615,7 +4647,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		// STEP 3. Get events
 		
 		var latestEnrollment = ClientUtil.getLatestEnrollment( data.enrollments );
-		var events = ( latestEnrollment ) ? latestEnrollment.events : [];
+		var events = ( latestEnrollment && latestEnrollment.events ) ? latestEnrollment.events : [];
+		events = Util.sortDescByKey( events, "eventDate" );
+		
 		var todayEvent = false;
 		var latestEvent;
 		var activeHIVTestingEvent;
@@ -4643,11 +4677,16 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				if( event.status == "ACTIVE" ) // && activeHIVTestingEvent === undefined )
 				{
 					activeHIVTestingEvent = event;
+					artHIVTestingEvent = event;
 				}
 				// Get completed event list
 				else
 				{
 					completedHIVTestingEvents.push( event );
+					if( artHIVTestingEvent == undefined )
+					{
+						artHIVTestingEvent = event;
+					}
 				}
 				
 				// Check event is today event
@@ -4730,7 +4769,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		// ------------------------------------------------------------------------------------------------
 		// [Indexing] TAB
 		
-		me.populateRelationShips( data.client.trackedEntityInstance, data.client.relationships );
+		var relationships =  data.client.relationships;
+		if( relationships && relationships.length > 0 )
+		{
+			me.populateRelationShips( data.client.trackedEntityInstance, data.client.relationships );
+		}
 		
 		
 		// ---------------------------------------------------------------------------------------
@@ -5247,7 +5290,10 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		if( closureLinkageOutcomeVal == "SUCCESS" )
 		{
 			Element.artReferCloseFormTag.find("input,select").each(function(){
-				me.setHideLogicTag( $(this), false);
+				if( $(this).attr("dataelement") != MetaDataID.de_ARTClosureLinkageOutcome )
+				{
+					me.setHideLogicTag( $(this), false);
+				}
 			});
 		
 			me.setHideLogicTag( droppedReasonTag, true);
@@ -5269,7 +5315,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		else if( closureLinkageOutcomeVal == "DROPPED" )
 		{
 			Element.artReferCloseFormTag.find("input,select").each(function(){
-				if( $(this).attr("dataelement") != MetaDataID.de_artLinkageStatusDropReason )
+				if( $(this).attr("dataelement") != MetaDataID.de_ARTClosureLinkageOutcome
+					&& $(this).attr("dataelement") != MetaDataID.de_ARTLinkageStatusDropReason )
 				{
 					me.setHideLogicTag( $(this).closest("tr"), true);
 				}
@@ -5297,9 +5344,10 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		if( closureLinkageOutcomeVal == "SUCCESS" )
 		{
 			Element.prepReferCloseFormTag.find("input,select").each(function(){
-//				if( $(this).attr("attribute") != MetaDataID.attr_PrEPReferClosure_EventDate
-//					 &&  $(this).attr("attribute") != MetaDataID.attr_PrEPReferClosure_Usernames )
-				me.setHideLogicTag( $(this), false);
+				if( $(this).attr("dataelement") != MetaDataID.de_prepReferClosureLinkageOutcome )
+				{
+					me.setHideLogicTag( $(this), false);
+				}
 			});
 		
 			me.setHideLogicTag( droppedReasonTag, true);
@@ -5322,7 +5370,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		else if( closureLinkageOutcomeVal == "DROPPED" )
 		{
 			Element.prepReferCloseFormTag.find("input,select").each(function(){
-				if( $(this).attr("dataelement") != MetaDataID.de_prepReferLinkageStatusDropReason )
+				if( $(this).attr("dataelement") != MetaDataID.de_prepReferClosureLinkageOutcome
+						&& $(this).attr("dataelement") != MetaDataID.de_prepReferLinkageStatusDropReason )
 				{
 					me.setHideLogicTag( $(this), true);
 				}

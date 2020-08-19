@@ -136,11 +136,14 @@ public class EventController
                     if ( eventId == null )
                     {
                         responseInfo = EventController.createEvent( receivedData, clientId, ouId, loginUsername );
+                        
+                        System.out.println( "\n\n ADD responseInfo : " + responseInfo.output );
                     }
                     // Update Event
                     else
                     {
                         responseInfo = EventController.updateEvent( eventId, receivedData );
+                        System.out.println( "\n\n UPDATE responseInfo : " + responseInfo.output );
                     }
                 } 
                 // Load event by ID

@@ -165,6 +165,34 @@ ClientUtil.getLatestEventByEnrollments = function( enrollments, stageId )
 	
 }
 
+
+ClientUtil.replaceLatestEventByEnrollments = function( enrollments, stageId, eventJson )
+{
+	var enrollment = ClientUtil.getLatestEnrollment( enrollments );
+	
+	if( enrollment )
+	{
+		// We need to sort events list becasue there are some stages are repeatable
+		var orderedEvents = Util.sortDescByKey( enrollment.events, "eventDate" )
+		
+		for( var i=0; i<orderedEvents.length; i++ )
+		{
+			if( orderedEvents[i].programStage == stageId )
+			{
+				enrollment.events.push( eventJson );
+				enrollment.events.splice(i, 1);
+//				delete orderedEvents[i];	
+				
+				return;
+			}
+		}
+	}
+	
+}
+
+
+
+
 ClientUtil.getLatestEvent = function( events, stageId )
 {
 	var orderedEvents = Util.sortDescByKey( events, "eventDate" );

@@ -471,10 +471,6 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
 				var disabled = ( idConfig.readOnly && inputTag.val() != "" );
 				
-				if( idConfig.readOnly )
-				{
-					console.log( idConfig.id + " - inputTag.val() :  " + inputTag.val() + " - disabled : " + disabled );
-				}
 				Util.disableTag( inputTag, disabled );
 			}
 		}
@@ -543,6 +539,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			
 			ClientUtil.setMainClientFormStatus();
 
+			Element.addClientFormTabTag.removeAttr( "client" );
 			Element.backToSearchClientResultBtnTag.show();
 			Element.backToCaseListBtnTag.hide();
 

@@ -433,13 +433,14 @@ function CounsellorListMaganement( _mainPage  )
 			Element.backToCaseListBtnTag.show();
 			Element.relationshipMsgTag.hide();
 			
+			var clientId = rowTag.attr("clientId");
+			var eventId = rowTag.attr("eventId");
+			
+			Element.addClientFormTabTag.removeAttr( "client" );
+			
 			Element.headerListTag.removeAttr("clientId");
 			Element.relationshipMsgTag.attr( "clientId", clientId );
 			Element.relationshipMsgTag.find("[clientId]").remove();
-			
-			var clientId = rowTag.attr("clientId");
-			var eventId = rowTag.attr("eventId");
-			Element.addClientFormTabTag.removeAttr( "client" );
 			
 			Util.resetPageDisplay();
 			me.clientFormManagement.loadClientDetails( clientId, eventId, function(){
