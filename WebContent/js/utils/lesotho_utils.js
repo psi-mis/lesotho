@@ -159,7 +159,7 @@ Util.setAutoCompleteTag = function( selectTag )
 
 Util.disableForm = function( tag, isDisable )
 {
-	var inputTags = tag.find("input,selec,textarea,button");
+	var inputTags = tag.find("input,select,textarea,button");
 	inputTags.each( function(){
 		if( $(this).attr( 'isReadOnly' ) == undefined )
 		{

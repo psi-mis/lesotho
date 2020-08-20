@@ -106,7 +106,6 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					$(this).val( value );
 				}
 			});
-			Util.disableForm( Element.addRelationshipFormDivTag, false );
 		});
 		
 		Element.backToSearchRelationshipResultBtnTag.click( function(){
