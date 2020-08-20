@@ -18,17 +18,12 @@ ClientUtil.setSearchClientStatus = function()
 {
 	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_CLIENT;
 
-	
-//	Element.searchClientBtnTag.show();
 	Element.clientSearchBtnDivTag.show();
 	Element.searchResultTbTag.show();
 
 	Element.backToClientFormBtnTag.hide();
 	Element.relationshipSearchBtnDivTag.hide();
 	Element.searchResultRelationshipTbTag.hide();
-	
-//
-//	Element.backToCaseListBtnTag.hide();
 	
 }
 
@@ -43,18 +38,6 @@ ClientUtil.getSearchResultTag = function()
 	return ( ClientUtil.isSearchClientStatus() ) ? Element.searchResultTbTag : Element.searchResultRelationshipTbTag ;
 }
 
-// For [ClientForm]
-ClientUtil.setMainClientFormStatus = function()
-{
-//	Element.backToMainClientFormBtnTag.hide();
-	ClientUtil.clientRelationShip = ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS;
-}
-
-ClientUtil.isMainClientFormStatus = function()
-{
-	return ClientUtil.clientRelationShip == ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS;
-}
-
 //--------------------------------------------------------------------------------
 //For relationship client
 //---------------------------------------------------------------------------------
@@ -63,41 +46,18 @@ ClientUtil.setSearchRelationshipStatus = function()
 {
 	ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_RELATIONSHIP;
 	
-//	Element.backToSearchClientResultBtnTag.hide();
-//	Element.searchClientBtnTag.hide();
 	Element.clientSearchBtnDivTag.hide();
-//	Element.backToCaseListBtnTag.hide();
 	Element.searchResultTbTag.hide();
 
-//	Element.searchRelationshipClientBtnTag.show();
 	Element.backToClientFormBtnTag.show();
-//	Element.backToSearchRelationshipClientResultBtnTag.show();
 	Element.relationshipSearchBtnDivTag.show();
 	Element.searchResultRelationshipTbTag.show();
-//	
-//	Element.backToCaseListBtnTag.hide();
 }
 
 
 ClientUtil.isSearchRelationshipStatus = function()
 {
 	return ( ClientUtil.searchStatus == ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS );
-}
-
-
-ClientUtil.setRelationshipClientFormStatus = function()
-{
-//	Element.backToSearchClientResultBtnTag.hide();
-//	Element.backToCaseListBtnTag.hide();
-//	
-//	Element.backToMainClientFormBtnTag.show();
-	ClientUtil.clientRelationShip = ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS;
-}
-
-
-ClientUtil.isRelationshipClientFormStatus = function()
-{
-	return ClientUtil.clientRelationShip == ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS;
 }
 
 

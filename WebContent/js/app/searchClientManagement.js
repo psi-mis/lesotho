@@ -536,8 +536,6 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		rowTag.click(function(){
 			var clientId = rowTag.attr("clientId");
 			
-			ClientUtil.setMainClientFormStatus();
-
 			Element.addClientFormTabTag.removeAttr( "client" );
 			Element.backToSearchClientResultBtnTag.show();
 			Element.backToCaseListBtnTag.hide();

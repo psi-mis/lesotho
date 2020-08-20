@@ -4983,8 +4983,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.setUp_Event_RelationshipRow = function( rowTag )
 	{
 		rowTag.click( function(){
-			
-			ClientUtil.setMainClientFormStatus();
 
 			var clientId = rowTag.attr("clientId");
 			var cuic = $(rowTag.find("td")[2] ).html();
