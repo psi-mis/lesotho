@@ -2202,6 +2202,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 							
 							// Update list of relationship information
 							me.addRelationshipRow( clientData, Util.getCurrentDate(), relationshipName );
+							
+							
+							// Show the "MainClient" form
+							Element.searchResultTag.hide();
+							Element.addClientFormDivTag.show();
 						}
 						,error: function(response)
 						{
@@ -2238,7 +2243,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 
 		// RelationshipType
 		var deRelationshipType =  Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_RelationshipType + "']").val();
-		var relationshipTypeId = ( deRelationshipType.value == "SP" ) ? MetaDataID.reType_SexParner : MetaDataID.reType_ParentChild ;// CH
+		var relationshipTypeId = ( deRelationshipType == "SP" ) ? MetaDataID.reType_SexParner : MetaDataID.reType_ParentChild ;// CH
 		jsonData.relationshipType = relationshipTypeId;
 		
 		// Attributes

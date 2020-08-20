@@ -277,11 +277,11 @@ function Counsellor( storageObj, translationObj )
 		}
 		else if( page == me.settingsManagement.PAGE_SETTINGS )
 		{
-			me.settingsManagement.settingsDivTag.show("fast");
+			Element.settingsDivTag.show("fast");
 		}
 		else if( page == me.settingsManagement.PAGE_ABOUT )
 		{
-			me.settingsManagement.aboutDivTag.show("fast");
+			Element.aboutDivTag.show("fast");
 		}
 		else
 		{

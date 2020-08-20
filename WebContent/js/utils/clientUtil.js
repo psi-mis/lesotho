@@ -127,11 +127,24 @@ ClientUtil.getDetails = function( clientId, loadingMsg, exeFunc )
 }
 
 
+ClientUtil.getActiveEnrollment = function( enrollments  )
+{
+	if( enrollments != undefined && enrollments.length > 0 )
+	{
+		return Util.findItemFromList( enrollments, "status", "ACTIVE" );
+	
+	}
+	
+	return undefined;
+	
+}
+
+
 ClientUtil.getLatestEnrollment = function( enrollments  )
 {
 	if( enrollments != undefined && enrollments.length > 0 )
 	{
-		var foundItem = Util.findItemFromList( enrollments, "status", "ACTIVE" );
+		var foundItem = Util.findItemFromList( enrollments );
 	
 		if( foundItem ) return foundItem;
 		
