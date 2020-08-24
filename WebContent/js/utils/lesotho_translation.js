@@ -32,6 +32,16 @@ function Translation( baseURL, storageObj )
 	
 	me.translatedKeyWords = {};
 	
+	me.setBaseURL = function( baseURL )
+	{
+		me.baseURL = baseURL;
+	}
+	
+	me.setBaseURL = function( baseURL )
+	{
+		me.baseURL = baseURL;
+	}
+	
 	me.init = function()
 	{
 		// STEP 1. Get the language which was choice before in local storage
@@ -181,7 +191,7 @@ function Translation( baseURL, storageObj )
 	me.loadKeywords = function( exeFunc )
 	{
 		var storedLangkey = "lang_" + me.lang;
-		var url = me.baseURL + "../" + Commons.wsUrl + "/translation/keywordList?lang=" + me.lang;
+		var url = me.baseURL + "translation/keywordList?lang=" + me.lang;
 		$.ajax(
 			{
 				type: "POST"
@@ -207,7 +217,7 @@ function Translation( baseURL, storageObj )
 	{ 
 		me.translateStatusImgChange( me._TRANSLATE_STATUS_LOADING, "version info" );		
 				
-		var url = me.baseURL + "../" + Commons.wsUrl + "/translation/version";
+		var url = me.baseURL + "translation/version";
 		
 		$.ajax(
 			{
