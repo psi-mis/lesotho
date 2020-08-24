@@ -95,26 +95,26 @@ function Relationships()
 // Static variables and methods
  
 Relationships.addRelationShipFormIds = [
-	{ "type": "dataelement", "id" : "Ghs7vYIWIpi", "mandatory" : "true" },
-	{ "type": "attribute", "id" : "R9Lw1uNtRuj", "mandatory" : "true", "readOnly" : true },
-	{ "type": "attribute", "id" : "TBt2a4Bq0Lx", "mandatory" : "true", "readOnly" : true },
-	{ "type": "attribute", "id" : "JcGai6pHG1M", "mandatory" : "true", "readOnly" : true },
-	{ "type": "attribute", "id" : "eOZJ5fonziS", "mandatory" : "true", "readOnly" : true },
-	{ "type": "attribute", "id" : "Rl2hRelrfur", "mandatory" : "true" },
-	{ "type": "attribute", "id" : "gY1FrhX5UTn", "mandatory" : "false" },
-	{ "type": "attribute", "id" : "gn35714pj4p", "mandatory" : "true", "rules" : { "maxLen" : 200 } },
-	{ "type": "attribute", "id" : "qynN2cqRe71", "mandatory" : "true" },
-	{ "type": "attribute", "id" : "NLNTtpbT3c5", "mandatory" : "false" }, 
-	{ "type": "attribute", "id" : "jQilj6Wjweq", "mandatory" : "true" }, 
-	{ "type": "attribute", "id" : "Wea8fAtYVwx", "mandatory" : "false" }, 
-	{ "type": "dataelement", "id" : "UuKat0HFjWS", "mandatory" : "true", "readOnly" : true }, 
-	{ "type": "dataelement", "id" : "bCVRuaX7LwG", "mandatory" : "true" }, 
-	{ "type": "dataelement", "id" : "Eis9qerhBFg", "mandatory" : "true" }, 
-	{ "type": "attribute", "id" : "n8m5JoVrapA", "mandatory" : "true" }, 
-	{ "type": "attribute", "id" : "QnSYmezcVi0", "mandatory" : "true" }, 
-	{ "type": "attribute", "id" : "JRV6Z03Cu5H", "mandatory" : "true" }, 
-	{ "type": "attribute", "id" : "UTNfpVZjHcF", "mandatory" : "true" }, 
-	{ "type": "dataelement", "id" : "HcBFZsCt8Sy", "mandatory" : "true" }
+	{ "type": "dataelement", "id" : MetaDataID.de_RelationshipType, "rules" : { "mandatory" : true } },
+	{ "type": "attribute", "id" : MetaDataID.attr_FirstName, "rules" :{ "mandatory" : true, "readOnly" : true, "notallowspecialchars" : true } },
+	{ "type": "attribute", "id" : MetaDataID.attr_LastName, "rules" :{ "mandatory" : true, "readOnly" : true, "notallowspecialchars" : true } },
+	{ "type": "attribute", "id" : MetaDataID.attr_Sex, "rules" :{ "mandatory" : true, "readOnly" : true }  },
+	{ "type": "attribute", "id" : MetaDataID.attr_Age, "rules" :{ "mandatory" : true, "readOnly" : true }  },
+	{ "type": "attribute", "id" : MetaDataID.attr_ContactDetails_phoneNumber, "rules" : { "mandatory" : true } },
+	{ "type": "attribute", "id" : MetaDataID.attr_Address1, "rules" : { "mandatory" : false } },
+	{ "type": "attribute", "id" : MetaDataID.attr_Address2, "rules" : { "mandatory" : true, "maxLen" : 200 } },
+	{ "type": "attribute", "id" : MetaDataID.attr_Address3, "rules" : { "mandatory" : true } },
+	{ "type": "attribute", "id" : MetaDataID.attr_Address4, "rules" : { "mandatory" : false } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_Address5, "rules" : { "mandatory" : true } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_VillageChiefName, "rules" : { "mandatory" : false } }, 
+	{ "type": "dataelement", "id" : MetaDataID.de_FinalResult_HIVStatus, "rules" : { "readOnly" : true, "mandatory" : true } }, 
+	{ "type": "dataelement", "id" : MetaDataID.de_HIV_Status, "rules" : { "mandatory" : true } }, 
+	{ "type": "dataelement", "id" : MetaDataID.de_Notification_Method, "rules" : { "mandatory" : true } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_IPV1, "rules" : { "mandatory" : true } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_IPV2, "rules" : { "mandatory" : true } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_IPV3, "rules" : { "mandatory" : true } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_IPVOutcome, "rules" : { "mandatory" : true } }, 
+	{ "type": "dataelement", "id" : MetaDataID.de_DueDate, "rules" : { "mandatory" : true } }
 ];
 
 Relationships.genrateRelationshipJson = function( clientAId, clientBId, relationshipTypeId, relationshipName )

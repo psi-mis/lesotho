@@ -126,7 +126,8 @@
 
 	$( document ).ready()
 	{
-		new lesothoApp( "", function( translationObj ){
+		var basedUrl = "";
+		new lesothoApp( basedUrl, function( translationObj ){
 			var loginForm = new LoginForm( new Storage(), translationObj );			
 		});
 		

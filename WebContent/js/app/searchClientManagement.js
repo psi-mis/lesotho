@@ -59,14 +59,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			
 			Element.searchResultRelationshipTbTag.hide();
 		});
-			
-//		Element.backToSearchRelationshipClientResultBtnTag.click( function(){
-//			MsgManager.msgAreaHide();
-//			Element.addClientFormDivTag.hide();
-//			Element.selectOrgUnitWarningMsgTag.hide();
-//			Element.searchResultRelationshipTbTag.show();
-//			Element.searchResultTag.show();
-//		});
+		
 		
 		// Add Datepicker to date fields
 			
@@ -96,16 +89,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 
 		Element.showAddNewRelationClientFormBtnTag.click( function(){
 			
-			me.showAddRelationshipFormDialog( true );
-			
-			Element.addRelationshipFormDivTag.find("[attribute]").each(function(){
-				var attrId = $(this).attr("attribute");
-				var value = Element.searchClientFormTag.find("[attribute='" + attrId + "']").val();
-				if( value != "" )
-				{
-					$(this).val( value );
-				}
-			});
+			me.showAddRelationshipFormDialog();
 		});
 		
 		Element.backToSearchRelationshipResultBtnTag.click( function(){
@@ -392,7 +376,13 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				
 				Util.resetForm( Element.addRelationshipFormDivTag );
 				Util.disableForm( Element.addRelationshipFormDivTag, false );
+				
 				Util.populateDataValues( Element.addRelationshipFormDivTag, jsonData.client.attributes, "attribute" );
+				
+				// Calcualte [Age] from [dateOfBirth] attribute value of clientB
+//				var birthDate = Util.findItemFromList( jsonData.client.attributes, "attribute", MetaDataID.attr_DoB );
+//				var age = Util.calculateAge( birthDateStr );
+//				Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_Age + "']");
 				
 				var latestEnrollment = ClientUtil.getLatestEnrollment( jsonData.enrollments );
 				if( latestEnrollment )
@@ -414,64 +404,83 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				}
 				
 				// Show [Add relationship] form
-				me.showAddRelationshipFormDialog( false, clientId, hivTestFinalStatus );
+				me.showAddRelationshipFormDialog( clientId, hivTestFinalStatus );
 			});
 			
 		} );
 		
 	}
 	
-	me.showAddRelationshipFormDialog = function( isAddNew, clientId, hivTestFinalStatus )
+	me.showAddRelationshipFormDialog = function( clientId, hivTestFinalStatus )
 	{
+		// ----------------------------------------------------------------------------------------------
+		// Show all INPUT fields, clean data, set default values if any
+		
 		Element.addRelationshipFormDivTag.find( "[dataElement]" ).closest("tr").show();
 		Element.addRelationshipFormDivTag.removeAttr( "clientId" );
 		
 		Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
 		
-		// Add some attributes
+		Element.addRelationshipFormDivTag.find("[name='" + MetaDataID.de_RelationshipType + "'][value='SP']" ).prop("checked", true );
+		
+		// ----------------------------------------------------------------------------------------------
+		// For existing client case
 		if( clientId )
 		{
+			// Set clientId
 			Element.addRelationshipFormDivTag.attr( "clientId", clientId );
-		}
-		
-		// Disable some fields if the form is used for editting relationship.
-		// Enable all fields if the form is used for adding relationship.
-		if( isAddNew )
-		{
-			Util.resetForm( Element.addRelationshipFormDivTag );
-			Util.disableForm( Element.addRelationshipFormDivTag, false );
 			
-			var hivStatus = Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
-			hivStatus.closest("tr").hide();
-		}
-		else
-		{
-
+			// Add logic for [Add Relationship] based on last HIV test
 			if( hivTestFinalStatus == "Positive" )
 			{
-				Element.addRelationshipFormDivTag.find( "[dataElement]" ).closest("tr").hide();
-				Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
+				// Hide all data element fields, except [Relationship type]
+				Element.addRelationshipFormDivTag.find( "[dataelement]" ).closest("tr").hide();
+				Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
 			}
 			else
 			{
-				var hivStatus = Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+				// Show [HIV Status] field
+				var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
 				hivStatus.closest("tr").show();
 			}
+
+			// ----------------------------------------------------------------------------------------------
+			// Show and enable some fields
 			
+			// Show [HIV Status] field
+			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+			hivStatus.closest("tr").show();
+			
+			// Enable "mandatory and disabled" fields if the fields are no value so that we can enter values
 			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
 			{
 				var idConfig = Relationships.addRelationShipFormIds[i];
-				if( idConfig.id == MetaDataID.de_FinalResult_HIVStatus )
-				{
-					var hivStatus = Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
-					hivStatus.closest("tr").show();
-				}
 				
 				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
-				var disabled = ( idConfig.readOnly && inputTag.val() != "" );
+				var disabled = ( idConfig.rules !==undefined && idConfig.rules.readOnly && inputTag.val() != "" );
 				
 				Util.disableTag( inputTag, disabled );
 			}
+		}
+		else // For Add new client case
+		{
+			// Clean up the form and enable all fields
+			Util.resetForm( Element.addRelationshipFormDivTag );
+			Util.disableForm( Element.addRelationshipFormDivTag, false );
+			
+			// Hide [HIV Status] field
+			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+			hivStatus.closest("tr").hide();
+			
+			// Fill values from [Search form] to [Add relationship] form if any
+			Element.addRelationshipFormDivTag.find("[attribute]").each(function(){
+				var attrId = $(this).attr("attribute");
+				var value = Element.searchClientFormTag.find("[attribute='" + attrId + "']").val();
+				if( value != "" )
+				{
+					$(this).val( value );
+				}
+			});
 		}
 		
 		
@@ -539,8 +548,7 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			Element.addClientFormTabTag.removeAttr( "client" );
 			Element.backToSearchClientResultBtnTag.show();
 			Element.backToCaseListBtnTag.hide();
-
-			Element.headerListTag.attr("clientId", clientId );
+			
 			Element.relationshipMsgTag.hide();
 			Element.relationshipMsgTag.find("[clientId]").remove();
 			

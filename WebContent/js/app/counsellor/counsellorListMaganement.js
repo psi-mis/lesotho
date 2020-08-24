@@ -86,7 +86,6 @@ function CounsellorListMaganement( _mainPage  )
 			
 			Element.headerListTag.removeAttr("clientId");
 			Element.relationshipMsgTag.hide();
-//			Element.relationshipMsgTag.removeAttr( "clientId" );
 			Element.relationshipMsgTag.find("[clientId]").remove();
 			
 			me.storageObj.removeItem("clientId");

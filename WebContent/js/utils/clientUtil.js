@@ -121,7 +121,7 @@ ClientUtil.getLatestEventByEnrollments = function( enrollments, stageId )
 {
 	var enrollment = ClientUtil.getLatestEnrollment( enrollments );
 	
-	if( enrollment )
+	if( enrollment && enrollment.events )
 	{
 		// We need to sort events list becasue there are some stages are repeatable
 		var orderedEvents = Util.sortDescByKey( enrollment.events, "eventDate" );

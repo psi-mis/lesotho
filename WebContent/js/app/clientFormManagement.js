@@ -116,22 +116,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		me.setUp_Events_Indexing();
 		
-		me.setUp_Events_HeaderLink();
-		
 	};
-	
-	me.setUp_Events_HeaderLink = function()
-	{
-		Element.headerListTag.click( function(){
-			var clientId = Element.headerListTag.attr("clientId");
-			
-			Element.relationshipMsgTag.hide();
-			Element.relationshipMsgTag.find("[clientId]").remove();
-			
-			me.showUpdateClientForm( me.clientDataList[clientId] );
-			
-		});
-	}
 	
 	
 	// Add Events for [Add/Edit Client Form]
@@ -2031,18 +2016,27 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			if( detailsConfig )
 			{
 				// Override "mandatory" for orginal metadata config
-				detailsConfig.mandatory = idConfig.mandatory;
+				detailsConfig.mandatory = ( idConfig.rules != undefined && idConfig.rules.mandatory == true );
 				
 				var rowTag = $("<tr></tr>");
 
-				var mandatoryTag = ( detailsConfig.mandatory == "true" ) ? "<span class='required'> *</span>" : "";
+				var mandatoryTag = ( detailsConfig.mandatory ) ? "<span class='required'> *</span>" : "";
 				rowTag.append("<td>" + detailsConfig.displayName + mandatoryTag + "</td>");
 				
-				if( idConfig.id == "JRV6Z03Cu5H" )
+				if( idConfig.id == MetaDataID.de_RelationshipType )
 				{
-					var fadfs = 0;
+					detailsConfig.valueType = "OPTIONSET_RADIO";
 				}
 				var inputTag = me.inputTagGeneration.generateInputTag( detailsConfig, idConfig.type );
+				
+				// Add validations
+				for( var key in idConfig.rules )
+				{
+					if( key != "readOnly" )
+					{
+						inputTag.attr( key, idConfig.rules[key] );
+					}
+				}
 				
 				var inputColTag = $("<td></td>");
 				if( detailsConfig.valueType == "DATE" )
@@ -2086,7 +2080,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	
 	me.setUp_Events_AddRelationshipForm = function()
 	{
-		Element.addRelationshipFormDivTag.find("[dataElement='" + MetaDataID.de_RelationshipType + "']").change( function(){
+		Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_RelationshipType + "']").change( function(){
 			var IPV1Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV1 + "']");
 			var IPV2Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV2 + "']");
 			var IPV3Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV3 + "']");
@@ -2206,6 +2200,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 							
 							// Show the "MainClient" form
 							Element.searchResultTag.hide();
+							me.showUpdateClientForm( clientData );
 							Element.addClientFormDivTag.show();
 						}
 						,error: function(response)
@@ -2242,14 +2237,14 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		}
 
 		// RelationshipType
-		var deRelationshipType =  Element.addRelationshipFormDivTag.find( "[dataElement='" + MetaDataID.de_RelationshipType + "']").val();
+		var deRelationshipType =  Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']:selected").val();
 		var relationshipTypeId = ( deRelationshipType == "SP" ) ? MetaDataID.reType_SexParner : MetaDataID.reType_ParentChild ;// CH
 		jsonData.relationshipType = relationshipTypeId;
 		
 		// Attributes
 		
 		// Set value for [LS - Client Info - Client Acquisition(nUTGX5v69V9)] field
-		var clientAcquisitionVal = ( deRelationshipType.value == "SP" ) ? "SP" : "CH";
+		var clientAcquisitionVal = ( deRelationshipType == "SP" ) ? "SP" : "CH";
 		var attributes = Util.getArrayJsonData( "attribute", Element.addRelationshipFormDivTag, false );
 		attributes.push({ "attribute" : MetaDataID.attr_ClientAcquisition, "value" : clientAcquisitionVal });
 		
@@ -2258,17 +2253,27 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 
 		if( Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus" ) !== "Positive" )
 		{
+			var hivStatusReportedTag = Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_HIV_Status + "']" );
+			var hivStatusReportedVal = Util.getJsonDataValue( hivStatusReportedTag, "dataelement" ).value;
+			
+			var notificationMethodTag = Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_Notification_Method + "']");
+			var notificationMethodVal = Util.getJsonDataValue( notificationMethodTag, "dataelement" ).value;
+				
 			// Data elements
 			jsonData[MetaDataID.stage_HIVTesting] = {
 					"programStage": MetaDataID.stage_HIVTesting,
 					"dataValues":[
 						{
+							"dataElement" : MetaDataID.de_RelationshipType, 
+							"value" : deRelationshipType
+						},
+						{
 							"dataElement" : MetaDataID.de_HIV_Status, 
-							"value" : Util.getJsonDataValue( Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_HIV_Status + "']"), "dataelement" ).value
+							"value" : hivStatusReportedVal
 						},
 						{
 							"dataElement" : MetaDataID.de_Notification_Method, 
-							"value" : Util.getJsonDataValue( Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_Notification_Method + "']"), "dataelement" ).value
+							"value" : notificationMethodVal
 						}
 					]
 			};
@@ -2301,6 +2306,10 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 						{
 							"dataElement" : MetaDataID.de_Outcome,
 							"value" : "TBD"
+						},
+						{
+							"dataElement" : MetaDataID.de_Comments,
+							"value" : hivStatusReportedTag.find("option:selected").text() + "\r\n" + notificationMethodTag.find("option:selected").text()
 						}
 					]
 			};
@@ -3482,9 +3491,12 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 						
 						Element.indexingListTbTag.html("");
 						Element.relationshipMsgTag.attr( "clientId", clientId );
-//						me.storageObj.addItem( "clientId", clientId );
-//						me.storageObj.addItem( "eventId", eventId );
+						me.storageObj.addItem( "clientId", clientId );
+						me.storageObj.addItem( "eventId", eventId );
 						me.showUpdateClientForm( response, eventId );
+						
+						var clientDisplayName = me.getDisplayClientName( response );
+						me.createPreviousClientLink( clientId, clientDisplayName );
 						
 						if( exeFunc !== undefined ) exeFunc();
 						
@@ -3890,7 +3902,6 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				"status" : "ACTIVE"
 			}];
 			
-			Element.headerListTag.attr("clientId", clientId);
 		}
 		else
 		{
@@ -3902,12 +3913,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		Element.addClientFormTabTag.attr( "client", JSON.stringify( response ) );
 		
 		// STEP 2. Set the header of the [Client Form] Tab
-		
-		if( Element.headerListTag.attr("clientId") == undefined 
-			|| response.trackedEntityInstance == Element.headerListTag.attr("clientId") )
-		{
-			me.generateAddClientFormHeader();
-		}
+		me.generateAddClientFormHeader( response.client.trackedEntityInstance  );
 		
 		// STEP 3. Display [This Test] Tab if the "status" mode is "Add Client"
 		
@@ -4080,8 +4086,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		inputTag.closest("td").append( "<span class='errorMsg'>" + errorMsg + "</span>" );
 	};
 	
-	me.generateAddClientFormHeader = function()
+	me.generateAddClientFormHeader = function( clientId )
 	{
+		// Generate header
 		var headerText = "";
 		
 		var firstName = me.clientFirstNameTag.val();
@@ -4106,6 +4113,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		headerText = headerText.substring( 0, headerText.length - 2 );
 		
 		Element.headerListTag.html( headerText );
+		
+		// Find if the client is existing in list or not. If yes, make "font-style:bold" for the link
+
+		Element.relationshipMsgTag.find("[clientId]").find("span").css("color", "");
+		Element.relationshipMsgTag.find("[clientId=" + clientId +"]").find("span").css("color", "gray");
 	};
 	
 	
@@ -4748,7 +4760,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		// [Client Attribute] TAB
 		
 		// STEP 4. Populate Client Registration data	
-//		delete data.client["enrollments"];	
+		delete data.client["enrollments"];	
 		Element.addClientFormTabTag.attr( "client", JSON.stringify( data.client ) );
 		
 		// Populate attribute values in form
@@ -4758,11 +4770,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 
 		
 		// STEP 5. Create header for [Update client] form
-		if( Element.headerListTag.attr("clientId") == undefined 
-			|| Element.headerListTag.attr("clientId") == data.client.trackedEntityInstance )
-		{
-			me.generateAddClientFormHeader();
-		}
+		me.generateAddClientFormHeader( data.client.trackedEntityInstance );
 		
 		// STEP 6. Lock for if there is any HIV Testing event existed
 		if( events.length > 0 )
@@ -4945,21 +4953,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		var clientId = clientData.client.trackedEntityInstance;
 		var created = Util.formatDate_DisplayDate( relationshipCreated );
-		var CIC = "";
-		var attrCIC =  Util.findItemFromList( clientData.client.attributes, "attribute", MetaDataID.attr_ClientCUIC );
-		if( attrCIC )
-		{
-			CIC = attrCIC.value;
-		}
-		else
-		{
-			var firstNameAttrValue = Util.findItemFromList( clientData.client.attributes, "attribute", MetaDataID.attr_FirstName );
-			var lastNameAttrValue = Util.findItemFromList( clientData.client.attributes, "attribute", MetaDataID.attr_LastName );
-			if( firstNameAttrValue && lastNameAttrValue )
-			{
-				CIC = firstNameAttrValue.value + " " + lastNameAttrValue.value;
-			}
-		}	
+		var CIC = me.getDisplayClientName( clientData );
 		
 		var hivStatus = "";
 		var hivStatusEvent = ClientUtil.getLatestEventByEnrollments( clientData.enrollments, MetaDataID.stage_HIVTesting );
@@ -4980,22 +4974,37 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		Element.indexingListTbTag.append( rowTag );
 	};
 	
+	// Get CUIC value. If not, get Fullname
+	me.getDisplayClientName = function( clientData )
+	{
+		var attrCIC =  Util.findItemFromList( clientData.client.attributes, "attribute", MetaDataID.attr_ClientCUIC );
+		if( attrCIC )
+		{
+			return attrCIC.value;
+		}
+		else
+		{
+			var firstNameAttrValue = Util.findItemFromList( clientData.client.attributes, "attribute", MetaDataID.attr_FirstName );
+			var lastNameAttrValue = Util.findItemFromList( clientData.client.attributes, "attribute", MetaDataID.attr_LastName );
+			if( firstNameAttrValue && lastNameAttrValue )
+			{
+				return firstNameAttrValue.value + " " + lastNameAttrValue.value;
+			}
+		}
+		
+		return clientData.client.trackedEntityInstance;
+		
+	}
+	
 	me.setUp_Event_RelationshipRow = function( rowTag )
 	{
 		rowTag.click( function(){
 
 			var clientId = rowTag.attr("clientId");
+			
+			// Create Link
 			var cuic = $(rowTag.find("td")[2] ).html();
-			
-			var relationshipClientLink = $( "<span clientId='" + clientId + "'> > <a>" + cuic + "</a></span>" );
-			relationshipClientLink.click( function(){
-				me.showUpdateClientForm( me.clientDataList[clientId] );
-				
-				var relationshipClientLinkTag = Element.relationshipMsgTag.find("[clientId=" + clientId +"]");
-				relationshipClientLinkTag.nextAll().remove(); // Remove all clients after the selected one
-			});
-			
-			Element.relationshipMsgTag.append( relationshipClientLink );
+			me.createPreviousClientLink( clientId, cuic );
 			Element.relationshipMsgTag.show();
 			
 			if( me.clientDataList[clientId] != undefined )
@@ -5007,6 +5016,26 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				me.loadClientDetails( clientId );
 			}
 		});
+	};
+	
+	
+	me.createPreviousClientLink = function( clientId, displayName )
+	{
+		// Create the link only if client wasn't loaded before
+		if( Element.relationshipMsgTag.find("[clientId='" + clientId + "']" ).length == 0 )
+		{
+			var relationshipClientLink = $( "<span clientId='" + clientId + "'> > <a><span>" + displayName + "</span></a></span>" );
+			Element.relationshipMsgTag.append( relationshipClientLink );
+			
+			relationshipClientLink.click( function(){
+				me.showUpdateClientForm( me.clientDataList[clientId] );
+			});
+		}
+		
+
+		// Find if the client is existing in list or not. If yes, make "font-style:bold" for the link
+		Element.relationshipMsgTag.find("[clientId]").find("span").css("color", "");
+		Element.relationshipMsgTag.find("[clientId=" + clientId +"]").find("span").css("color", "gray");
 	};
 	
 	// -----------------------------------------------------------------------------------

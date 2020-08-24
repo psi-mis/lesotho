@@ -10,8 +10,11 @@ function InputTagGeneration( attribute )
 	me.generateInputTag = function( attribute, inputKey )
 	{
 		var inputTag = $( "<input type='text' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >" );
-		
-		if( attribute.optionSet !== undefined )
+		 if( attribute.valueType === "OPTIONSET_RADIO" )
+		{
+			inputTag = me.generateOptionRadioTags( attribute, inputKey );
+		}
+		else if( attribute.optionSet !== undefined )
 		{
 			inputTag = me.generateOptionInputTag( attribute, inputKey );
 		}
@@ -31,24 +34,25 @@ function InputTagGeneration( attribute )
 		}
 		else if( attribute.valueType === "LETTER" )
 		{
-			inputTag = "<input type='text' letter='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >";
+			inputTag = $("<input type='text' letter='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >");
 		}
 		else if( attribute.valueType === "DATE" )
 		{
-			inputTag = "<input type='text' isDate='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >";
+			inputTag = $("<input type='text' isDate='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >");
 		}
 		else if( attribute.valueType === "DATETIME" )
 		{
-			inputTag = "<input type='text' isDateTime='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >";
+			inputTag = $("<input type='text' isDateTime='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >");
 		}
 //		else if( attribute.valueType === "PHONE_NUMBER" )
 //		{
-//			inputTag = "<input type='text' phonenumber='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >";
+//			inputTag = $("<input type='text' phonenumber='true' class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' >");
 //		}
 		else if( attribute.valueType === "LONG_TEXT" )
 		{
-			inputTag = "<textarea class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' maxlength='255'>";
+			inputTag = $("<textarea class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' maxlength='200'></textarea>");
 		}
+		
 		
 		return inputTag;
 		
@@ -64,6 +68,22 @@ function InputTagGeneration( attribute )
 			var code = options[k].code;
 			var name = options[k].name;
 			inputTag.append( "<option value='" + code + "'>" + name + "</option>" );
+		}
+		
+		return inputTag;
+	};
+	
+
+	me.generateOptionRadioTags = function( attribute, inputKey )
+	{
+		var options = attribute.optionSet.options;
+		inputTag = $("<div></div>");
+		for( var k=0; k<options.length; k++ )
+		{
+			var code = options[k].code;
+			var name = options[k].name;
+			var style = ( k==0 ) ? "" : "margin-left: 30px;";
+			inputTag.append( "<input " + inputKey + "='" + attribute.id + "' type='radio' value='" + code + "' name='" + attribute.id + "' style='" + style + "'> " + name );
 		}
 		
 		return inputTag;

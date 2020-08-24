@@ -747,7 +747,6 @@ function CoordinatorListManagement( _mainPage )
 			Element.backToCaseListBtnTag.show();
 			Element.relationshipMsgTag.hide();
 			
-			Element.headerListTag.removeAttr("clientId");
 			Element.relationshipMsgTag.attr( "clientId", clientId );
 			Element.relationshipMsgTag.find("[clientId]").remove();
 			

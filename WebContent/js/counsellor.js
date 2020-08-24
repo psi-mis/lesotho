@@ -43,12 +43,13 @@ function Counsellor( storageObj, translationObj )
 			
 			var tranlatedText = me.translationObj.getTranslatedValueByKey( "common_msg_loadingData" );
     		MsgManager.appBlock( tranlatedText + " ..." ); 
-    		
+
+			me.programSection = new ProgramSection( me, metaData, me.translationObj );
+			
 			me.clientFormManagement = new ClientFormManagement( me, metaData, Commons.APPPAGE_COUNSELLOR );
 			me.searchClientManagement = new SearchClientManagement( me, metaData, Commons.APPPAGE_COUNSELLOR );
 			me.listManagement = new CounsellorListMaganement( me );
 			me.reportManagement = new CounsellorReportManagement( me );
-			me.programSection = new ProgramSection( me, metaData, me.translationObj );
 			me.checkAndLoadDataAfterInit();
 		} );
 		
