@@ -181,7 +181,7 @@ function Translation( baseURL, storageObj )
 	me.loadKeywords = function( exeFunc )
 	{
 		var storedLangkey = "lang_" + me.lang;
-		var url = me.baseURL + "../" + Commons.wsUrl + "/translation/keywordList?lang=" + me.lang;
+		var url = me.baseURL + "translation/keywordList?lang=" + me.lang;
 		$.ajax(
 			{
 				type: "POST"
@@ -207,7 +207,7 @@ function Translation( baseURL, storageObj )
 	{ 
 		me.translateStatusImgChange( me._TRANSLATE_STATUS_LOADING, "version info" );		
 				
-		var url = me.baseURL + "../" + Commons.wsUrl + "/translation/version";
+		var url = me.baseURL + "translation/version";
 		
 		$.ajax(
 			{
