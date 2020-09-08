@@ -52,8 +52,12 @@ function InputTagGeneration( attribute )
 		{
 			inputTag = $("<textarea class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "' maxlength='200'></textarea>");
 		}
-		
-		
+		else if( attribute.valueType === "AGE_BIRTHDATE" ) 
+		{
+			// Display a integer field. When data get saved, data will be converted to DATE 
+			inputTag = me.generateAgeInputTag( attribute, inputKey );
+		}
+		 
 		return inputTag;
 		
 	};
@@ -115,7 +119,16 @@ function InputTagGeneration( attribute )
 			type = "integerZeroPositive='true'";
 		}
 		
-		return $( "<input type='text' " + type + " class='form-control' " + inputKey + "='" + attribute.id + "'>" );;
+		return $( "<input type='text' " + type + " class='form-control' " + inputKey + "='" + attribute.id + "'>" );
+	};
+	
+	me.generateAgeInputTag = function( attribute, inputKey )
+	{
+		attribute.valueType = "INTEGER_ZERO_OR_POSITIVE";
+		var inputTag = me.generateNumberInputTag( attribute, inputKey );
+		inputTag.attr( "valueType", "AGE_BIRTHDATE" );
+		
+		return inputTag;
 	};
 	
 	me.generateBoolInputTag = function( attribute, inputKey )
@@ -126,6 +139,11 @@ function InputTagGeneration( attribute )
 		inputTag.append( "<option value='false'>No</option>" );
 		
 		return inputTag;
+	};
+	
+	me.generateRelationshipTypeInputTag = function( attribute, inputKey )
+	{
+		
 	};
 	
 }

@@ -162,7 +162,7 @@ function LoginForm( storageObj, translationObj )
 						}
 						
 						if( page != "" ){
-							window.location.href = "pages/" + page + ".html";
+							window.location = "pages/" + page + ".html";
 						}
 						else{
 							var tranlatedText = me.translationObj.getTranslatedValueByKey( "login_msg_notLSAccount" );

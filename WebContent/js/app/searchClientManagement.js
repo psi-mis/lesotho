@@ -380,9 +380,12 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				Util.populateDataValues( Element.addRelationshipFormDivTag, jsonData.client.attributes, "attribute" );
 				
 				// Calcualte [Age] from [dateOfBirth] attribute value of clientB
-//				var birthDate = Util.findItemFromList( jsonData.client.attributes, "attribute", MetaDataID.attr_DoB );
-//				var age = Util.calculateAge( birthDateStr );
-//				Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_Age + "']");
+				var birthDateDataValue = Util.findItemFromList( jsonData.client.attributes, "attribute", MetaDataID.attr_DoB );
+				if( birthDateDataValue != undefined )
+				{
+					var age = Util.calculateAge( birthDateDataValue.value );
+					Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_DoB + "']").val( age );
+				}
 				
 				var latestEnrollment = ClientUtil.getLatestEnrollment( jsonData.enrollments );
 				if( latestEnrollment )
@@ -418,10 +421,15 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		
 		Element.addRelationshipFormDivTag.find( "[dataElement]" ).closest("tr").show();
 		Element.addRelationshipFormDivTag.removeAttr( "clientId" );
-		
-		Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
-		
-		Element.addRelationshipFormDivTag.find("[name='" + MetaDataID.de_RelationshipType + "'][value='SP']" ).prop("checked", true );
+		Element.addRelationshipFormDivTag.removeAttr( "hivTestFinalStatus" );
+				
+		// Hide [Parent-Child] selector
+		Element.addRelationshipFormDivTag.find("[relationshipType='" + MetaDataID.reType_ParentChild + "']" ).closest("tr").hide();
+
+		// Select [Sexual Partner] relationship radio option
+		var sexualPartnerOptTag = Element.addRelationshipFormDivTag.find("[name='" + MetaDataID.de_RelationshipType + "'][value='SP']" );
+		sexualPartnerOptTag.prop("checked", true );
+		sexualPartnerOptTag.click();
 		
 		// ----------------------------------------------------------------------------------------------
 		// For existing client case
@@ -429,6 +437,11 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		{
 			// Set clientId
 			Element.addRelationshipFormDivTag.attr( "clientId", clientId );
+
+			if( hivTestFinalStatus )
+			{
+				Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
+			}
 			
 			// Add logic for [Add Relationship] based on last HIV test
 			if( hivTestFinalStatus == "Positive" )
@@ -465,8 +478,8 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		else // For Add new client case
 		{
 			// Clean up the form and enable all fields
-			Util.resetForm( Element.addRelationshipFormDivTag );
 			Util.disableForm( Element.addRelationshipFormDivTag, false );
+			Util.resetForm( Element.addRelationshipFormDivTag );
 			
 			// Hide [HIV Status] field
 			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");

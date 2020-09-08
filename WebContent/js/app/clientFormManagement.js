@@ -36,6 +36,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	me.attributeGroupList = [];
 	me.metadata_dataElements = {};
 	me.metadata_Attributes = {};
+	me.metadata_RelationshipTypes = {};
 	
 	me.clientDataList = [];
 	
@@ -48,6 +49,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	{
 		me.metadata_dataElements = ClientUtil.getDataElementList( me.metaData );
 		me.metadata_Attributes = ClientUtil.getAttributeList( me.metaData );
+		me.metadata_RelationshipTypes = ClientUtil.getRelationshipTypeList( me.metaData );
 		
 		me.inputTagGeneration = new InputTagGeneration();
 		me.relationshipsObj = new Relationships();
@@ -1994,12 +1996,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		var formTag = $("<table class='table table-hover table-striped previousTestTb'></table>");
 		var attributeList = me.metaData.programAttributes.programTrackedEntityAttributes;
 		
-		
 		var idConfigList = Relationships.addRelationShipFormIds;
 		for( var i=0; i<idConfigList.length; i++ )
 		{
 			var idConfig = idConfigList[i];
-			var detailsConfig;
+			var detailsConfig = {};
 			
 			if( idConfig.type == "dataelement" && me.metadata_dataElements[idConfig.id] )
 			{
@@ -2009,9 +2010,34 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			else if( idConfig.type == "attribute" &&  me.metadata_Attributes[idConfig.id] )
 			{
 				detailsConfig = me.metadata_Attributes[idConfig.id].trackedEntityAttribute;
-				detailsConfig.displayName = detailsConfig.name;
+				
+				if( idConfig.id == MetaDataID.attr_DoB )
+				{
+					detailsConfig.displayName = me.translationObj.getTranslatedValueByKey( "relationship_addRelationshipForm_age" );
+				}
+				else
+				{
+					detailsConfig.displayName = detailsConfig.name;
+				}
 			}
-		
+			else if( idConfig.type == "relationshipType" )
+			{
+				var relationshipType = me.metadata_RelationshipTypes[ idConfig.id ];
+				
+				detailsConfig = idConfig;
+				detailsConfig.displayName = relationshipType.displayName;
+				detailsConfig.optionSet= {};
+				detailsConfig.optionSet.options = [ {
+						"name" : relationshipType.fromToName,
+						"code" : "from"
+					},
+					{
+						"name" : relationshipType.toFromName,
+						"code" : "to"
+					}
+				];
+			}
+			
 			
 			if( detailsConfig )
 			{
@@ -2027,6 +2053,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				{
 					detailsConfig.valueType = "OPTIONSET_RADIO";
 				}
+				else if( idConfig.id == MetaDataID.attr_DoB )
+				{
+					detailsConfig.valueType = "AGE_BIRTHDATE";
+				}
+				 
 				var inputTag = me.inputTagGeneration.generateInputTag( detailsConfig, idConfig.type );
 				
 				// Add validations
@@ -2080,11 +2111,15 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	
 	me.setUp_Events_AddRelationshipForm = function()
 	{
-		Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_RelationshipType + "']").change( function(){
+		Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_RelationshipType + "']").click( function(){
 			var IPV1Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV1 + "']");
 			var IPV2Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV2 + "']");
 			var IPV3Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV3 + "']");
 			var IPVOutcomeTag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPVOutcome + "']");
+			
+			// Two relationshipType fields
+			var reType_ParentChildTag = Element.addRelationshipFormDivTag.find("[relationshipType='" + MetaDataID.reType_ParentChild + "']");
+			var reType_SexParnerTag = Element.addRelationshipFormDivTag.find("[relationshipType='" + MetaDataID.reType_SexParner + "']");
 			
 			var value = $(this).val();
 			
@@ -2094,6 +2129,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				me.setHideLogicTag( IPV2Tag, true );
 				me.setHideLogicTag( IPV3Tag, true );
 				me.setHideLogicTag( IPVOutcomeTag, true );
+				
+				me.setHideLogicTag( reType_SexParnerTag, true );
+				me.setHideLogicTag( reType_ParentChildTag, false );
 			}
 			else
 			{
@@ -2101,6 +2139,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				me.setHideLogicTag( IPV2Tag, false );
 				me.setHideLogicTag( IPV3Tag, false );
 				me.setHideLogicTag( IPVOutcomeTag, false );
+				
+				me.setHideLogicTag( reType_SexParnerTag, false );
+				me.setHideLogicTag( reType_ParentChildTag, true );
 			}
 		});
 		
@@ -2129,78 +2170,21 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 							var savedSuccessedMsg = me.translationObj.getTranslatedValueByKey( "relationship_addRelationshipForm_msg_saved" );
 							MsgManager.msgAreaShow( savedSuccessedMsg );
 
-							// Update Client B
-							
-							var clientData = {};
-							clientData.client = response;
-							clientData.enrollments = response.enrollments;
-							var clientBId = clientData.client.trackedEntityInstance;
-							
-							var latestEnrollment = ClientUtil.getLatestEnrollment( clientData.enrollments );
-							if( jsonData[MetaDataID.stage_HIVTesting] != undefined && latestEnrollment != undefined )
-							{
-								if( latestEnrollment.events == undefined )
-								{
-									latestEnrollment.events = [];
-								}
-								
-								jsonData[MetaDataID.stage_HIVTesting].eventDate = Util.getCurrentDate();
-								jsonData[MetaDataID.stage_HIVTesting].event = response.hivEventId;
-								
-								latestEnrollment.events.push( jsonData[MetaDataID.stage_HIVTesting] );
-								
-								jsonData[MetaDataID.stage_ContactLog].eventDate = Util.getCurrentDate();
-								jsonData[MetaDataID.stage_ContactLog].event = response.contactLogEventId;
-								latestEnrollment.events.push( jsonData[MetaDataID.stage_ContactLog] );
-							}
-							
-							// Add relationship for clientB
-							var relationshipName = me.mainPage.settingsManagement.relationshipTypes[jsonData.relationshipType];
-							if( clientData.client.relationships == undefined )
-							{
-								clientData.client.relationships = [];
-							}
-							var newRelationship = Relationships.genrateRelationshipJson( jsonData.clientAId, clientBId, jsonData.relationshipType, relationshipName );
-							clientData.client.relationships.push( newRelationship );
-							me.clientDataList[clientBId] = clientData;
-							
-							
-							me.relationshipsObj.relationshipTEI_List[ clientBId ] = {
-									"relationshipType" : newRelationship.relationshipName,
-									"created": newRelationship.created,
-									"client": clientData.client,
-									"enrollments": clientData.enrollments
-							};
-							
-							
-							// Add relationship for clientA
-							var clientAId = jsonData.clientAId;
-							var clientAIData = me.clientDataList[clientAId];
-							
-							if( clientAIData.client.relationships == undefined )
-							{
-								clientAIData.client.relationships = [];
-							}
-							newRelationship = Relationships.genrateRelationshipJson( clientBId, clientAId, jsonData.relationshipType, relationshipName );
-							clientAIData.client.relationships.push( newRelationship );
-							me.clientDataList[clientAId] = clientAIData;
-							
 
-							me.relationshipsObj.relationshipTEI_List[ clientAId ] = {
-									"relationshipType" : newRelationship.relationshipName,
-									"created": newRelationship.created,
-									"client": clientAIData.client,
-									"enrollments": clientAIData.enrollments
-							};
+							var clientAId = jsonData.clientAId;
+							var clientBId = response.trackedEntityInstance;
 							
-							
-							// Update list of relationship information
-							me.addRelationshipRow( clientData, Util.getCurrentDate(), relationshipName );
-							
+							// Update ClientB
+							me.updateClientBInfo( jsonData, response, clientAId );
+
+							// Add relationship for clientA
+							me.updateClientAInfo( jsonData, response, clientBId );
 							
 							// Show the "MainClient" form
 							Element.searchResultTag.hide();
-							me.showUpdateClientForm( clientData );
+
+							var clientAIData = me.clientDataList[clientAId];
+							me.showUpdateClientForm( clientAIData );
 							Element.addClientFormDivTag.show();
 						}
 						,error: function(response)
@@ -2218,6 +2202,87 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		})
 	};
 	
+	
+	me.updateClientBInfo = function( jsonData, response, clientAId )
+	{
+		var relationshipId = response.relationshipId;
+		
+		// Update Client B
+
+		var clientData = {};
+		clientData.client = response;
+		clientData.enrollments = response.enrollments;
+		var clientBId = clientData.client.trackedEntityInstance;
+		
+		var latestEnrollment = ClientUtil.getLatestEnrollment( clientData.enrollments );
+		if( jsonData[MetaDataID.stage_HIVTesting] != undefined && latestEnrollment != undefined )
+		{
+			if( latestEnrollment.events == undefined )
+			{
+				latestEnrollment.events = [];
+			}
+			
+			jsonData[MetaDataID.stage_HIVTesting].eventDate = Util.getCurrentDate();
+			jsonData[MetaDataID.stage_HIVTesting].event = response.hivEventId;
+			
+			latestEnrollment.events.push( jsonData[MetaDataID.stage_HIVTesting] );
+			
+			jsonData[MetaDataID.stage_ContactLog].eventDate = Util.getCurrentDate();
+			jsonData[MetaDataID.stage_ContactLog].event = response.contactLogEventId;
+			latestEnrollment.events.push( jsonData[MetaDataID.stage_ContactLog] );
+		}
+		
+		// Add relationship for clientB
+		var relationshipName = me.mainPage.settingsManagement.relationshipTypes[jsonData.relationshipType];
+		if( clientData.client.relationships == undefined )
+		{
+			clientData.client.relationships = [];
+		}
+		var newRelationship = Relationships.genrateRelationshipJson( jsonData.clientAId, clientBId, jsonData.relationshipType, relationshipName, jsonData.relationshipOption, relationshipId );
+		clientData.client.relationships.push( newRelationship );
+		me.clientDataList[clientBId] = clientData;
+		
+		
+		me.relationshipsObj.relationshipTEI_List[ clientBId ] = {
+				"relationshipType" : newRelationship.relationshipName,
+				"created": newRelationship.created,
+				"client": clientData.client,
+				"enrollments": clientData.enrollments
+		};
+	};
+	
+	me.updateClientAInfo = function( jsonData, response, clientBId )
+	{
+		var relationshipId = response.relationshipId;
+		
+		var clientAId = jsonData.clientAId;
+		var clientAIData = me.clientDataList[clientAId];
+		
+		if( clientAIData.client.relationships == undefined )
+		{
+			clientAIData.client.relationships = [];
+		}
+		
+		var relationshipName = me.mainPage.settingsManagement.relationshipTypes[jsonData.relationshipType];
+		if( clientAIData.client.relationships == undefined )
+		{
+			clientAIData.client.relationships = [];
+		}
+		
+		var clientARelation = ( jsonData.relationshipOption == "from" ) ? "to" : "from";
+		newRelationship = Relationships.genrateRelationshipJson( clientBId, clientAId, jsonData.relationshipType, relationshipName, clientARelation, relationshipId );
+		clientAIData.client.relationships.push( newRelationship );
+		me.clientDataList[clientAId] = clientAIData;
+		
+
+		me.relationshipsObj.relationshipTEI_List[ clientAId ] = {
+				"relationshipType" : newRelationship.relationshipName,
+				"created": newRelationship.created,
+				"client": clientAIData.client,
+				"enrollments": clientAIData.enrollments
+		};
+		
+	};
 	
 	me.createRelationshipJsonData = function()
 	{
@@ -2237,9 +2302,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		}
 
 		// RelationshipType
-		var deRelationshipType =  Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']:selected").val();
+		var deRelationshipType =  Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']:checked").val();
 		var relationshipTypeId = ( deRelationshipType == "SP" ) ? MetaDataID.reType_SexParner : MetaDataID.reType_ParentChild ;// CH
 		jsonData.relationshipType = relationshipTypeId;
+		var relationshipOption = Element.addRelationshipFormDivTag.find( "[relationshipType='" + relationshipTypeId + "']").val();
+		jsonData.relationshipOption = relationshipOption;
 		
 		// Attributes
 		
@@ -2247,6 +2314,23 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		var clientAcquisitionVal = ( deRelationshipType == "SP" ) ? "SP" : "CH";
 		var attributes = Util.getArrayJsonData( "attribute", Element.addRelationshipFormDivTag, false );
 		attributes.push({ "attribute" : MetaDataID.attr_ClientAcquisition, "value" : clientAcquisitionVal });
+		
+		// Set DOB
+		var ageBirthdateTag = Element.addRelationshipFormDivTag.find( "[attribute='" + MetaDataID.attr_DoB + "']");
+		if( ageBirthdateTag.attr("disabled") != "disabled" )
+		{
+			var birthDateStr = Util.convertAgeToDBBirthDate( ageBirthdateTag.val() );
+			var birthDateDataValue = {
+				"attribute" :  MetaDataID.attr_DoB,
+				"value" : birthDateStr
+			}
+			Util.findAndReplaceItemFromList( attributes, "attribute", MetaDataID.attr_DoB, birthDateDataValue );
+		}
+		else
+		{
+			Util.RemoveFromArray( attributes, "attribute", MetaDataID.attr_DoB );
+		}
+		
 		
 		jsonData.client = {};
 		jsonData.client.attributes = attributes;
@@ -4940,14 +5024,14 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			for( var i in teiList ) // "i" is teiId
 			{
 				var relationshipDetails = me.relationshipsObj.relationshipTEI_List[ i ];
-				me.addRelationshipRow( teiList[i], relationshipDetails.created, relationshipDetails.relationshipType );
+				me.addRelationshipRow( teiList[i], relationshipDetails.created, relationshipDetails );
 				me.clientDataList[teiList[i].client.trackedEntityInstance] =  teiList[i];
 			}
 		});
 	};
 	
 	
-	me.addRelationshipRow = function( clientData, relationshipCreated, relationshipTypeName )
+	me.addRelationshipRow = function( clientData, relationshipCreated, relationshipDetails )
 	{
 		var rowTitle = me.translationObj.getTranslatedValueByKey( "indexing_table_clickToSeeDetails" );
 		
@@ -4955,7 +5039,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		var created = Util.formatDate_DisplayDate( relationshipCreated );
 		var CIC = me.getDisplayClientName( clientData );
 		
-		var hivStatus = "";
+		var hivStatus = me.translationObj.getTranslatedValueByKey( "indexing_table_noHIVTest" );
 		var hivStatusEvent = ClientUtil.getLatestEventByEnrollments( clientData.enrollments, MetaDataID.stage_HIVTesting );
 		if( hivStatusEvent != undefined )
 		{
@@ -4963,13 +5047,22 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			hivStatus = ( hivStatusData != undefined ) ? hivStatusData.value : "";
 		}
 		
-		var rowTag = $("<tr title='" + rowTitle + "' clientId='" + clientId +"'></tr>");
+		var relationshipTypeData = me.metadata_RelationshipTypes[relationshipDetails.relationshipTypeId];
+		var relationshipTypeName = ( relationshipDetails.isFrom ) ? relationshipTypeData.fromToName : relationshipTypeData.toFromName ;
+		
+		var deleteMsg = me.translationObj.getTranslatedValueByKey( "indexing_table_deleteRelationship" );
+		var imgDeleteTag = "<img src='../images/hide.png' title='" + deleteMsg +"'>";
+		var deleteColTag = $("<td style='width:20px;'>" + imgDeleteTag + "</td>");
+		
+		var rowTag = $("<tr title='" + rowTitle + "' clientId='" + clientId +"' reTypeName='" + relationshipDetails.relationshipTypeName + "' reId='" + relationshipDetails.relationshipId + "' style='cursor:pointer;'></tr>");
 		rowTag.append("<td>" + created + "</td>");
 		rowTag.append("<td>" + relationshipTypeName + "</td>");
 		rowTag.append("<td>" + CIC + "</td>");
-		rowTag.append("<td colspan='2'>" + hivStatus + "</td>");
+		rowTag.append("<td>" + hivStatus + "</td>");
+		rowTag.append( deleteColTag );
 		
 		me.setUp_Event_RelationshipRow( rowTag );
+		me.setUp_Event_deleteColTag( deleteColTag );
 		
 		Element.indexingListTbTag.append( rowTag );
 	};
@@ -4998,7 +5091,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	
 	me.setUp_Event_RelationshipRow = function( rowTag )
 	{
-		rowTag.click( function(){
+		rowTag.find("td:not(:last-child)").click( function(){
 
 			var clientId = rowTag.attr("clientId");
 			
@@ -5018,6 +5111,39 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		});
 	};
 	
+	me.setUp_Event_deleteColTag = function( deleteColTag ){
+		deleteColTag.click( function(){
+
+			var selectedRowTag = deleteColTag.closest("tr");
+			var clientBName = $( selectedRowTag.find("td")[2] ).html();
+			var clientBId = selectedRowTag.attr("clientId");
+			var relationshipTypeName = selectedRowTag.attr("reTypeName");
+			var relationshipId = selectedRowTag.attr("reId");
+			
+			var clientAId = JSON.parse( Element.addClientFormTabTag.attr("client") ).trackedEntityInstance;
+			var clientAData =  me.clientDataList[clientAId];
+			var clientAName = me.getDisplayClientName( clientAData );
+			
+			
+			var askingDeleteMsg1 = me.translationObj.getTranslatedValueByKey( "indexing_table_confirmDeleteRelationship1" );
+			var askingDeleteMsg2 = me.translationObj.getTranslatedValueByKey( "indexing_table_confirmDeleteRelationship_between" );
+			var askingDeleteMsg3 = me.translationObj.getTranslatedValueByKey( "indexing_table_confirmDeleteRelationship_and" );
+			var deleteMsg = askingDeleteMsg1 + " " + relationshipTypeName + " " + askingDeleteMsg2 + " " + clientAName + " " + askingDeleteMsg3 + " " + clientBName + " ?";
+			
+			var deletingMsg = me.translationObj.getTranslatedValueByKey( "indexing_table_deletingMsg" );
+			var ok = confirm( deleteMsg );
+			if( ok )
+			{
+				me.relationshipsObj.deleteRelationship( relationshipId, deletingMsg, function(){
+					Util.RemoveFromArray( me.clientDataList[clientBId].client.relationships, "relationship", relationshipId )
+					Util.RemoveFromArray( me.clientDataList[clientAId].client.relationships, "relationship", relationshipId )
+					selectedRowTag.remove();
+					
+					delete me.relationshipsObj.relationshipTEI_List[clientAId];
+				});
+			}
+		});
+	};
 	
 	me.createPreviousClientLink = function( clientId, displayName )
 	{

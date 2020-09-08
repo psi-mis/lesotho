@@ -69,12 +69,17 @@ function Relationships()
 		for( var i=0; i<jsonRelationships.length; i++ )
 		{
 			var teiId = jsonRelationships[i].from.trackedEntityInstance.trackedEntityInstance;
+			var from = true;
 			if( clientAId == teiId )
 			{
 				teiId = jsonRelationships[i].to.trackedEntityInstance.trackedEntityInstance;
+				from = false;
 			}
 			me.relationshipTEI_List[ teiId ] = {
-				"relationshipType" : jsonRelationships[i].relationshipName,
+				"relationshipId" : jsonRelationships[i].relationship,
+				"relationshipTypeName" : jsonRelationships[i].relationshipName,
+				"relationshipTypeId" : jsonRelationships[i].relationshipType,
+				"isFrom" : from,
 				"created": jsonRelationships[i].created
 			};
 			
@@ -82,7 +87,29 @@ function Relationships()
 		
 	}
 
-	
+	me.deleteRelationship = function( relationshipId, loadingMsg, exeFunc  )
+	{
+		$.ajax( 
+			{
+				type: "POST"
+				,url: "../client/deleteRelationship?relationshipId=" + relationshipId
+	            ,contentType: "application/json;charset=utf-8"
+	            ,beforeSend: function( xhr ) 
+	            {
+	            	MsgManager.appBlock( loadingMsg + " ..." );
+	            }
+				,success: function( response ) 
+				{		
+					if( exeFunc !== undefined ) exeFunc( response );
+				}
+				,error: function(response)
+				{
+					if( exeFunc !== undefined ) exeFunc( response );
+				}
+			}).always( function( data ) {
+				MsgManager.appUnblock();
+			});
+	}
 	
 	// -----------------------------------------------------------------------
 	// Run init method
@@ -94,12 +121,15 @@ function Relationships()
 // -------------------------------------------------------------------------------------------
 // Static variables and methods
  
+
 Relationships.addRelationShipFormIds = [
 	{ "type": "dataelement", "id" : MetaDataID.de_RelationshipType, "rules" : { "mandatory" : true } },
+	{ "type": "relationshipType", "id" : MetaDataID.reType_ParentChild, "rules" : { "mandatory" : true } },
+	{ "type": "relationshipType", "id" : MetaDataID.reType_SexParner, "rules" : { "mandatory" : true } },
 	{ "type": "attribute", "id" : MetaDataID.attr_FirstName, "rules" :{ "mandatory" : true, "readOnly" : true, "notallowspecialchars" : true } },
 	{ "type": "attribute", "id" : MetaDataID.attr_LastName, "rules" :{ "mandatory" : true, "readOnly" : true, "notallowspecialchars" : true } },
 	{ "type": "attribute", "id" : MetaDataID.attr_Sex, "rules" :{ "mandatory" : true, "readOnly" : true }  },
-	{ "type": "attribute", "id" : MetaDataID.attr_Age, "rules" :{ "mandatory" : true, "readOnly" : true }  },
+	{ "type": "attribute", "id" : MetaDataID.attr_DoB, "rules" :{ "mandatory" : true, "readOnly" : true }  },
 	{ "type": "attribute", "id" : MetaDataID.attr_ContactDetails_phoneNumber, "rules" : { "mandatory" : true } },
 	{ "type": "attribute", "id" : MetaDataID.attr_Address1, "rules" : { "mandatory" : false } },
 	{ "type": "attribute", "id" : MetaDataID.attr_Address2, "rules" : { "mandatory" : true, "maxLen" : 200 } },
@@ -117,22 +147,35 @@ Relationships.addRelationShipFormIds = [
 	{ "type": "dataelement", "id" : MetaDataID.de_DueDate, "rules" : { "mandatory" : true } }
 ];
 
-Relationships.genrateRelationshipJson = function( clientAId, clientBId, relationshipTypeId, relationshipName )
+Relationships.genrateRelationshipJson = function( clientAId, clientBId, relationshipTypeId, relationshipName, relationshipOption, relationshipId )
 {
+	var clientFrom, clientTo;
+	if( relationshipOption == "from" )
+	{
+		clientFrom = clientBId;
+		clientTo = clientAId;
+	}
+	else
+	{
+		clientFrom = clientAId;
+		clientTo = clientBId;
+	}
+	
 	return {
 	  "relationshipType": relationshipTypeId,
 	  "relationshipName": relationshipName,
 	  "created" : Util.getCurrentDate(),
+	  "relationship" : relationshipId,
 	  "from": {
 	    "trackedEntityInstance": {
-	      "trackedEntityInstance": clientAId
+	      "trackedEntityInstance": clientFrom
 	    }
 	  },
 	  "to": {
 	    "trackedEntityInstance": {
-	      "trackedEntityInstance": clientBId
+	      "trackedEntityInstance": clientTo
 	    }
 	  }
-	}
+	};
 	
 }

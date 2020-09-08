@@ -131,6 +131,11 @@ public class ClientController
 
                     responseInfo = ClientController.saveClient( clientId, ouId, receivedData );
                 }
+                else if( key.equals( Util.KEY_DELETE_RELATIONSHIP ))
+                {
+                    String relationshipId = request.getParameter( "relationshipId" );
+                    responseInfo = ClientController.deleteRelationship( relationshipId );
+                }
                 else if( key.equals( Util.KEY_ADD_RELATIONSHIP ))
                 {
                     JSONObject receivedData = Util.getJsonFromInputStream( request.getInputStream() );
@@ -143,38 +148,42 @@ public class ClientController
                     }
                     String ouId = receivedData.getString( Util.PAMAM_ORGUNIT_ID );
                     String relationshipType = receivedData.getString( "relationshipType" );
+                    String relationshipOption = receivedData.getString( "relationshipOption" );
                     String loginUsername = receivedData.getString( "loginUsername" );
                     
                     // Save Or Update client
                     responseInfo = ClientController.saveRelationshipClient( clientBId, ouId, receivedData.getJSONObject( "client" ) );
-                    
                     clientBId = responseInfo.data.getString("trackedEntityInstance");
-                    
                     
                     if( responseInfo.responseCode == 200 )
                     {
                         // Add relationship
-                        ResponseInfo responseInfo_Relationship = ClientController.addRelationship( clientAId, clientBId, relationshipType );
-                    
+                        ResponseInfo responseInfo_Relationship = ClientController.addRelationship( clientAId, clientBId, relationshipType, relationshipOption );
+
                         // Add new event for "HIVTest" and "ContactLog" if any
-                        if( responseInfo_Relationship.responseCode == 200 
-                            && receivedData.has( Util.ID_STAGE ) )
+                        if( responseInfo_Relationship.responseCode == 200 )
                         {
-                            // Create "HIVTest" event
-                            JSONObject hivEventJsonData = receivedData.getJSONObject( Util.ID_STAGE );
-                            ResponseInfo responseInfo_HIVEvent = EventController.createEvent( hivEventJsonData, clientBId, ouId, loginUsername );
-         
-                            String hivEventId = EventController.getEventIdAfterCreated( responseInfo_HIVEvent.data );
-                            responseInfo.data.put( "hivEventId", hivEventId );
-                            
-                            // Create "ContactLog" event
-                            JSONObject contactLogJsonData = receivedData.getJSONObject( Util.ID_STAGE_CONTACTLOG );
-                            ResponseInfo responseInfo_ContactLog = EventController.createEvent( contactLogJsonData, clientBId, ouId, loginUsername );
-       
-                            String contactLogEventId = EventController.getEventIdAfterCreated( responseInfo_ContactLog.data );
-                            responseInfo.data.put( "contactLogEventId", contactLogEventId );
-                            
-//                            responseInfo.data.getJSONArray( "relationships" ).put( responseInfo_Relationship.inputData );
+                            String relationshipId = responseInfo_Relationship.data.getJSONObject( "response" ).getJSONArray( "importSummaries" ).getJSONObject( 0 ).getString( "reference" );
+                            responseInfo.data.put( "relationshipId", relationshipId );
+                           
+                            if( receivedData.has( Util.ID_STAGE ) )
+                            {
+                                // Create "HIVTest" event
+                                JSONObject hivEventJsonData = receivedData.getJSONObject( Util.ID_STAGE );
+                                ResponseInfo responseInfo_HIVEvent = EventController.createEvent( hivEventJsonData, clientBId, ouId, loginUsername );
+             
+                                String hivEventId = EventController.getEventIdAfterCreated( responseInfo_HIVEvent.data );
+                                responseInfo.data.put( "hivEventId", hivEventId );
+                                
+                                // Create "ContactLog" event
+                                JSONObject contactLogJsonData = receivedData.getJSONObject( Util.ID_STAGE_CONTACTLOG );
+                                ResponseInfo responseInfo_ContactLog = EventController.createEvent( contactLogJsonData, clientBId, ouId, loginUsername );
+           
+                                String contactLogEventId = EventController.getEventIdAfterCreated( responseInfo_ContactLog.data );
+                                responseInfo.data.put( "contactLogEventId", contactLogEventId );
+                                
+    //                            responseInfo.data.getJSONArray( "relationships" ).put( responseInfo_Relationship.inputData );
+                            }
                         }
                     }
                     
@@ -269,13 +278,21 @@ public class ClientController
         return responseInfo;
     }
     
-    private static JSONObject generateRelationshipJsonData( String clientAId, String clientBId, String relationshipTypeId )
+    private static JSONObject generateRelationshipJsonData( String clientAId, String clientBId, String relationshipTypeId, String relationshipOption )
     {
         JSONObject jsonData_From = new JSONObject();
-        jsonData_From.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientAId )  );
-        
         JSONObject jsonData_To = new JSONObject();
-        jsonData_To.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientBId )  );
+        
+        if( relationshipOption.equals( "from" ) )
+        {
+            jsonData_From.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientBId )  );
+            jsonData_To.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientAId )  );
+        }
+        else
+        {
+            jsonData_From.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientAId )  );
+            jsonData_To.put( "trackedEntityInstance", ( new JSONObject() ).put( "trackedEntityInstance", clientBId )  );
+        }
         
         JSONObject jsonData = new JSONObject();
         jsonData.put( "relationshipType", relationshipTypeId );
@@ -285,16 +302,34 @@ public class ClientController
         return jsonData;
     }
 
-    private static ResponseInfo addRelationship( String clientAId, String clientBId, String relationshipTypeId )
+    private static ResponseInfo addRelationship( String clientAId, String clientBId, String relationshipTypeId, String relationshipOption )
     {
         ResponseInfo responseInfo = null;
 
         try
         {
-            JSONObject jsonData = ClientController.generateRelationshipJsonData( clientAId, clientBId, relationshipTypeId );
-            
+            JSONObject jsonData = ClientController.generateRelationshipJsonData( clientAId, clientBId, relationshipTypeId, relationshipOption );
+         System.out.println( "\n\n === jsonData : " + jsonData );   
             String requestUrl = ClientController. URL_ADD_RELATIONSHIP;
             responseInfo = Util.sendRequest( Util.REQUEST_TYPE_POST, requestUrl, jsonData, null );
+        }
+        catch ( Exception ex )
+        {
+            System.out.println( "Exception: " + ex.toString() );
+        }
+
+        return responseInfo;
+    }
+    
+
+    private static ResponseInfo deleteRelationship( String relationshipId )
+    {
+        ResponseInfo responseInfo = null;
+
+        try
+        {
+            String requestUrl = ClientController. URL_ADD_RELATIONSHIP + relationshipId;
+            responseInfo = Util.sendRequest( Util.REQUEST_TYPE_DELETE, requestUrl, null, null );
         }
         catch ( Exception ex )
         {
@@ -446,7 +481,6 @@ public class ClientController
             if( ClientController.checkEnrollmentForProgram( enrollements, Util.ID_PROGRAM ) )
             {
                 ResponseInfo responseInfo_Enrollment = ClientController.enrollClient(clientId, ouId );
-                
 
                 JSONObject enrollment = responseInfo_Enrollment.inputData;
                 enrollements.put( enrollment );

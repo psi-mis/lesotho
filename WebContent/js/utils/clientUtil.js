@@ -6,10 +6,6 @@ ClientUtil.SEARCH_STATUS_RELATIONSHIP = "searchRelationship";
 ClientUtil.searchStatus = ClientUtil.SEARCH_STATUS_CLIENT;
 
 
-ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS = "mainClient";
-ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS = "relationshipClient";
-ClientUtil.clientRelationShip = ClientUtil.CLIENTDETAILS_MAIN_CLIENT_STATUS;
-
 // --------------------------------------------------------------------------------
 // For main client
 //---------------------------------------------------------------------------------
@@ -39,7 +35,7 @@ ClientUtil.getSearchResultTag = function()
 }
 
 //--------------------------------------------------------------------------------
-//For relationship client
+// For relationship client
 //---------------------------------------------------------------------------------
 
 ClientUtil.setSearchRelationshipStatus = function()
@@ -55,12 +51,9 @@ ClientUtil.setSearchRelationshipStatus = function()
 }
 
 
-ClientUtil.isSearchRelationshipStatus = function()
-{
-	return ( ClientUtil.searchStatus == ClientUtil.CLIENTDETAILS_RELATIONSHIP_CLIENT_STATUS );
-}
-
-
+//--------------------------------------------------------------------------------
+// Get client details
+//---------------------------------------------------------------------------------
 
 ClientUtil.getDetails = function( clientId, loadingMsg, exeFunc )
 {
@@ -86,6 +79,10 @@ ClientUtil.getDetails = function( clientId, loadingMsg, exeFunc )
 		});
 }
 
+
+//---------------------------------------------------------------------------------
+// Retrieve ACTIVE enrollment, Latest enrollent, latest event
+//---------------------------------------------------------------------------------
 
 ClientUtil.getActiveEnrollment = function( enrollments  )
 {
@@ -139,33 +136,6 @@ ClientUtil.getLatestEventByEnrollments = function( enrollments, stageId )
 }
 
 
-ClientUtil.replaceLatestEventByEnrollments = function( enrollments, stageId, eventJson )
-{
-	var enrollment = ClientUtil.getLatestEnrollment( enrollments );
-	
-	if( enrollment )
-	{
-		// We need to sort events list becasue there are some stages are repeatable
-		var orderedEvents = Util.sortDescByKey( enrollment.events, "eventDate" )
-		
-		for( var i=0; i<orderedEvents.length; i++ )
-		{
-			if( orderedEvents[i].programStage == stageId )
-			{
-				enrollment.events.push( eventJson );
-				enrollment.events.splice(i, 1);
-//				delete orderedEvents[i];	
-				
-				return;
-			}
-		}
-	}
-	
-}
-
-
-
-
 ClientUtil.getLatestEvent = function( events, stageId )
 {
 	var orderedEvents = Util.sortDescByKey( events, "eventDate" );
@@ -181,8 +151,34 @@ ClientUtil.getLatestEvent = function( events, stageId )
 }
 
 
-// ---------------------------------------------------------
+ClientUtil.replaceLatestEventByEnrollments = function( enrollments, stageId, eventJson )
+{
+	var enrollment = ClientUtil.getLatestEnrollment( enrollments );
+	
+	if( enrollment )
+	{
+		// We need to sort events list becasue there are some stages are repeatable
+		var orderedEvents = Util.sortDescByKey( enrollment.events, "eventDate" )
+		
+		for( var i=0; i<orderedEvents.length; i++ )
+		{
+			if( orderedEvents[i].programStage == stageId )
+			{
+				enrollment.events.push( eventJson );
+				enrollment.events.splice(i, 1);
+				return;
+			}
+		}
+	}
+	
+}
+
+
+
+
+//---------------------------------------------------------------------------------
 // Resolve metadata
+//---------------------------------------------------------------------------------
 
 // { "id1" : {configuration1} }, "id2" : {configuration2} } }
 ClientUtil.getDataElementList = function( metaData )
@@ -217,5 +213,21 @@ ClientUtil.getAttributeList = function( metaData )
 	
 	return attributeList;
 };
+
+
+ClientUtil.getRelationshipTypeList = function( metaData )
+{
+	var relationshipTypeList = {};
+	
+	var relationshipTypes = metaData.relationshipTypes;
+	for( var i=0; i<relationshipTypes.length; i++ )
+	{
+		var relationshipType = relationshipTypes[i];
+		relationshipTypeList[relationshipType.id] = relationshipType;
+	}
+	
+	return relationshipTypeList;
+};
+
 
 

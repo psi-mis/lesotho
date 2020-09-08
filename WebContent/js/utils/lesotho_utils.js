@@ -407,6 +407,30 @@ Util.calculateAge = function( birthDateStr )
 };
 
 
+Util.convertAgeToDBBirthDate = function( age )
+{
+	var age = eval( age );
+	var date = new Date();
+	date.setYear(date.getFullYear() - age );
+	
+	var birthDate = new Date( date );
+	return Util.convertDateObj_DateStr( birthDate );
+};
+
+
+Util.convertDateObj_DateStr = function( dateObj )
+{	
+	var day = dateObj.getDate();
+	day = ( day < 10 ) ? "0" + day : day;
+	
+	var month = dateObj.getMonth() + 1;
+	month = ( month < 10 ) ? "0" + month : month;
+	
+	var year = dateObj.getFullYear();
+	
+	return year + "-" + month + "-" + day;
+};
+
 //-------------------------------------------------------------------
 // Utils URL
 

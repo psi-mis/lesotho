@@ -97,6 +97,7 @@ public final class Util
     public static final String KEY_SAVE_EVENT = "save"; 
     public static final String KEY_SAVE_PARTNER_CUIC = "savePartnerCUIC"; 
     public static final String KEY_ADD_RELATIONSHIP = "addRelationship"; 
+    public static final String KEY_DELETE_RELATIONSHIP = "deleteRelationship";
     
     // Reports
     public static final String KEY_GET_COUNSELLOR_REPORT = "counsellorReport";
