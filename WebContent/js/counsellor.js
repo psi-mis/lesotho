@@ -127,13 +127,18 @@ function Counsellor( storageObj, translationObj )
 			me.settingsManagement.checkOrgunitSetting( function(){
 				Util.resetPageDisplay();
 				ClientUtil.setSearchClientStatus();
-
+				Element.backToSearchClientResultBtnTag.show();
+				Element.backToCaseListBtnTag.hide();
+				
 				Element.addClientFormTabTag.removeAttr( "client" );
 				me.storageObj.removeItem("clientId");
 				me.storageObj.removeItem("eventId");
 				
 				me.searchClientManagement.resetSearchClientForm();
 				me.searchClientManagement.showSearchClientForm();
+				
+				Element.backToSearchClientResultBtnTag.show();
+				Element.backToCaseListBtnTag.hide();
 			});
 		});
 		

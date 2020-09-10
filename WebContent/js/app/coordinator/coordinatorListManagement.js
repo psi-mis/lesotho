@@ -117,6 +117,11 @@ function CoordinatorListManagement( _mainPage )
 		
 		me.registerClientBtnTag.click(function(){
 			Util.resetPageDisplay();
+
+			ClientUtil.setSearchClientStatus();
+			Element.backToSearchClientResultBtnTag.hide();
+			Element.backToCaseListBtnTag.show();
+			
 			
 			me.storageObj.removeItem("clientId");
 			me.storageObj.removeItem("eventId");

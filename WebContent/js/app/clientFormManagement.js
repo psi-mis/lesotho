@@ -129,6 +129,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		// [Client Details] tab 		
 
 		// Validation for fields in [Add/Update Form] form
+		Element.addClientFormTag.find("[attribute='" + MetaDataID.attr_DoB + "']" ).on('dp.change', function(e){ 
+			me.generateClientCUIC();
+		});
 		
 		Element.addClientFormTag.find("input,select").change(function(e){
 			me.generateClientCUIC();
@@ -137,7 +140,8 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		// Add [District] of [Contact Log] change event
 		var districtTag = me.getAttributeField( MetaDataID.attr_Address3 );
 		districtTag.change( function(){
-			me.filterCouncilsByDistrict();
+			var councilTag = me.getAttributeField( MetaDataID.attr_Address4 );
+			me.filterCouncilsByDistrict( districtTag, councilTag );
 		});
 		
 		
@@ -969,8 +973,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	// ----------------------------------------------------------------------------
 	
 	me.setUp_DataEntryFormInputTagEvent = function()
-	{		
-
+	{	
 		// STEP 1. Hide all tbody and input in [New Test]
 		Element.addEventFormTag.find("tbody[sectionid]").show();
 		Element.addEventFormTag.find("tbody[sectionid]").find("input,select").each(function(){
@@ -988,9 +991,34 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		me.setUp_OtherReasonTagLogic();
 		me.setUp_DataElementBMI();
 		me.setUp_DataElementTimeSinceLastTest();
-		
 	}; 
 	
+	me.setUp_DataElementToComeBackMonths12 = function()
+	{
+		var finalHIVTestTag = me.getDataElementField( Element.thisTestDivTag, MetaDataID.de_FinalResult_HIVStatus );
+		var toComeBackMonths12Tag = me.getDataElementField( Element.thisTestDivTag, MetaDataID.de_ToComeBackMonths12 );
+		var section = Element.thisTestDivTag.find("[sectionid='" + MetaDataID.section_CommentsTCB + "']");
+		
+		if( finalHIVTestTag.val() == "Negative" )
+		{
+			me.setHideLogicTag( toComeBackMonths12Tag, false );
+			section.show();
+		}
+		else
+		{
+			me.setHideLogicTag( toComeBackMonths12Tag, true );
+			
+			// Hide the section [] if this section has only data element [To Come Back Months/12]
+			var visibleRowLen = section.find("tr:visible").length;
+			if( visibleRowLen == 1 )// Only header of section is shown, then hidden section
+			{
+				section.hide();
+			}
+		}
+
+		
+		
+	};
 	
 	me.setUp_DataEntryHIVTestInputTagEvent = function( attrId )
 	{
@@ -1042,6 +1070,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			}
 			
 			me.setUp_ReferralOfferedLogic();
+			me.setUp_DataElementToComeBackMonths12();
 		}
 	};
 	
@@ -1875,7 +1904,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		
 		// Hide Councils list in [Contact Log] attribute form
-		me.filterCouncilsByDistrict();
+		var districtTag = me.getAttributeField( MetaDataID.attr_Address3 );
+		var councilTag = me.getAttributeField( MetaDataID.attr_Address4 );
+		me.filterCouncilsByDistrict( districtTag, councilTag );
 		
 		// Add validation[EQC] for [First name]
 		me.getAttributeField( MetaDataID.attr_FirstName ).attr( "valueNotAllow", "EQC" );
@@ -2102,6 +2133,12 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			}
 		});
 		
+		var districtTag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_Address3 + "']");
+		districtTag.change( function(){
+			var councilTag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_Address4 + "']");
+			me.filterCouncilsByDistrict( districtTag, councilTag );
+		});
+		
 
 		me.setUp_validationCheck( Element.addRelationshipFormDivTag.find( 'input,select,textarea' ) );
 		
@@ -2224,6 +2261,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			
 			jsonData[MetaDataID.stage_HIVTesting].eventDate = Util.getCurrentDate();
 			jsonData[MetaDataID.stage_HIVTesting].event = response.hivEventId;
+			jsonData[MetaDataID.stage_HIVTesting].status = "ACTIVE";
 			
 			latestEnrollment.events.push( jsonData[MetaDataID.stage_HIVTesting] );
 			
@@ -3997,7 +4035,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		Element.addClientFormTabTag.attr( "client", JSON.stringify( response ) );
 		
 		// STEP 2. Set the header of the [Client Form] Tab
-		me.generateAddClientFormHeader( response.client.trackedEntityInstance  );
+		me.generateAddClientFormHeader( clientId  );
 		
 		// STEP 3. Display [This Test] Tab if the "status" mode is "Add Client"
 		
@@ -4716,7 +4754,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 
 		// Init dataElement fields
 		me.setUp_DataEntryFormInputTagEvent();
-		
+		me.getDataElementField( MetaDataID.de_ToComeBackMonths12 ).hide();
 	};
 	
 	
@@ -4850,7 +4888,9 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		// Populate attribute values in form
 		me.populateClientAttrValues( Element.addClientFormTabTag, data.client );
 
-		me.filterCouncilsByDistrict();
+		var districtTag = me.getAttributeField( MetaDataID.attr_Address3 );
+		var councilTag = me.getAttributeField( MetaDataID.attr_Address4 );
+		me.filterCouncilsByDistrict( districtTag, councilTag );
 
 		
 		// STEP 5. Create header for [Update client] form
@@ -4874,13 +4914,14 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		
 		// ---------------------------------------------------------------------------------------
-		// Set up [HIV Testing] event data
+		// Set up [HIV Testing] event data & [Previous tests]
 		
 		// STEP 7. Set up data in "Previous Test" tab
 		me.setUp_DataInPreviousTestTab( completedHIVTestingEvents, selectedEventId );
 
 		// STEP 8. Set up data in "This Test" tab
 		me.setUp_DataInThisTestTab( activeHIVTestingEvent, data.partner );
+		
 		
 		if( activeHIVTestingEvent === undefined )
 		{
@@ -4951,7 +4992,15 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 
 		// STEP 14. Init logic for attribute fields based on attribute values
 		me.setUp_ClientRegistrationFormDataLogic();
-
+		
+		// STEP 15. Populate data in [This Test] again here 
+		// so that we don't lose any data in form after running a lot of logic
+		if( activeHIVTestingEvent !== undefined )
+		{	
+			// Populate event data
+			me.populateDataValuesInEntryForm( Element.addClientFormTabTag, activeHIVTestingEvent );
+		}
+		me.setUp_DataElementToComeBackMonths12();
 	};
 	
 
@@ -5044,7 +5093,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		if( hivStatusEvent != undefined )
 		{
 			var hivStatusData = Util.findItemFromList( hivStatusEvent.dataValues, "dataElement", MetaDataID.de_FinalResult_HIVStatus );
-			hivStatus = ( hivStatusData != undefined ) ? hivStatusData.value : "";
+			if( hivStatusData != undefined ) 
+			{
+				var lable = me.translationObj.getTranslatedValueByKey( "indexing_table_lastTest" );
+				hivStatus = lable + " : " + hivStatusData.value;
+			}
 		}
 		
 		var relationshipTypeData = me.metadata_RelationshipTypes[relationshipDetails.relationshipTypeId];
@@ -6069,7 +6122,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		
 		// Set data values based on client attribute values
 		me.setUp_InitDataValues();
-		
+		me.setUp_DataElementToComeBackMonths12();
 		
 		me.checkAndShowCheckedIconForPartnerCUICTag();
 		me.populatePartnerInfor( partnerData );
@@ -6495,11 +6548,10 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 	}
 	
 	// Filter councils by selected district
-	me.filterCouncilsByDistrict = function()
+	me.filterCouncilsByDistrict = function( districtTag, councilTag )
 	{
-		var districtTag = me.getAttributeField( MetaDataID.attr_Address3 );
-		var councilTag = me.getAttributeField( MetaDataID.attr_Address4 );
 		var councilOptionsTag = councilTag.find("option");
+		councilTag.val("");
 		councilOptionsTag.hide();
 		
 		if( districtTag.val() != "" )
@@ -6513,7 +6565,7 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				councilOptionsTag.each( function(){
 					var optionTag = $(this);
 					var key = "LS" + districtTag.val();
-					if( optionTag.val().indexOf( key ) == 0 )
+					if( optionTag.val().indexOf( key ) == 0 || optionTag.val() == "" )
 					{
 						optionTag.show();
 					}

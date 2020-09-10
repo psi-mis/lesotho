@@ -135,6 +135,10 @@ function Coordinator( storageObj, translationObj )
 				
 				me.searchClientManagement.resetSearchClientForm();
 				me.searchClientManagement.showSearchClientForm();
+				
+				
+				Element.backToSearchClientResultBtnTag.show();
+				Element.backToCaseListBtnTag.hide();
 			});
 		});
 		

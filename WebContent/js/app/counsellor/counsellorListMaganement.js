@@ -83,6 +83,7 @@ function CounsellorListMaganement( _mainPage  )
 			
 			ClientUtil.setSearchClientStatus();
 			Element.backToSearchClientResultBtnTag.hide();
+			Element.backToCaseListBtnTag.show();
 			
 			Element.headerListTag.removeAttr("clientId");
 			Element.relationshipMsgTag.hide();

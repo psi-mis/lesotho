@@ -389,21 +389,26 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				
 				var latestEnrollment = ClientUtil.getLatestEnrollment( jsonData.enrollments );
 				if( latestEnrollment )
-				{
-					// Populate dataValue in [Add Relationship] FORM - 
+				{					
 					var testingEvent = ClientUtil.getLatestEvent( latestEnrollment.events, MetaDataID.stage_HIVTesting );
-					var hivTestFinalStatus;
 					
 					if( testingEvent )
 					{
-						// Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
-						var hivTestFinalStatusDV = Util.findItemFromList( testingEvent.dataValues, "dataElement", MetaDataID.de_FinalResult_HIVStatus );
-						if( hivTestFinalStatusDV )
+						// Populate dataValue in [Add Relationship] FORM
+						Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
+	
+						var hivTestFinalStatus;
+						
+						if( testingEvent )
 						{
-							hivTestFinalStatus = hivTestFinalStatusDV.value;							
+							// Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
+							var hivTestFinalStatusDV = Util.findItemFromList( testingEvent.dataValues, "dataElement", MetaDataID.de_FinalResult_HIVStatus );
+							if( hivTestFinalStatusDV )
+							{
+								hivTestFinalStatus = hivTestFinalStatusDV.value;							
+							}
 						}
 					}
-					
 				}
 				
 				// Show [Add relationship] form
@@ -437,43 +442,51 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 		{
 			// Set clientId
 			Element.addRelationshipFormDivTag.attr( "clientId", clientId );
+			var hivStatusTag = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
 
 			if( hivTestFinalStatus )
 			{
 				Element.addRelationshipFormDivTag.attr( "hivTestFinalStatus", hivTestFinalStatus );
-			}
 			
-			// Add logic for [Add Relationship] based on last HIV test
-			if( hivTestFinalStatus == "Positive" )
-			{
-				// Hide all data element fields, except [Relationship type]
-				Element.addRelationshipFormDivTag.find( "[dataelement]" ).closest("tr").hide();
-				Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
+				// Add logic for [Add Relationship] based on last HIV test
+				if( hivTestFinalStatus == "Positive" )
+				{
+					// Hide all data element fields, except [Relationship type]
+					Element.addRelationshipFormDivTag.find( "[dataelement]" ).closest("tr").hide();
+					Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
+				}
+				else
+				{
+					// Show [HIV Status] field
+					hivStatusTag.closest("tr").show();
+				}
+				
 			}
 			else
 			{
-				// Show [HIV Status] field
-				var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
-				hivStatus.closest("tr").show();
+				// Hide [HIV Status] field
+				hivStatusTag.closest("tr").hide();
 			}
 
-			// ----------------------------------------------------------------------------------------------
-			// Show and enable some fields
 			
-			// Show [HIV Status] field
-			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
-			hivStatus.closest("tr").show();
 			
-			// Enable "mandatory and disabled" fields if the fields are no value so that we can enter values
-			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
-			{
-				var idConfig = Relationships.addRelationShipFormIds[i];
-				
-				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
-				var disabled = ( idConfig.rules !==undefined && idConfig.rules.readOnly && inputTag.val() != "" );
-				
-				Util.disableTag( inputTag, disabled );
-			}
+//			// ----------------------------------------------------------------------------------------------
+//			// Show and enable some fields
+			
+//			// Show [HIV Status] field
+//			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
+//			hivStatus.closest("tr").show();
+//			
+//			// Enable "mandatory and disabled" fields if the fields are no value so that we can enter values
+//			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
+//			{
+//				var idConfig = Relationships.addRelationShipFormIds[i];
+//				
+//				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
+//				var disabled = ( idConfig.rules !==undefined && idConfig.rules.readOnly && inputTag.val() != "" );
+//				
+//				Util.disableTag( inputTag, disabled );
+//			}
 		}
 		else // For Add new client case
 		{
@@ -495,6 +508,13 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 				}
 			});
 		}
+		
+		// ----------------------------------------------------------------------------------------------
+		// Filter for councilTag
+		
+		var districtTag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_Address3 + "']");
+		var councilTag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_Address4 + "']");
+		me.mainPage.clientFormManagement.filterCouncilsByDistrict( districtTag, councilTag );
 		
 		
 		// Show the form
