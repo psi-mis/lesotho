@@ -2094,7 +2094,11 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 				// Add validations
 				for( var key in idConfig.rules )
 				{
-					if( key != "readOnly" )
+					if( key == "readOnly" )
+					{
+						Util.disableTag( inputTag, true );
+					}
+					else
 					{
 						inputTag.attr( key, idConfig.rules[key] );
 					}

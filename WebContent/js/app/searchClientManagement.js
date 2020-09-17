@@ -455,11 +455,11 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					Element.addRelationshipFormDivTag.find( "[dataelement]" ).closest("tr").hide();
 					Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
 				}
-				else
-				{
+//				else
+//				{
 					// Show [HIV Status] field
 					hivStatusTag.closest("tr").show();
-				}
+//				}
 				
 			}
 			else
@@ -477,16 +477,15 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 //			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
 //			hivStatus.closest("tr").show();
 //			
-//			// Enable "mandatory and disabled" fields if the fields are no value so that we can enter values
-//			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
-//			{
-//				var idConfig = Relationships.addRelationShipFormIds[i];
-//				
-//				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
-//				var disabled = ( idConfig.rules !==undefined && idConfig.rules.readOnly && inputTag.val() != "" );
-//				
-//				Util.disableTag( inputTag, disabled );
-//			}
+			// Enable "mandatory and disabled" fields if the fields are no value so that we can enter values
+			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
+			{
+				var idConfig = Relationships.addRelationShipFormIds[i];
+				
+				var inputTag = Element.addRelationshipFormDivTag.find("[" + idConfig.type + "='" + idConfig.id + "']");
+				var disabled = ( idConfig.rules !== undefined && idConfig.rules.readOnly );
+				Util.disableTag( inputTag, disabled );
+			}
 		}
 		else // For Add new client case
 		{
