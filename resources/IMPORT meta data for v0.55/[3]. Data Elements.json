@@ -1,0 +1,295 @@
+{
+	"system": {
+		"id": "d1a6eab7-ddc3-4dd1-a17d-caf61735f991",
+		"rev": "ba0e775",
+		"version": "2.33.4",
+		"date": "2020-10-07T02:58:00.724"
+	},
+	"dataElements": 
+	[
+	{
+"lastUpdated": "2020-04-15T14:19:55.047",
+"id": "h2mjNAtBQJU",
+"created": "2020-04-15T14:19:55.047",
+"name": "LS HTS TRK - Index contact - Relationship Type",
+"shortName": "Index contact - Relationship Type",
+"aggregationType": "NONE",
+"domainType": "TRACKER",
+"displayName": "LS HTS TRK - Index contact - Relationship Type",
+"publicAccess": "--------",
+"description": "Relationship Type",
+"displayShortName": "Index contact - Relationship Type",
+"externalAccess": false,
+"valueType": "TEXT",
+"formName": "Relationship Type",
+"displayDescription": "Relationship Type",
+"dimensionItem": "h2mjNAtBQJU",
+"displayFormName": "Relationship Type",
+"zeroIsSignificant": false,
+"favorite": false,
+"optionSetValue": true,
+"dimensionItemType": "DATA_ELEMENT",
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true
+},
+"optionSet": {
+"id": "RsRqvKWqmbd"
+},
+"categoryCombo": {
+"id": "vBNfvFQQ0q3"
+},
+"lastUpdatedBy": {
+"id": "ahghJySjYTf"
+},
+"favorites": [],
+"dataSetElements": [],
+"translations": [],
+"dataElementGroups": [],
+"attributeValues": [],
+"userAccesses": [],
+"legendSets": [],
+"aggregationLevels": []
+},
+{
+"lastUpdated": "2020-04-15T14:20:27.268",
+"id": "JyVlcepnbhF",
+"created": "2020-04-15T14:20:27.268",
+"name": "LS HTS TRK - Index contact - Type of Client",
+"shortName": "Index contact - Type of Client",
+"aggregationType": "NONE",
+"domainType": "TRACKER",
+"displayName": "LS HTS TRK - Index contact - Type of Client",
+"publicAccess": "--------",
+"description": "Type of Client",
+"displayShortName": "Index contact - Type of Client",
+"externalAccess": false,
+"valueType": "TEXT",
+"formName": "Type of Client",
+"displayDescription": "Type of Client",
+"dimensionItem": "JyVlcepnbhF",
+"displayFormName": "Type of Client",
+"zeroIsSignificant": false,
+"favorite": false,
+"optionSetValue": true,
+"dimensionItemType": "DATA_ELEMENT",
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true
+},
+"optionSet": {
+"id": "Eobve8Pr02m"
+},
+"categoryCombo": {
+"id": "vBNfvFQQ0q3"
+},
+"lastUpdatedBy": {
+"id": "ahghJySjYTf"
+},
+"favorites": [],
+"dataSetElements": [],
+"translations": [],
+"dataElementGroups": [],
+"attributeValues": [],
+"userAccesses": [],
+"legendSets": [],
+"aggregationLevels": []
+},
+{
+"lastUpdated": "2020-09-04T22:42:39.620",
+"id": "BZxUgzX4BpO",
+"created": "2020-09-04T22:42:39.620",
+"name": "LS HTS TRK - Comments/TCB - To Come Back (months/12)",
+"shortName": "Comments/TCB - To Come Back (months/12)",
+"aggregationType": "NONE",
+"domainType": "TRACKER",
+"displayName": "LS HTS TRK - Comments/TCB - To Come Back (months/12)",
+"publicAccess": "--------",
+"displayShortName": "Comments/TCB - To Come Back (months/12)",
+"externalAccess": false,
+"valueType": "TEXT",
+"formName": "To Come Back (months/12)",
+"dimensionItem": "BZxUgzX4BpO",
+"displayFormName": "To Come Back (months/12)",
+"zeroIsSignificant": false,
+"favorite": false,
+"optionSetValue": false,
+"dimensionItemType": "DATA_ELEMENT",
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true
+},
+"categoryCombo": {
+"id": "vBNfvFQQ0q3"
+},
+"lastUpdatedBy": {
+"id": "ahghJySjYTf"
+},
+"favorites": [],
+"dataSetElements": [],
+"translations": [],
+"dataElementGroups": [],
+"attributeValues": [],
+"userAccesses": [],
+"legendSets": [],
+"aggregationLevels": []
+},
+{
+"lastUpdated": "2020-07-23T22:29:56.185",
+"id": "Ghs7vYIWIpi",
+"created": "2020-07-23T22:29:56.185",
+"name": "LS HTS TRK - Background - Relationship Type",
+"shortName": "Background - Relationship Type",
+"aggregationType": "NONE",
+"domainType": "TRACKER",
+"displayName": "LS HTS TRK - Background - Relationship Type",
+"publicAccess": "--------",
+"description": "If the client is an indexed contact, select the type or relationship with the lead",
+"displayShortName": "Background - Relationship Type",
+"externalAccess": false,
+"valueType": "TEXT",
+"formName": "Relationship type",
+"displayDescription": "If the client is an indexed contact, select the type or relationship with the lead",
+"dimensionItem": "Ghs7vYIWIpi",
+"displayFormName": "Relationship type",
+"zeroIsSignificant": false,
+"favorite": false,
+"optionSetValue": true,
+"dimensionItemType": "DATA_ELEMENT",
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true
+},
+"optionSet": {
+"id": "RsRqvKWqmbd"
+},
+"categoryCombo": {
+"id": "vBNfvFQQ0q3"
+},
+"lastUpdatedBy": {
+"id": "ahghJySjYTf"
+},
+"favorites": [],
+"dataSetElements": [],
+"translations": [],
+"dataElementGroups": [],
+"attributeValues": [],
+"userAccesses": [],
+"legendSets": [],
+"aggregationLevels": []
+},
+{
+"lastUpdated": "2020-07-23T22:31:47.966",
+"id": "Eis9qerhBFg",
+"created": "2020-07-23T22:31:47.966",
+"name": "LS HTS TRK - Background - Notification Method",
+"shortName": "Background - Notification Method",
+"aggregationType": "NONE",
+"domainType": "TRACKER",
+"displayName": "LS HTS TRK - Background - Notification Method",
+"publicAccess": "--------",
+"description": "One Partner Notification Method can be selected per contact. Options should be (Client Referral, Contract, Dual, Provider)",
+"displayShortName": "Background - Notification Method",
+"externalAccess": false,
+"valueType": "TEXT",
+"formName": "Partner Notification Method",
+"displayDescription": "One Partner Notification Method can be selected per contact. Options should be (Client Referral, Contract, Dual, Provider)",
+"dimensionItem": "Eis9qerhBFg",
+"displayFormName": "Partner Notification Method",
+"zeroIsSignificant": false,
+"favorite": false,
+"optionSetValue": true,
+"dimensionItemType": "DATA_ELEMENT",
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true
+},
+"optionSet": {
+"id": "WEdJ07Qrfjw"
+},
+"categoryCombo": {
+"id": "vBNfvFQQ0q3"
+},
+"lastUpdatedBy": {
+"id": "ahghJySjYTf"
+},
+"favorites": [],
+"dataSetElements": [],
+"translations": [],
+"dataElementGroups": [],
+"attributeValues": [],
+"userAccesses": [],
+"legendSets": [],
+"aggregationLevels": []
+},
+{
+"lastUpdated": "2020-07-23T22:30:48.148",
+"id": "bCVRuaX7LwG",
+"created": "2020-07-23T22:30:48.148",
+"name": "LS HTS TRK - Background - HIV Status",
+"shortName": "Background - HIV Status",
+"aggregationType": "NONE",
+"domainType": "TRACKER",
+"displayName": "LS HTS TRK - Background - HIV Status",
+"publicAccess": "--------",
+"description": "HIV Status reported by index lead",
+"displayShortName": "Background - HIV Status",
+"externalAccess": false,
+"valueType": "TEXT",
+"formName": "HIV Status reported by index lead",
+"displayDescription": "HIV Status reported by index lead",
+"dimensionItem": "bCVRuaX7LwG",
+"displayFormName": "HIV Status reported by index lead",
+"zeroIsSignificant": false,
+"favorite": false,
+"optionSetValue": true,
+"dimensionItemType": "DATA_ELEMENT",
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true
+},
+"optionSet": {
+"id": "h7guQoNoGJI"
+},
+"categoryCombo": {
+"id": "vBNfvFQQ0q3"
+},
+"lastUpdatedBy": {
+"id": "ahghJySjYTf"
+},
+"favorites": [],
+"dataSetElements": [],
+"translations": [],
+"dataElementGroups": [],
+"attributeValues": [],
+"userAccesses": [],
+"legendSets": [],
+"aggregationLevels": []
+}
+
+	]
+}

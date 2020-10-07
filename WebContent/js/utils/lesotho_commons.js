@@ -1,8 +1,8 @@
 
 function Commons() {}
 
-Commons.VERSION = "v0.55 - SNAPSHOT 7";
-Commons.VERSION_DATE = "Sep 14 2020";
+Commons.VERSION = "v0.55";
+Commons.VERSION_DATE = "Oct 07 2020";
 Util.SITE_INFO = "This is developing version";
 
 Commons.wsUrl = "ls-dev";

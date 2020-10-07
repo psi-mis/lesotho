@@ -1,0 +1,116 @@
+{
+	"system": {
+		"id": "d1a6eab7-ddc3-4dd1-a17d-caf61735f991",
+		"rev": "ba0e775",
+		"version": "2.33.4",
+		"date": "2020-10-07T02:58:00.724"
+	},
+	"relationshipTypes": 
+	[
+	{
+"lastUpdated": "2020-07-13T15:19:57.106",
+"href": "https://dev.psi-mis.org/api/relationshipTypes/CnrPOhfTfoV",
+"id": "CnrPOhfTfoV",
+"created": "2020-04-14T05:38:17.602",
+"name": "Parent-Child",
+"bidirectional": true,
+"displayName": "Parent-Child",
+"publicAccess": "rw------",
+"fromToName": "Child",
+"externalAccess": false,
+"toFromName": "Parent",
+"favorite": false,
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true,
+"data": {
+"read": true,
+"write": true
+}
+},
+"toConstraint": {
+"relationshipEntity": "TRACKED_ENTITY_INSTANCE",
+"trackedEntityType": {
+"id": "XV3kldsZq0H"
+},
+"program": {
+"id": "KDgzpKX3h2S"
+}
+},
+"lastUpdatedBy": {
+"id": "QN5gz0VwVOJ"
+},
+"fromConstraint": {
+"relationshipEntity": "TRACKED_ENTITY_INSTANCE",
+"trackedEntityType": {
+"id": "XV3kldsZq0H"
+},
+"program": {
+"id": "KDgzpKX3h2S"
+}
+},
+"favorites": [],
+"translations": [],
+"userGroupAccesses": [],
+"attributeValues": [],
+"userAccesses": []
+},
+{
+"lastUpdated": "2020-07-13T15:20:38.988",
+"href": "https://dev.psi-mis.org/api/relationshipTypes/FB65LN5U5Jv",
+"id": "FB65LN5U5Jv",
+"created": "2020-04-14T05:38:02.394",
+"name": "Sexual Partner",
+"bidirectional": true,
+"displayName": "Sexual Partner",
+"publicAccess": "rw------",
+"fromToName": "Sexual Partner - Contact",
+"externalAccess": false,
+"toFromName": "Sexual Partner - Lead",
+"favorite": false,
+"access": {
+"read": true,
+"update": true,
+"externalize": true,
+"delete": true,
+"write": true,
+"manage": true,
+"data": {
+"read": true,
+"write": true
+}
+},
+"toConstraint": {
+"relationshipEntity": "TRACKED_ENTITY_INSTANCE",
+"trackedEntityType": {
+"id": "XV3kldsZq0H"
+},
+"program": {
+"id": "KDgzpKX3h2S"
+}
+},
+"lastUpdatedBy": {
+"id": "QN5gz0VwVOJ"
+},
+"fromConstraint": {
+"relationshipEntity": "TRACKED_ENTITY_INSTANCE",
+"trackedEntityType": {
+"id": "XV3kldsZq0H"
+},
+"program": {
+"id": "KDgzpKX3h2S"
+}
+},
+"favorites": [],
+"translations": [],
+"userGroupAccesses": [],
+"attributeValues": [],
+"userAccesses": []
+}
+	]
+}
+	

@@ -67,10 +67,10 @@ function InputTagGeneration( attribute )
 		var options = attribute.optionSet.options;
 		inputTag = $("<select class='form-control' " + inputKey + "='" + attribute.id + "' mandatory='" + attribute.mandatory + "'>");
 		inputTag.append( "<option value=''>[Please select]</option>" );
-		for( var k in options )
+		for( var i=0; i<options.length; i++ )
 		{
-			var code = options[k].code;
-			var name = options[k].name;
+			var code = options[i].code;
+			var name = options[i].name;
 			inputTag.append( "<option value='" + code + "'>" + name + "</option>" );
 		}
 		
@@ -87,9 +87,8 @@ function InputTagGeneration( attribute )
 			var code = options[k].code;
 			var name = options[k].name;
 			var style = ( k==0 ) ? "" : "margin-left: 30px;";
-			inputTag.append( "<input " + inputKey + "='" + attribute.id + "' type='radio' value='" + code + "' name='" + attribute.id + "' style='" + style + "'> " + name );
+			inputTag.append( "<input " + inputKey + "='" + attribute.id + "' type='radio' value='" + code + "' name='" + attribute.id + "' style='" + style + "'> " + name );		
 		}
-		
 		return inputTag;
 	};
 	

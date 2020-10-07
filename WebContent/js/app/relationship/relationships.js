@@ -143,7 +143,7 @@ Relationships.addRelationShipFormIds = [
 	{ "type": "attribute", "id" : MetaDataID.attr_IPV1, "rules" : { "mandatory" : true } }, 
 	{ "type": "attribute", "id" : MetaDataID.attr_IPV2, "rules" : { "mandatory" : true } }, 
 	{ "type": "attribute", "id" : MetaDataID.attr_IPV3, "rules" : { "mandatory" : true } }, 
-	{ "type": "attribute", "id" : MetaDataID.attr_IPVOutcome, "rules" : { "mandatory" : true } }, 
+	{ "type": "attribute", "id" : MetaDataID.attr_IPVOutcome, "rules" : { "mandatory" : true, "readOnly" : true } }, 
 	{ "type": "dataelement", "id" : MetaDataID.de_DueDate, "rules" : { "mandatory" : true } }
 ];
 

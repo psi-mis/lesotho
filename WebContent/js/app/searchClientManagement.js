@@ -394,8 +394,12 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					
 					if( testingEvent )
 					{
+						// Remove RelationshipType value from dataValues list because users need to choose an another relationship to add new relationship 
+						var dataValues = testingEvent.dataValues;;
+						Util.RemoveFromArray( dataValues, "dataElement", MetaDataID.de_RelationshipType );
+						
 						// Populate dataValue in [Add Relationship] FORM
-						Util.populateDataValues( Element.addRelationshipFormDivTag, testingEvent.dataValues, "dataElement" );
+						Util.populateDataValues( Element.addRelationshipFormDivTag, dataValues, "dataElement" );
 	
 						var hivTestFinalStatus;
 						
@@ -455,11 +459,8 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 					Element.addRelationshipFormDivTag.find( "[dataelement]" ).closest("tr").hide();
 					Element.addRelationshipFormDivTag.find( "[dataelement='" + MetaDataID.de_RelationshipType + "']").closest("tr").show();
 				}
-//				else
-//				{
-					// Show [HIV Status] field
-					hivStatusTag.closest("tr").show();
-//				}
+				
+				hivStatusTag.closest("tr").show();
 				
 			}
 			else
@@ -469,15 +470,10 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			}
 
 			
+			// ----------------------------------------------------------------------------------------------
+			// Show and enable some fields
 			
-//			// ----------------------------------------------------------------------------------------------
-//			// Show and enable some fields
-			
-//			// Show [HIV Status] field
-//			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");
-//			hivStatus.closest("tr").show();
-//			
-			// Enable "mandatory and disabled" fields if the fields are no value so that we can enter values
+			// Set "mandatory and disabled" fields if the fields are no value so that we can enter values
 			for( var i=0; i<Relationships.addRelationShipFormIds.length; i++ )
 			{
 				var idConfig = Relationships.addRelationShipFormIds[i];
@@ -492,6 +488,9 @@ function SearchClientManagement( _mainPage, _metaData, _appPage )
 			// Clean up the form and enable all fields
 			Util.disableForm( Element.addRelationshipFormDivTag, false );
 			Util.resetForm( Element.addRelationshipFormDivTag );
+			
+			// Always disable "attr_IPVOutcome" field
+			Util.disableTag( Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPVOutcome + "']"), true );
 			
 			// Hide [HIV Status] field
 			var hivStatus = Element.addRelationshipFormDivTag.find("[dataelement='" + MetaDataID.de_FinalResult_HIVStatus + "']");

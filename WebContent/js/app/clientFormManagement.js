@@ -1902,6 +1902,10 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		me.addMandatoryForField( me.getAttributeField( MetaDataID.attr_ContactDetails_Council ) );
 		me.addMandatoryForField( me.getAttributeField( MetaDataID.attr_NextOfKin_ConsenToContact ) );
 		
+		me.addMandatoryForField( me.getAttributeField( MetaDataID.attr_IPV1 ) );
+		me.addMandatoryForField( me.getAttributeField( MetaDataID.attr_IPV2 ) );
+		me.addMandatoryForField( me.getAttributeField( MetaDataID.attr_IPV3 ) );
+		
 		
 		// Hide Councils list in [Contact Log] attribute form
 		var districtTag = me.getAttributeField( MetaDataID.attr_Address3 );
@@ -1919,8 +1923,30 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		Element.addClientFormTag.find("input[dateTimePicker='true']").each(function(){
 			Util.dateTimePicker( $(this) );
 		});
+		
+		me.setup_Events_ContactLogForm();
+		Util.disableTag( Element.contactLogFormTag .find("[attribute='" + MetaDataID.attr_IPVOutcome + "']"), true );
 	};
 
+	me.setup_Events_ContactLogForm = function()
+	{
+		// Set up events for attributes 
+		var IPV1Tag =  Element.contactLogFormTag .find("[attribute='" + MetaDataID.attr_IPV1 + "']");
+		var IPV2Tag =  Element.contactLogFormTag .find("[attribute='" + MetaDataID.attr_IPV2 + "']");
+		var IPV3Tag =  Element.contactLogFormTag .find("[attribute='" + MetaDataID.attr_IPV3 + "']");
+		
+		IPV1Tag.change( function(){
+			me.setup_Events_IVPLogic(  Element.contactLogFormTag  );
+		});
+
+		IPV2Tag.change( function(){
+			me.setup_Events_IVPLogic(  Element.contactLogFormTag  );
+		});
+
+		IPV3Tag.change( function(){
+			me.setup_Events_IVPLogic(  Element.contactLogFormTag  );
+		});
+	}
 	me.createAttributeClientForm = function( table, preFixGroupName, addHistoryDiv )
 	{
 		// STEP 1. Generate fields into the table
@@ -2186,6 +2212,23 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 			}
 		});
 		
+		// Set up events for attributes 
+		var IPV1Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV1 + "']");
+		var IPV2Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV2 + "']");
+		var IPV3Tag = Element.addRelationshipFormDivTag.find("[attribute='" + MetaDataID.attr_IPV3 + "']");
+		
+		IPV1Tag.change( function(){
+			me.setup_Events_IVPLogic( Element.addRelationshipFormDivTag );
+		});
+
+		IPV2Tag.change( function(){
+			me.setup_Events_IVPLogic( Element.addRelationshipFormDivTag );
+		});
+
+		IPV3Tag.change( function(){
+			me.setup_Events_IVPLogic( Element.addRelationshipFormDivTag );
+		});
+		
 		Element.addRelationshipBtnTag.click( function(){
 			
 			if( me.validationObj.checkFormEntryTagsData( Element.addRelationshipFormDivTag ) )
@@ -2243,7 +2286,26 @@ function ClientFormManagement( _mainPage, _metaData, _appPage )
 		})
 	};
 	
-	
+	me.setup_Events_IVPLogic = function( formTag )
+	{
+		var IPV1Tag = formTag.find("[attribute='" + MetaDataID.attr_IPV1 + "']");
+		var IPV2Tag = formTag.find("[attribute='" + MetaDataID.attr_IPV2 + "']");
+		var IPV3Tag = formTag.find("[attribute='" + MetaDataID.attr_IPV3 + "']");
+		var IPVOutcomeTag = formTag.find("[attribute='" + MetaDataID.attr_IPVOutcome + "']");
+		
+		if( IPV1Tag.val() == "true" || IPV2Tag.val() == "true" || IPV3Tag.val() == "true" )
+		{
+			IPVOutcomeTag.val("POS");
+		}
+		else if( IPV1Tag.val() == "false" && IPV2Tag.val() == "false" && IPV3Tag.val() == "false" )
+		{
+			IPVOutcomeTag.val("NEG");
+		}
+		else
+		{
+			IPVOutcomeTag.val("");
+		}
+	}
 	me.updateClientBInfo = function( jsonData, response, clientAId )
 	{
 		var relationshipId = response.relationshipId;
