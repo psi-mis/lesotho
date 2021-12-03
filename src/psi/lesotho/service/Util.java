@@ -35,7 +35,8 @@ public final class Util
 //    public static String LOCATION_DHIS_SERVER = "https://data.psi-mis.org";
 //    public static String LOCATION_DHIS_SERVER = "https://clone.psi-mis.org";
 //    public static String LOCATION_DHIS_SERVER = "https://new.psi-mis.org";
-    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
+//    public static String LOCATION_DHIS_SERVER = "https://dev.psi-mis.org";
+    public static String LOCATION_DHIS_SERVER = "https://236data.psi-mis.org";
     public static final String ID_TRACKED_ENTITY = "XV3kldsZq0H";
 //    
 //    // https://sandbox.psi-mis.org
