@@ -1,0 +1,72 @@
+<div id="setupProgramSectionDiv" style="display:none;" class="mainContent">
+
+	<div id="programSectionListDiv" style="display:none;">	
+		<h4 keyword="setupProgramSection_headerTitle">Program Section</h4>
+		
+		<div style="float:right;margin-bottom: 10px;">
+			<button id="addNewBtn" keyword="setupProgramSection_rowHeader_addNew" class="btn btn-default">Add New</button>
+			<button id="backToSettingPageBtn" keyword="setupProgramSection_rowHeader_back" class="btn btn-default">Back</button>
+		</div>
+		
+		<br>
+		<table id="programSectionListDiv" class="table table-hover table-striped listTable tablesorter" style="width: 100%;">
+			<thead>
+				<tr style="background-color: #989bab;">
+					<th keyword="setupProgramSection_rowHeader_name"></th>
+					<th keyword="setupProgramSection_rowHeader_code"></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	
+	<div id="programSectionForm" style="display:none;">
+		
+		<h4 keyword="setupProgramSection_headerTitle">Program Section</h4>
+		
+		<table class="table aboutTable">
+			<tr>
+				<td keyword="setupProgramSection_rowHeader_name">Name <span class='required'>*</span></td>
+				<td><input id="name" class="form-control"></td>
+			</tr>
+			<tr>
+				<td keyword="setupProgramSection_rowHeader_code">Code <span class='required'>*</span></td>
+				<td><input id="code" class="form-control"></td>
+			</tr>
+			<tr style="display:none;">
+				<td keyword="setupProgramSection_rowHeader_program">Program <span class='required'>*</span></td>
+				<td><select id="program" class="form-control">
+					<option value="KDgzpKX3h2S"></option>
+				</select> </td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<table style="width:100%">
+						<tr>
+							<td><span keyword="setupProgramSection_rowHeader_available"></span></td>
+							<td keyword="setupProgramSection_rowHeader_selected"></td>
+						</tr>
+						
+						<tr>
+							<td><input type="text" id="searchAvailableAttribute" class="form-control" style="width: 95%;"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td style="width:50%"><select multiple id="availableAttribute" style="width:95%;height:100px;" class="form-control" ></select></td>
+							<td style="width:50%"><select multiple id="selectedAttribute" style="width:100%;height:100px;" class="form-control" ></select></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<td></td>
+				<td>
+					<button style="margin-top: 10px;" id="setupProgamSectionBtn" class="btn btn-default" keyword="setupProgramSection_btn_save">Save</button>
+					<button style="margin-top: 10px;" id="cancelProgamSectionBtn" class="btn btn-default" keyword="setupProgramSection_btn_cancel">Cancel</button>
+				</td>
+			<tr>
+		</table>
+	</div>
+</div>
